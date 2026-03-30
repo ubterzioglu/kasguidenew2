@@ -1,0 +1,37 @@
+{
+  "name": "kasguide-new",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "postbuild": "node scripts/sync-next-server-chunks.mjs",
+    "sync:next-chunks": "node scripts/sync-next-server-chunks.mjs",
+    "prestart": "node scripts/sync-next-server-chunks.mjs",
+    "start": "next start",
+    "lint": "next lint",
+    "import:osm": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/import-osm.ts",
+    "import:google:grid": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/import-google-grid.ts",
+    "normalize:places": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/normalize-places.ts",
+    "dedupe:places": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/dedupe-places.ts",
+    "publish:reviewed": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/publish-reviewed.ts",
+    "reset:ingestion": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/reset-ingestion.ts",
+    "test:google-places": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/test-google-places.ts",
+    "seed:sample-bar": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/seed-sample-bar.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
+    "next": "^15.2.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
+    "@types/node": "^22.13.17",
+    "@types/react": "^19.0.12",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.2"
+  }
+}
