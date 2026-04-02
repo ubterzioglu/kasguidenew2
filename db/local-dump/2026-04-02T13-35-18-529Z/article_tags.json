@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "article_id": 1,
+    "tag_name": "kas"
+  },
+  {
+    "id": 2,
+    "article_id": 1,
+    "tag_name": "rehber"
+  },
+  {
+    "id": 3,
+    "article_id": 1,
+    "tag_name": "ipuclari"
+  },
+  {
+    "id": 4,
+    "article_id": 2,
+    "tag_name": "kis"
+  },
+  {
+    "id": 5,
+    "article_id": 2,
+    "tag_name": "sakin sezon"
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "id": "2d05af93-f7bd-432f-9982-24423d90d10d",
+    "sweep_id": "ef892fc6-5710-4203-b6bb-ee7a18c8f06b",
+    "cell_index": 1,
+    "south": 36.197137,
+    "west": 29.63855,
+    "north": 36.201629,
+    "east": 29.644116,
+    "status": "success",
+    "fetched_count": 320,
+    "prepared_count": 249,
+    "error_message": null,
+    "started_at": "2026-03-29T12:30:26.103Z",
+    "completed_at": "2026-03-29T12:30:31.717Z",
+    "created_at": "2026-03-29T12:30:32.602Z",
+    "updated_at": "2026-03-29T12:30:32.602Z"
+  },
+  {
+    "id": "64dfd6f2-77dc-42b0-b671-a22daa1a697d",
+    "sweep_id": "6c4754c6-bbd8-4afa-89ce-24b2f8c7b520",
+    "cell_index": 1,
+    "south": 36.197137,
+    "west": 29.644116,
+    "north": 36.201629,
+    "east": 29.649682,
+    "status": "success",
+    "fetched_count": 40,
+    "prepared_count": 27,
+    "error_message": null,
+    "started_at": "2026-03-29T12:36:53.682Z",
+    "completed_at": "2026-03-29T12:36:58.888Z",
+    "created_at": "2026-03-29T12:36:59.826Z",
+    "updated_at": "2026-03-29T12:36:59.826Z"
+  }
+]

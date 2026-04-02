@@ -1,28 +1,26 @@
-﻿'use client'
-
 import type { ReactNode } from 'react'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+
+import { BackToTopButton } from './back-to-top-button'
+import { ClientHeader } from './client-header'
+import { ClientPageShell } from './client-page-shell'
 
 type SiteFrameProps = {
   children: ReactNode
 }
 
 export function SiteFrame({ children }: SiteFrameProps) {
-  const pathname = usePathname()
-  const isHomePage = pathname === '/'
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
   return (
     <>
       <div id="page-top"></div>
 
-      <header className={`header ${isHomePage ? 'header-home' : 'header-subpage'}`}>
+      <ClientHeader>
         <div className="header-content">
+          <Link href="/" className="header-mobile-brand">
+            Kaş Guide
+          </Link>
+
           <nav className="header-inline-nav header-inline-nav-left" aria-label="Ana navigasyon">
             <Link href="/" className="header-inline-item">
               Kaş Guide
@@ -35,6 +33,15 @@ export function SiteFrame({ children }: SiteFrameProps) {
             <Link href="/#contact" className="header-inline-item">
               İletişim
             </Link>
+            <span className="header-inline-separator" aria-hidden="true"></span>
+            <a
+              href="https://wa.me/4915258450111"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="header-inline-item"
+            >
+              WhatsApp Topluluğu
+            </a>
           </nav>
 
           <nav className="header-inline-nav header-inline-nav-right" aria-label="Kısa yol">
@@ -42,38 +49,39 @@ export function SiteFrame({ children }: SiteFrameProps) {
               Ana Sayfa
             </Link>
           </nav>
+
+          <details className="header-mobile-menu">
+            <summary className="header-hamburger" aria-label="Menüyü aç">
+              <span></span>
+              <span></span>
+              <span></span>
+            </summary>
+            <nav className="header-mobile-panel" aria-label="Mobil menü">
+              <Link href="/" className="header-mobile-link">
+                Ana Sayfa
+              </Link>
+              <Link href="/#categories" className="header-mobile-link">
+                Kategoriler
+              </Link>
+              <Link href="/#contact" className="header-mobile-link">
+                İletişim
+              </Link>
+              <a
+                href="https://wa.me/4915258450111"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="header-mobile-link"
+              >
+                WhatsApp Topluluğu
+              </a>
+            </nav>
+          </details>
         </div>
-      </header>
+      </ClientHeader>
 
-      <div className={`page-shell ${isHomePage ? 'page-shell-home' : 'page-shell-subpage'}`}>
-        {isHomePage ? (
-          <div className="page-shell-bubbles" aria-hidden="true">
-            <span className="page-shell-bubble bubble-1"></span>
-            <span className="page-shell-bubble bubble-2"></span>
-            <span className="page-shell-bubble bubble-3"></span>
-            <span className="page-shell-bubble bubble-4"></span>
-            <span className="page-shell-bubble bubble-5"></span>
-            <span className="page-shell-bubble bubble-6"></span>
-            <span className="page-shell-bubble bubble-7"></span>
-            <span className="page-shell-bubble bubble-8"></span>
-          </div>
-        ) : null}
-        {children}
-      </div>
+      <ClientPageShell>{children}</ClientPageShell>
 
-      <button
-        type="button"
-        className="back-to-top"
-        aria-label="Yukarı çık"
-        onClick={scrollToTop}
-      >
-        <span className="back-to-top-glyph" aria-hidden="true">
-          ↑
-        </span>
-      </button>
+      <BackToTopButton />
     </>
   )
 }
-
-
-

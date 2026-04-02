@@ -1,0 +1,130 @@
+[
+  {
+    "id": 1,
+    "slug": "tourist",
+    "emoji": "🎒",
+    "title": "Turist Dostu",
+    "description": "İlk kez gelenler için anlaşılır, rahat ve pratik bir tercih.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 2,
+    "slug": "recommend",
+    "emoji": "⭐",
+    "title": "Kaş Guide Önerir",
+    "description": "Kaş Guide ekibinin net önerisi.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 3,
+    "slug": "localFav",
+    "emoji": "❤️",
+    "title": "Yerel Favori",
+    "description": "Kaşlıların sık gittiği, sevdiği yer.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 4,
+    "slug": "classic",
+    "emoji": "🏛️",
+    "title": "Kaş Klasiği",
+    "description": "Yıllardır bilinen, adı oturmuş klasik durak.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 5,
+    "slug": "newFind",
+    "emoji": "🌱",
+    "title": "Yeni Keşif",
+    "description": "Yeni açılan/yeniden parlayan, keşiflik yer.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 6,
+    "slug": "editorsPick",
+    "emoji": "🖊️",
+    "title": "Editör Seçimi",
+    "description": "Detaylarıyla öne çıkan, seçilmiş deneyim.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 7,
+    "slug": "surprise",
+    "emoji": "🎯",
+    "title": "Sürpriz Nokta",
+    "description": "Beklenenden iyi çıkan, hoş sürpriz.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 8,
+    "slug": "hidden",
+    "emoji": "👀",
+    "title": "Gizli Kalmış",
+    "description": "Çok bilinmeyen ama değerli bir köşe.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 9,
+    "slug": "again",
+    "emoji": "🔁",
+    "title": "Tekrar Gidilir",
+    "description": "Bir kez gidince listede kalan yer.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 10,
+    "slug": "kasSoul",
+    "emoji": "🌊",
+    "title": "Kaş Ruhu Var",
+    "description": "Kaş'ın o rahat, gerçek hissini veren yer.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 11,
+    "slug": "firstTimers",
+    "emoji": "🧭",
+    "title": "İlk Kez Gelenlere Uygun",
+    "description": "Kaş'a ilk gelişte risksiz, net tercih.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 12,
+    "slug": "timeless",
+    "emoji": "🕰️",
+    "title": "Yıllardır Değişmeyen",
+    "description": "İstikrarı ve çizgisiyle güven veren.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 13,
+    "slug": "chattyOwner",
+    "emoji": "🤝",
+    "title": "Sahibiyle Muhabbetlik",
+    "description": "Sıcakkanlı, iletişimi güçlü işletme hissi.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 14,
+    "slug": "sunsetStart",
+    "emoji": "🌅",
+    "title": "Akşam Başlangıcı",
+    "description": "Gün batımı sonrası akşamı başlatmalık.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 15,
+    "slug": "nightCarrier",
+    "emoji": "🌙",
+    "title": "Geceyi Taşıyan Mekân",
+    "description": "Gece ilerledikçe temposu yükselen durak.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  },
+  {
+    "id": 16,
+    "slug": "must",
+    "emoji": "💎",
+    "title": "Kaş'ta Olmazsa Olmaz",
+    "description": "Kaş deneyiminin imza duraklarından.",
+    "created_at": "2026-03-20T08:22:23.047Z"
+  }
+]

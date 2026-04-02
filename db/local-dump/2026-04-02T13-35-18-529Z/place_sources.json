@@ -1,0 +1,15 @@
+[
+  {
+    "id": "97dec56d-1823-45b3-881d-3fa5e3d9241e",
+    "place_id": "766efa22-329c-443d-9786-e610ec427e5a",
+    "raw_place_id": null,
+    "source_name": "seed",
+    "source_id": "sample-bar-mavi-kose",
+    "source_url": null,
+    "is_primary": true,
+    "first_seen_at": "2026-03-29T16:04:35.684Z",
+    "last_seen_at": "2026-03-29T16:04:35.684Z",
+    "created_at": "2026-03-29T16:04:35.684Z",
+    "updated_at": "2026-03-29T16:04:35.684Z"
+  }
+]

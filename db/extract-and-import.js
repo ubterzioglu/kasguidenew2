@@ -1,0 +1,428 @@
+#!/usr/bin/env node
+/**
+ * Extract and Import Static Data to Supabase
+ * Reads JS data files and imports to Supabase
+ */
+
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import vm from 'vm';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Dynamic import for pg
+const { default: sql } = await import('./connection.js');
+
+// Helper to read JS files and extract data using VM
+function extractJSData(filePath, varNames) {
+  try {
+    const fullPath = path.join(process.cwd(), filePath);
+    if (!fs.existsSync(fullPath)) {
+      console.warn(`⚠️ File not found: ${filePath}`);
+      return null;
+    }
+    
+    let content = fs.readFileSync(fullPath, 'utf8');
+    
+    // Replace const/let/var declarations with global assignments
+    // This makes the variables available in the context
+    content = content.replace(/\b(const|let|var)\s+/g, 'this.');
+    
+    // Create a context to execute the JS
+    const context = { 
+      console,
+      Array,
+      Object,
+      String,
+      Number,
+      Date,
+      JSON,
+      Math,
+      RegExp,
+      parseInt,
+      parseFloat,
+      isNaN,
+      isFinite,
+      undefined,
+      null: null
+    };
+    
+    // Execute the JS code
+    vm.createContext(context);
+    vm.runInContext(content, context, { filename: fullPath });
+    
+    // Extract the requested variables
+    const result = {};
+    for (const varName of varNames) {
+      result[varName] = context[varName];
+    }
+    return result;
+  } catch (error) {
+    console.error(`❌ Error reading ${filePath}:`, error.message);
+    return null;
+  }
+}
+
+// Import Places
+async function importPlaces() {
+  console.log('\n📍 Importing Places...');
+  try {
+    const data = extractJSData('places/places-data.js', ['allPlaces', 'badgeDefinitions']);
+    const allPlaces = data?.allPlaces;
+    
+    if (!allPlaces || allPlaces.length === 0) {
+      console.log('   No places found');
+      return 0;
+    }
+    
+    console.log(`   Found ${allPlaces.length} places`);
+    let imported = 0;
+    
+    for (const place of allPlaces) {
+      try {
+        if (!place.id || !place.title) {
+          console.log(`   ⚠️ Skipping invalid place entry`);
+          continue;
+        }
+        
+        // Check if already exists
+        const existing = await sql`SELECT id FROM items WHERE slug = ${place.id}`;
+        if (existing.rows.length > 0) {
+          console.log(`   ⏭️  Skipping ${place.id} (already exists)`);
+          continue;
+        }
+        
+        // Generate item number
+        const itemNumResult = await sql`SELECT get_next_item_number('place') as num`;
+        const itemNumber = itemNumResult.rows[0].num;
+        
+        // Prepare attributes
+        const attributes = {
+          badge_id: place.badgeId || 'tourist',
+          categories: place.category || [],
+          price: place.price || '',
+          selected: place.selected || false,
+          distance: place.distance || '',
+          duration: place.duration || '',
+          access_info: place.accessInfo || '',
+          google_maps_query: place.googleMapsQuery || '',
+          facilities: place.facilities || [],
+          features: place.features || [],
+          tags: place.tags || []
+        };
+        
+        // Prepare photos
+        const photos = [];
+        if (place.image) {
+          photos.push({ url: place.image.replace(/^\.\.\//, '/'), sequence: 0, is_primary: true });
+        }
+        if (place.images && Array.isArray(place.images)) {
+          place.images.forEach((img, idx) => {
+            if (img !== place.image) {
+              photos.push({ url: img.replace(/^\.\.\//, '/'), sequence: idx + 1 });
+            }
+          });
+        }
+        
+        await sql`
+          INSERT INTO items (
+            item_number, item_type, slug, title, description, long_text,
+            phone, website, instagram, location, coordinates_lat, coordinates_lng,
+            rating, verified, status, photos, attributes, published_at
+          ) VALUES (
+            ${itemNumber}, 'place', ${place.id}, ${place.title}, ${place.description || ''},
+            ${place.longText || place.description || ''}, ${place.phone || ''}, ${place.website || ''},
+            ${place.instagram || ''}, ${place.location || ''}, 
+            ${place.coordinates?.lat || null}, ${place.coordinates?.lng || null},
+            ${place.rating || null}, true, 'approved',
+            ${JSON.stringify(photos)}::jsonb, ${JSON.stringify(attributes)}::jsonb, NOW()
+          )
+        `;
+        
+        imported++;
+        console.log(`   ✅ ${itemNumber}: ${place.title}`);
+      } catch (err) {
+        console.error(`   ❌ Failed to import ${place.id || 'unknown'}:`, err.message);
+      }
+    }
+    
+    console.log(`   Imported ${imported}/${allPlaces.length} places`);
+    return imported;
+  } catch (error) {
+    console.error('❌ Error importing places:', error.message);
+    return 0;
+  }
+}
+
+// Import Hotels
+async function importHotels() {
+  console.log('\n🏨 Importing Hotels...');
+  try {
+    const data = extractJSData('hotel/hotels-data.js', ['allHotels']);
+    const allHotels = data?.allHotels;
+    
+    if (!allHotels || allHotels.length === 0) {
+      console.log('   No hotels found');
+      return 0;
+    }
+    
+    // Filter out example/template hotels
+    const validHotels = allHotels.filter(h => 
+      h.id && 
+      !h.id.includes('ornek') && 
+      !h.id.includes('template') && 
+      !h.id.includes('example')
+    );
+    
+    console.log(`   Found ${validHotels.length} valid hotels (${allHotels.length} total)`);
+    let imported = 0;
+    
+    for (const hotel of validHotels) {
+      try {
+        // Check if already exists
+        const existing = await sql`SELECT id FROM items WHERE slug = ${hotel.id}`;
+        if (existing.rows.length > 0) {
+          console.log(`   ⏭️  Skipping ${hotel.id} (already exists)`);
+          continue;
+        }
+        
+        // Generate item number
+        const itemNumResult = await sql`SELECT get_next_item_number('hotel') as num`;
+        const itemNumber = itemNumResult.rows[0].num;
+        
+        // Prepare attributes
+        const attributes = {
+          hotel_type: hotel.hotelType || 'butik',
+          star_rating: hotel.starRating || '',
+          room_count: hotel.roomCount || null,
+          capacity: hotel.capacity || null,
+          price_range: hotel.priceRange || 'mid',
+          checkin_time: hotel.checkinTime || '14:00',
+          checkout_time: hotel.checkoutTime || '11:00',
+          distance_to_sea: hotel.distanceToSea || '',
+          booking_url: hotel.booking || '',
+          google_maps_query: hotel.googleMapsQuery || '',
+          facilities: hotel.facilities || [],
+          tags: hotel.tags || [],
+          review_count: hotel.reviewCount || 0
+        };
+        
+        // Prepare photos
+        const photos = [];
+        if (hotel.image) {
+          photos.push({ url: hotel.image.replace(/^\.\.?\//, '/'), sequence: 0, is_primary: true });
+        }
+        if (hotel.images && Array.isArray(hotel.images)) {
+          hotel.images.forEach((img, idx) => {
+            if (img !== hotel.image) {
+              photos.push({ url: img.replace(/^\.\.?\//, '/'), sequence: idx + 1 });
+            }
+          });
+        }
+        
+        await sql`
+          INSERT INTO items (
+            item_number, item_type, slug, title, description, long_text,
+            phone, email, website, instagram, location, coordinates_lat, coordinates_lng,
+            rating, verified, status, photos, attributes, published_at
+          ) VALUES (
+            ${itemNumber}, 'hotel', ${hotel.id}, ${hotel.title}, ${hotel.description || ''},
+            ${hotel.longText || hotel.description || ''}, ${hotel.phone || ''}, ${hotel.email || ''},
+            ${hotel.website || ''}, ${hotel.instagram || ''}, ${hotel.location || ''},
+            ${hotel.coordinates?.lat || null}, ${hotel.coordinates?.lng || null},
+            ${hotel.rating || null}, true, 'approved',
+            ${JSON.stringify(photos)}::jsonb, ${JSON.stringify(attributes)}::jsonb, NOW()
+          )
+        `;
+        
+        imported++;
+        console.log(`   ✅ ${itemNumber}: ${hotel.title}`);
+      } catch (err) {
+        console.error(`   ❌ Failed to import ${hotel.id}:`, err.message);
+      }
+    }
+    
+    console.log(`   Imported ${imported}/${validHotels.length} hotels`);
+    return imported;
+  } catch (error) {
+    console.error('❌ Error importing hotels:', error.message);
+    return 0;
+  }
+}
+
+// Import Pets
+async function importPets() {
+  console.log('\n🐾 Importing Pets...');
+  try {
+    const data = extractJSData('pet/pet-data.js', ['pets']);
+    const pets = data?.pets;
+    
+    if (!pets || pets.length === 0) {
+      console.log('   No pets found');
+      return 0;
+    }
+    
+    console.log(`   Found ${pets.length} pets`);
+    let imported = 0;
+    
+    for (const pet of pets) {
+      try {
+        // Check if already exists by pet number
+        const existing = await sql`SELECT id FROM items WHERE item_number = ${pet.id}`;
+        if (existing.rows.length > 0) {
+          console.log(`   ⏭️  Skipping ${pet.id} (already exists)`);
+          continue;
+        }
+        
+        // Prepare attributes
+        const attributes = {
+          listing_type: 'found',
+          pet_type: pet.type || 'kedi',
+          age: pet.age || '',
+          breed: pet.breed || '',
+          short_note: pet.shortNote || '',
+          extra_notes: pet.extraNotes || ''
+        };
+        
+        // Prepare photos
+        const photos = [];
+        if (pet.photos && Array.isArray(pet.photos)) {
+          pet.photos.forEach((img, idx) => {
+            photos.push({ url: img.replace(/^\.\.\//, '/'), sequence: idx });
+          });
+        }
+        
+        await sql`
+          INSERT INTO items (
+            item_number, item_type, slug, title, description,
+            phone, status, photos, attributes, created_at
+          ) VALUES (
+            ${pet.id}, 'pet', NULL, 
+            ${(pet.type || 'Hayvan') + ' - ' + (pet.breed || 'Bilinmiyor')}, 
+            ${pet.shortNote || ''},
+            '', 'active', 
+            ${JSON.stringify(photos)}::jsonb, ${JSON.stringify(attributes)}::jsonb,
+            ${pet.createdAt ? new Date(pet.createdAt) : new Date()}
+          )
+        `;
+        
+        imported++;
+        console.log(`   ✅ ${pet.id}: ${pet.type} - ${pet.breed}`);
+      } catch (err) {
+        console.error(`   ❌ Failed to import ${pet.id}:`, err.message);
+      }
+    }
+    
+    console.log(`   Imported ${imported}/${pets.length} pets`);
+    return imported;
+  } catch (error) {
+    console.error('❌ Error importing pets:', error.message);
+    return 0;
+  }
+}
+
+// Import Articles
+async function importArticles() {
+  console.log('\n📰 Importing Articles...');
+  try {
+    const data = extractJSData('articles/articles-data.js', ['articles']);
+    const articles = data?.articles;
+    
+    if (!articles || articles.length === 0) {
+      console.log('   No articles found');
+      return 0;
+    }
+    
+    console.log(`   Found ${articles.length} articles`);
+    let imported = 0;
+    
+    for (const article of articles) {
+      try {
+        if (!article.id || !article.title) {
+          console.log(`   ⚠️ Skipping invalid article entry`);
+          continue;
+        }
+        
+        // Check if already exists
+        const existing = await sql`SELECT id FROM articles WHERE slug = ${article.id}`;
+        if (existing.rows.length > 0) {
+          console.log(`   ⏭️  Skipping ${article.id} (already exists)`);
+          continue;
+        }
+        
+        await sql`
+          INSERT INTO articles (
+            slug, title, description, content, author, read_time, 
+            featured_image, status, published_at
+          ) VALUES (
+            ${article.id}, ${article.title}, ${article.description || ''},
+            ${article.longText || article.description || ''}, ${article.author || 'Kaş Guide'},
+            ${article.readTime || ''}, ${(article.image || '').replace(/^\.\.\//, '/')}, 
+            'published', NOW()
+          )
+        `;
+        
+        // Insert tags if any
+        if (article.tags && article.tags.length > 0) {
+          const articleResult = await sql`SELECT id FROM articles WHERE slug = ${article.id}`;
+          const articleId = articleResult.rows[0]?.id;
+          if (articleId) {
+            for (const tag of article.tags) {
+              await sql`INSERT INTO article_tags (article_id, tag_name) VALUES (${articleId}, ${tag})`;
+            }
+          }
+        }
+        
+        imported++;
+        console.log(`   ✅ ${article.id}: ${article.title}`);
+      } catch (err) {
+        console.error(`   ❌ Failed to import ${article.id}:`, err.message);
+      }
+    }
+    
+    console.log(`   Imported ${imported}/${articles.length} articles`);
+    return imported;
+  } catch (error) {
+    console.error('❌ Error importing articles:', error.message);
+    return 0;
+  }
+}
+
+// Main function
+async function main() {
+  console.log('🚀 Starting Static Data Import to Supabase\n');
+  console.log('==========================================');
+  
+  try {
+    // Test connection
+    const testResult = await sql`SELECT NOW() as time`;
+    console.log('✅ Connected to Supabase');
+    console.log(`   Server Time: ${testResult.rows[0].time}\n`);
+    
+    // Import data
+    const results = {
+      places: await importPlaces(),
+      hotels: await importHotels(),
+      pets: await importPets(),
+      articles: await importArticles()
+    };
+    
+    console.log('\n==========================================');
+    console.log('📊 Import Summary:');
+    console.log('==========================================');
+    console.log(`   Places:   ${results.places} imported`);
+    console.log(`   Hotels:   ${results.hotels} imported`);
+    console.log(`   Pets:     ${results.pets} imported`);
+    console.log(`   Articles: ${results.articles} imported`);
+    console.log('==========================================');
+    console.log('\n✅ Import completed!');
+    
+  } catch (error) {
+    console.error('\n❌ Import failed:', error.message);
+    process.exit(1);
+  }
+}
+
+main();

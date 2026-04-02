@@ -1,0 +1,38 @@
+[
+  {
+    "id": "dbd24717-c104-45ee-b12c-b26828657ecc",
+    "place_id": "766efa22-329c-443d-9786-e610ec427e5a",
+    "storage_path": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1600&q=80",
+    "public_url": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1600&q=80",
+    "alt_text": "Mavi Kose Bar fotograf 1",
+    "source_name": "seed",
+    "is_cover": true,
+    "sort_order": 0,
+    "created_at": "2026-03-29T16:04:35.584Z",
+    "updated_at": "2026-03-29T16:04:35.584Z"
+  },
+  {
+    "id": "e9348979-092d-4be6-8956-9b67bed3c89c",
+    "place_id": "766efa22-329c-443d-9786-e610ec427e5a",
+    "storage_path": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80",
+    "public_url": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80",
+    "alt_text": "Mavi Kose Bar fotograf 2",
+    "source_name": "seed",
+    "is_cover": false,
+    "sort_order": 1,
+    "created_at": "2026-03-29T16:04:35.584Z",
+    "updated_at": "2026-03-29T16:04:35.584Z"
+  },
+  {
+    "id": "b4990850-d8e0-4d41-aa61-31e39a29d05c",
+    "place_id": "766efa22-329c-443d-9786-e610ec427e5a",
+    "storage_path": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",
+    "public_url": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",
+    "alt_text": "Mavi Kose Bar fotograf 3",
+    "source_name": "seed",
+    "is_cover": false,
+    "sort_order": 2,
+    "created_at": "2026-03-29T16:04:35.584Z",
+    "updated_at": "2026-03-29T16:04:35.584Z"
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "slug": "kas-ilk-kez-gelenler",
+    "title": "Kaş’a İlk Kez Gelenler İçin Mini Rehber",
+    "description": "Ulaşım, yürüyüş rotaları, gün batımı noktaları ve küçük ipuçları.",
+    "content": "Kaş’a ilk defa geliyorsan, en büyük sürpriz şu: programı boş bırakınca daha güzel oluyor. 🙂\n\nBu yazı şimdilik bir placeholder. Sonra:\n- başlıklar\n- harita linkleri\n- görseller\n- öneriler\nekleyebiliriz.",
+    "author": "Kaş Guide",
+    "read_time": "5 dk",
+    "featured_image": "/assets/0_img/placeholder.jpg",
+    "status": "published",
+    "created_at": "2026-03-20T08:43:23.604Z",
+    "updated_at": "2026-03-20T08:43:23.604Z",
+    "published_at": "2026-03-20T08:43:23.604Z"
+  },
+  {
+    "id": 2,
+    "slug": "kas-kis-rehberi",
+    "title": "Kaş Kışın Nasıl? (Sakin Sezon Notları)",
+    "description": "Kalabalık yokken Kaş’ın tadı başka: kahveler, yürüyüşler, manzara.",
+    "content": "Bu da placeholder bir yazı. İçeriği sonra dolduracağız.",
+    "author": "Kaş Guide",
+    "read_time": "4 dk",
+    "featured_image": "/assets/0_img/placeholder.jpg",
+    "status": "published",
+    "created_at": "2026-03-20T08:43:23.827Z",
+    "updated_at": "2026-03-20T08:43:23.827Z",
+    "published_at": "2026-03-20T08:43:23.827Z"
+  }
+]

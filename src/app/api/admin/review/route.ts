@@ -87,7 +87,7 @@ function readLimit(value: string | null) {
     return 24
   }
 
-  return Math.max(1, Math.min(parsed, 100))
+  return Math.max(1, Math.min(parsed, 1000))
 }
 
 function readStringField(body: object, field: string) {

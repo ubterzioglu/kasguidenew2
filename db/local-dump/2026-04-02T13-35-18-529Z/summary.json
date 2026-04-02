@@ -1,0 +1,74 @@
+[
+  {
+    "table": "admin_users",
+    "rows": 0
+  },
+  {
+    "table": "article_tags",
+    "rows": 5
+  },
+  {
+    "table": "articles",
+    "rows": 2
+  },
+  {
+    "table": "audit_log",
+    "rows": 0
+  },
+  {
+    "table": "badges",
+    "rows": 16
+  },
+  {
+    "table": "categories",
+    "rows": 19
+  },
+  {
+    "table": "faq_series",
+    "rows": 0
+  },
+  {
+    "table": "faqs",
+    "rows": 0
+  },
+  {
+    "table": "grid_sweep_cells",
+    "rows": 2
+  },
+  {
+    "table": "grid_sweeps",
+    "rows": 2
+  },
+  {
+    "table": "hero_slides",
+    "rows": 2
+  },
+  {
+    "table": "items",
+    "rows": 355
+  },
+  {
+    "table": "place_content",
+    "rows": 1
+  },
+  {
+    "table": "place_images",
+    "rows": 3
+  },
+  {
+    "table": "place_sources",
+    "rows": 1
+  },
+  {
+    "table": "places",
+    "rows": 1
+  },
+  {
+    "table": "raw_places",
+    "rows": 276
+  },
+  {
+    "table": "review_queue",
+    "rows": 0
+  }
+]

@@ -1,13 +1,51 @@
-﻿import Link from 'next/link'
+﻿import type { Metadata } from 'next'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { getPlaceCategoryLabel } from '@/lib/place-taxonomy'
 import { getPublishedPlaceBySlug } from '@/lib/public-place-store'
 
+export const revalidate = 3600 // 1 hour caching
+
 type PlaceDetailPageProps = {
   params: Promise<{
     slug: string
   }>
+}
+
+export async function generateMetadata({ params }: PlaceDetailPageProps): Promise<Metadata> {
+  const { slug } = await params
+  const place = await getPublishedPlaceBySlug(slug)
+
+  if (!place) {
+    return {
+      title: 'Mekan Bulunamadı | Kaş Guide',
+    }
+  }
+
+  const title = `${place.headline} | Kaş Guide`
+  const description = place.shortDescription
+  const image = place.imageUrls[0] ?? null
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://kasguide.de/mekan/${slug}`,
+      siteName: 'Kaş Guide',
+      locale: 'tr_TR',
+      type: 'website',
+      ...(image ? { images: [{ url: image }] } : {}),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      ...(image ? { images: [image] } : {}),
+    },
+  }
 }
 
 export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) {
@@ -28,7 +66,8 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
       <section className="place-detail-shell">
         <div className="place-detail-top-grid">
           <section className="place-detail-hero">
-            <div className="place-detail-hero-media" style={{ backgroundImage: `url(${heroImage})` }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={heroImage} alt={place.name} className="place-detail-hero-media" fetchPriority="high" loading="eager" />
             <div className="place-detail-hero-shade" />
             <div className="place-detail-hero-copy">
               <span className="place-detail-kicker">{getPlaceCategoryLabel(place.categoryPrimary)}</span>
@@ -126,10 +165,13 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
             </div>
             <div className="place-detail-gallery-grid">
               {gallery.map((imageUrl, index) => (
-                <div
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
                   key={`${place.id}-gallery-${index}`}
+                  src={imageUrl}
+                  alt={`${place.name} — galeri ${index + 1}`}
                   className="place-detail-gallery-item"
-                  style={{ backgroundImage: `url(${imageUrl})` }}
+                  loading="lazy"
                 />
               ))}
             </div>

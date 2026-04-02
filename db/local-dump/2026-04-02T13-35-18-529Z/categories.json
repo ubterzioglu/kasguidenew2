@@ -1,0 +1,154 @@
+[
+  {
+    "id": 1,
+    "slug": "bar",
+    "name": "Bar",
+    "icon_code": "🍸",
+    "color_code": "#FF6B35",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 2,
+    "slug": "meyhane",
+    "name": "Meyhane",
+    "icon_code": "🍷",
+    "color_code": "#9B59B6",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 3,
+    "slug": "restoran",
+    "name": "Restoran",
+    "icon_code": "🍽️",
+    "color_code": "#E74C3C",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 4,
+    "slug": "cafe",
+    "name": "Cafe",
+    "icon_code": "☕",
+    "color_code": "#16A085",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 5,
+    "slug": "kahvalti",
+    "name": "Kahvaltı",
+    "icon_code": "🥐",
+    "color_code": "#F39C12",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 6,
+    "slug": "tarih",
+    "name": "Tarih",
+    "icon_code": "🏛️",
+    "color_code": "#5D4E37",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 7,
+    "slug": "doga",
+    "name": "Doğa",
+    "icon_code": "🌿",
+    "color_code": "#2ECC71",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 8,
+    "slug": "dalis",
+    "name": "Dalış",
+    "icon_code": "🤿",
+    "color_code": "#00BCD4",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 9,
+    "slug": "aktivite",
+    "name": "Aktivite",
+    "icon_code": "🏄",
+    "color_code": "#F59E0B",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 10,
+    "slug": "sergi",
+    "name": "Sergi",
+    "icon_code": "🖼️",
+    "color_code": "#EC4899",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 11,
+    "slug": "etkinlik",
+    "name": "Etkinlik",
+    "icon_code": "🎪",
+    "color_code": "#FBBF24",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 12,
+    "slug": "carsi",
+    "name": "Çarşı",
+    "icon_code": "🛍️",
+    "color_code": "#6B7280",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 13,
+    "slug": "articles",
+    "name": "Yazılar",
+    "icon_code": "📝",
+    "color_code": "#64748B",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 14,
+    "slug": "faqspecial",
+    "name": "Özel Soru Serileri",
+    "icon_code": "❓",
+    "color_code": "#8B5CF6",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 15,
+    "slug": "places",
+    "name": "Gezi",
+    "icon_code": "🗺️",
+    "color_code": "#3B82F6",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 16,
+    "slug": "plaj",
+    "name": "Plaj",
+    "icon_code": "🏖️",
+    "color_code": "#06B6D4",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 17,
+    "slug": "roportaj",
+    "name": "Röportaj",
+    "icon_code": "🎙️",
+    "color_code": "#8B5CF6",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 18,
+    "slug": "fotograf",
+    "name": "Fotoğraf",
+    "icon_code": "📷",
+    "color_code": "#6366F1",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  },
+  {
+    "id": 19,
+    "slug": "acildurum",
+    "name": "Acil Durum",
+    "icon_code": "🚨",
+    "color_code": "#EF4444",
+    "created_at": "2026-03-20T08:22:22.996Z"
+  }
+]
