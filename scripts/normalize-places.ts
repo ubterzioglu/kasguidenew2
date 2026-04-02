@@ -111,7 +111,7 @@ async function main() {
       phone: normalizedPhone,
       website: normalizedWebsite,
       opening_hours: null,
-      status: 'draft',
+      status: 'admin',
       verification_status: 'pending',
     }
 

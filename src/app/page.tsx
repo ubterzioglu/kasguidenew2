@@ -15,15 +15,6 @@ export default function HomePage() {
       <footer className="footer" id="contact">
         <div className="footer-content footer-shell">
           <div className="footer-grid" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '2rem' }}>
-            <div className="footer-brand-block">
-              <h2
-                className="footer-brand-title"
-                style={{ maxWidth: '100%', fontSize: '1.05rem', fontWeight: 700, color: '#004d40' }}
-              >
-                İletişim ve Sosyal
-              </h2>
-            </div>
-
             <div className="footer-contact-block">
               <div className="footer-social" style={{ justifyContent: 'center' }}>
                 <a

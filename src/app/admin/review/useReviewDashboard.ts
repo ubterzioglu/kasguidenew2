@@ -12,6 +12,8 @@ import type {
   RecentRawPlaceItem,
   ReviewAction,
   RawPlaceAction,
+  ExistingPlaceItem,
+  ExistingPlaceAction,
 } from './types'
 
 const INITIAL_STATUS: PanelStatus = {
@@ -39,13 +41,16 @@ export function useReviewDashboard() {
   const [adminPassword, setAdminPassword] = useState('')
   const [snapshot, setSnapshot] = useState<ReviewDashboardSnapshot>(EMPTY_SNAPSHOT)
   const [drafts, setDrafts] = useState<Record<string, PlaceEditorDraft>>({})
+  const [existingPlaces, setExistingPlaces] = useState<ExistingPlaceItem[]>([])
+  const [existingDrafts, setExistingDrafts] = useState<Record<string, PlaceEditorDraft>>({})
   const [status, setStatus] = useState<PanelStatus>(INITIAL_STATUS)
   const [isLoading, setIsLoading] = useState(false)
   const [activeActionId, setActiveActionId] = useState<string | null>(null)
   const [activeRawPlaceId, setActiveRawPlaceId] = useState<string | null>(null)
+  const [activeExistingPlaceId, setActiveExistingPlaceId] = useState<string | null>(null)
 
   const hydrateDrafts = useCallback((rawResults: RecentRawPlaceItem[]) => {
-    setDrafts((current) => {
+    setDrafts(() => {
       const nextDrafts: Record<string, PlaceEditorDraft> = {}
       for (const item of rawResults) {
         nextDrafts[item.id] = {
@@ -55,10 +60,28 @@ export function useReviewDashboard() {
       }
       return nextDrafts
     })
-    
-    // Auto-select first if none is selected
+
     setActiveRawPlaceId((current) => {
       if (!current && rawResults[0]) return rawResults[0].id
+      return current
+    })
+  }, [])
+
+  const hydrateExistingDrafts = useCallback((places: ExistingPlaceItem[]) => {
+    setExistingPlaces(places)
+    setExistingDrafts(() => {
+      const nextDrafts: Record<string, PlaceEditorDraft> = {}
+      for (const item of places) {
+        nextDrafts[item.id] = {
+          ...item.draft,
+          imageUrls: item.draft.imageUrls.length > 0 ? [...item.draft.imageUrls] : [''],
+        }
+      }
+      return nextDrafts
+    })
+
+    setActiveExistingPlaceId((current) => {
+      if (!current && places[0]) return places[0].id
       return current
     })
   }, [])
@@ -75,26 +98,46 @@ export function useReviewDashboard() {
     setStatus({ tone: 'neutral', message: 'Grid sweep kayıtları ve mekan editörü yükleniyor...' })
 
     try {
-      const response = await fetch('/api/admin/review?limit=276', {
-        headers: {
-          'X-Admin-Password': password,
-        },
-        cache: 'no-store',
-      })
+      const [reviewResponse, placesResponse] = await Promise.all([
+        fetch('/api/admin/review?limit=276', {
+          headers: {
+            'X-Admin-Password': password,
+          },
+          cache: 'no-store',
+        }),
+        fetch('/api/admin/places?limit=1000', {
+          headers: {
+            'X-Admin-Password': password,
+          },
+          cache: 'no-store',
+        }),
+      ])
 
-      const payload = (await response.json()) as ReviewDashboardSnapshot & { error?: string }
+      const payload = (await reviewResponse.json()) as ReviewDashboardSnapshot & { error?: string }
+      const placesPayload = (await placesResponse.json()) as
+        | { places?: ExistingPlaceItem[]; error?: string }
+        | undefined
 
-      if (!response.ok) {
+      if (!reviewResponse.ok) {
         throw new Error(payload.error || 'Admin verisi yüklenemedi.')
+      }
+
+      if (!placesResponse.ok) {
+        throw new Error(placesPayload?.error || 'Mevcut mekanlar yüklenemedi.')
+      }
+
+      if (!placesPayload?.places) {
+        throw new Error('Mevcut mekan verisi eksik.')
       }
 
       storeAdminPassword(password)
       setAdminPassword(password)
       setSnapshot(payload)
       hydrateDrafts(payload.rawResults)
+      hydrateExistingDrafts(placesPayload.places)
       setStatus({
         tone: 'success',
-        message: `${payload.rawResults.length} sweep mekanı ve ${payload.sweeps.length} sweep oturumu yüklendi.`,
+        message: `${payload.rawResults.length} sweep mekanı, ${payload.sweeps.length} sweep oturumu ve ${placesPayload.places.length} mevcut mekan yüklendi.`,
       })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Admin verisi yüklenemedi.'
@@ -109,7 +152,7 @@ export function useReviewDashboard() {
     } finally {
       setIsLoading(false)
     }
-  }, [adminPassword, hydrateDrafts, router])
+  }, [adminPassword, hydrateDrafts, hydrateExistingDrafts, router])
 
   useEffect(() => {
     const storedPassword = getStoredAdminPassword()
@@ -224,6 +267,62 @@ export function useReviewDashboard() {
     }
   }
 
+  const runExistingPlaceAction = async (placeId: string, action: ExistingPlaceAction) => {
+    const password = adminPassword.trim()
+
+    if (!password) {
+      router.replace('/admin')
+      return
+    }
+
+    const draft = existingDrafts[placeId]
+    if (!draft) {
+      setStatus({ tone: 'error', message: 'Mevcut mekan editörü hazır değil.' })
+      return
+    }
+
+    const nextDraft: PlaceEditorDraft =
+      action === 'publish'
+        ? { ...draft, status: 'published', verificationStatus: 'verified' }
+        : { ...draft, status: 'admin' }
+
+    setActiveActionId(placeId)
+    setStatus({
+      tone: 'neutral',
+      message: action === 'publish' ? 'Mevcut mekan yayına alınıyor...' : 'Mevcut mekan kaydediliyor...',
+    })
+
+    try {
+      const response = await fetch('/api/admin/places', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': password,
+        },
+        body: JSON.stringify({ placeId, draft: nextDraft }),
+      })
+
+      const payload = (await response.json()) as { places?: ExistingPlaceItem[]; error?: string }
+      if (!response.ok || !payload.places) {
+        throw new Error(payload.error || 'Mevcut mekan güncellenemedi.')
+      }
+
+      storeAdminPassword(password)
+      hydrateExistingDrafts(payload.places)
+      setStatus({
+        tone: 'success',
+        message: action === 'publish' ? 'Mevcut mekan yayına alındı.' : 'Mevcut mekan kaydedildi.',
+      })
+    } catch (error) {
+      setStatus({
+        tone: 'error',
+        message: error instanceof Error ? error.message : 'Mevcut mekan güncellenemedi.',
+      })
+    } finally {
+      setActiveActionId(null)
+    }
+  }
+
   const updateDraftField = (rawPlaceId: string, field: keyof PlaceEditorDraft, value: string) => {
     setDrafts((current) => ({
       ...current,
@@ -289,6 +388,65 @@ export function useReviewDashboard() {
     })
   }
 
+  const updateExistingDraftField = (placeId: string, field: keyof PlaceEditorDraft, value: string) => {
+    setExistingDrafts((current) => ({
+      ...current,
+      [placeId]: {
+        ...current[placeId],
+        [field]: field === 'imageUrls' ? current[placeId].imageUrls : value,
+      },
+    }))
+  }
+
+  const updateExistingImageField = (placeId: string, index: number, value: string) => {
+    setExistingDrafts((current) => {
+      const nextImages = [...(current[placeId]?.imageUrls ?? [''])]
+      nextImages[index] = value
+      return {
+        ...current,
+        [placeId]: {
+          ...current[placeId],
+          imageUrls: nextImages,
+        },
+      }
+    })
+  }
+
+  const addExistingImageField = (placeId: string) => {
+    setExistingDrafts((current) => {
+      const images = [...(current[placeId]?.imageUrls ?? [''])]
+      if (images.length >= 5) {
+        return current
+      }
+      images.push('')
+      return {
+        ...current,
+        [placeId]: {
+          ...current[placeId],
+          imageUrls: images,
+        },
+      }
+    })
+  }
+
+  const removeExistingImageField = (placeId: string, index: number) => {
+    setExistingDrafts((current) => {
+      const images = [...(current[placeId]?.imageUrls ?? [''])]
+      if (images.length <= 1) {
+        images[0] = ''
+      } else {
+        images.splice(index, 1)
+      }
+      return {
+        ...current,
+        [placeId]: {
+          ...current[placeId],
+          imageUrls: images,
+        },
+      }
+    })
+  }
+
   const logout = () => {
     clearStoredAdminPassword()
     setAdminPassword('')
@@ -298,18 +456,27 @@ export function useReviewDashboard() {
   return {
     snapshot,
     drafts,
+    existingPlaces,
+    existingDrafts,
     status,
     isLoading,
     activeActionId,
     activeRawPlaceId,
     setActiveRawPlaceId,
+    activeExistingPlaceId,
+    setActiveExistingPlaceId,
     loadDashboard,
     runReviewAction,
     runRawPlaceAction,
+    runExistingPlaceAction,
     updateDraftField,
     updateImageField,
     addImageField,
     removeImageField,
+    updateExistingDraftField,
+    updateExistingImageField,
+    addExistingImageField,
+    removeExistingImageField,
     logout,
   }
 }

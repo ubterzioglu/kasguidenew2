@@ -70,7 +70,7 @@ export function formatProcessingStatus(status: string) {
     case 'pending':
       return 'Ham kayıt'
     case 'review':
-      return 'Editor bekliyor'
+      return 'Admin bekliyor'
     case 'normalized':
       return 'Hazirlandi'
     case 'rejected':
@@ -88,6 +88,8 @@ export function formatPlaceStatus(status: string) {
       return 'Taslak'
     case 'review':
       return 'Review'
+    case 'admin':
+      return 'Admin'
     case 'published':
       return 'Yayında'
     case 'archived':

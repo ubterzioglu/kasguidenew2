@@ -4,8 +4,48 @@ import { notFound } from 'next/navigation'
 
 import { getPlaceCategoryLabel } from '@/lib/place-taxonomy'
 import { getPublishedPlaceBySlug } from '@/lib/public-place-store'
+import { PlaceDetailGallery } from './place-detail-gallery'
 
 export const revalidate = 3600 // 1 hour caching
+
+type DetailSignalKey = 'address' | 'phone' | 'website'
+
+function renderDetailSignalIcon(key: DetailSignalKey) {
+  if (key === 'address') {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+        <path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" stroke="currentColor" strokeWidth="2" />
+        <circle cx="12" cy="9" r="2.4" fill="currentColor" />
+      </svg>
+    )
+  }
+
+  if (key === 'phone') {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+        <path
+          d="M6.8 3.5h2.6c.5 0 .9.3 1 .7l.8 3.2c.1.4 0 .8-.3 1l-1.7 1.4a14.4 14.4 0 0 0 5 5l1.4-1.7c.3-.3.7-.4 1-.3l3.2.8c.5.1.8.5.8 1v2.6c0 .6-.5 1.1-1.1 1.1C10.7 19.8 4.2 13.3 4.2 4.6c0-.6.5-1.1 1.1-1.1z"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    )
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
 
 type PlaceDetailPageProps = {
   params: Promise<{
@@ -60,6 +100,20 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
     place.imageUrls[0] ||
     'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1600&q=80'
   const gallery = place.imageUrls.slice(1, 5)
+  const detailSignals = [
+    {
+      key: 'address',
+      active: Boolean(place.address),
+    },
+    {
+      key: 'phone',
+      active: Boolean(place.phone),
+    },
+    {
+      key: 'website',
+      active: Boolean(place.website),
+    },
+  ] as const satisfies Array<{ key: DetailSignalKey; active: boolean }>
 
   return (
     <main className="place-detail-page">
@@ -70,113 +124,69 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
             <img src={heroImage} alt={place.name} className="place-detail-hero-media" fetchPriority="high" loading="eager" />
             <div className="place-detail-hero-shade" />
             <div className="place-detail-hero-copy">
-              <span className="place-detail-kicker">{getPlaceCategoryLabel(place.categoryPrimary)}</span>
-              <h1 className="place-detail-title">{place.headline}</h1>
-              <p className="place-detail-intro">{place.shortDescription}</p>
-
-              <div className="place-detail-meta-chips">
-                <span className="place-detail-chip">{place.name}</span>
-                {place.address ? <span className="place-detail-chip">Kaş rotasına uygun</span> : null}
-                {place.website ? (
-                  <span className="place-detail-chip place-detail-chip-accent">Website aktif</span>
-                ) : null}
-              </div>
-
-              <div className="place-detail-actions">
-                <Link href="/#categories" className="place-detail-primary">
-                  Kategorilere Dön
-                </Link>
-                {place.website ? (
-                  <a
-                    href={place.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="place-detail-secondary"
-                  >
-                    Websitesini Aç
-                  </a>
-                ) : null}
-              </div>
+              <h1 className="place-detail-title place-detail-title-name">{place.name}</h1>
+              <p className="place-detail-intro">{place.headline}</p>
+              <span className="place-detail-hero-category">{getPlaceCategoryLabel(place.categoryPrimary)}</span>
             </div>
           </section>
-
-          <aside className="place-detail-hero-aside">
-            <article className="place-detail-aside-card">
-              <span className="place-detail-aside-label">Hızlı bakış</span>
-              <strong>{getPlaceCategoryLabel(place.categoryPrimary)}</strong>
-              <p>Bu mekân için ilk karar satırlarını hızlıca gör, sonra detaylara in.</p>
-            </article>
-
-            <article className="place-detail-aside-card">
-              <span className="place-detail-aside-label">Hemen karar ver</span>
-              <div className="place-detail-aside-list">
-                <span>{place.address || 'Adres bilgisi yakında eklenecek.'}</span>
-                <span>{place.phone || 'Telefon bilgisi şu an görünmüyor.'}</span>
-                <span>
-                  {place.website
-                    ? 'Rezervasyon ya da detay için dış bağlantıya geçebilirsin.'
-                    : 'Şimdilik harici bağlantı bulunmuyor.'}
-                </span>
-              </div>
-            </article>
-          </aside>
         </div>
+
+        <section className="place-detail-status-card">
+          <div className="place-detail-status-grid">
+            {detailSignals.map((signal) => (
+              signal.key === 'website' && place.website ? (
+                <a
+                  key={signal.key}
+                  href={place.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`place-detail-status-item place-detail-status-item-link${signal.active ? ' is-active' : ' is-muted'}`}
+                  aria-label="Website mevcut"
+                  title="Website mevcut"
+                >
+                  <span className="place-detail-status-icon" aria-hidden="true">
+                    {renderDetailSignalIcon(signal.key)}
+                  </span>
+                </a>
+              ) : (
+                <article
+                  key={signal.key}
+                  className={`place-detail-status-item${signal.active ? ' is-active' : ' is-muted'}`}
+                  aria-label={`${signal.key} ${signal.active ? 'mevcut' : 'yok'}`}
+                  title={`${signal.key} ${signal.active ? 'mevcut' : 'yok'}`}
+                >
+                  <span className="place-detail-status-icon" aria-hidden="true">
+                    {renderDetailSignalIcon(signal.key)}
+                  </span>
+                </article>
+              )
+            ))}
+          </div>
+        </section>
 
         <section className="place-detail-content-grid">
           <article className="place-detail-story-card">
-            <div className="place-detail-section-head">
-              <span className="place-detail-section-kicker">Mekân hikâyesi</span>
-              <h2>{place.name}</h2>
+            <div className="place-detail-section-head place-detail-section-head-lined">
+              <h2>Kısaca</h2>
+            </div>
+            <p>{place.shortDescription}</p>
+          </article>
+
+          <article className="place-detail-story-card">
+            <div className="place-detail-section-head place-detail-section-head-lined">
+              <h2>Uzunca</h2>
             </div>
             <p>{place.longDescription}</p>
           </article>
-
-          <aside className="place-detail-info">
-            <div className="place-info-card">
-              <span className="place-info-label">Kategori</span>
-              <strong>{getPlaceCategoryLabel(place.categoryPrimary)}</strong>
-            </div>
-            <div className="place-info-card">
-              <span className="place-info-label">Adres</span>
-              <strong>{place.address || 'Adres bilgisi yakında eklenecek.'}</strong>
-            </div>
-            <div className="place-info-card">
-              <span className="place-info-label">Telefon</span>
-              <strong>{place.phone || 'Telefon bilgisi yok.'}</strong>
-            </div>
-            <div className="place-info-card">
-              <span className="place-info-label">Bağlantılar</span>
-              {place.website ? (
-                <a href={place.website} target="_blank" rel="noopener noreferrer" className="place-info-link">
-                  Resmi website
-                </a>
-              ) : (
-                <strong>Website yok.</strong>
-              )}
-            </div>
-          </aside>
         </section>
 
-        {gallery.length > 0 ? (
-          <section className="place-detail-gallery">
-            <div className="place-detail-section-head">
-              <span className="place-detail-section-kicker">Galeri</span>
-              <h2>Mekândan kareler</h2>
-            </div>
-            <div className="place-detail-gallery-grid">
-              {gallery.map((imageUrl, index) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={`${place.id}-gallery-${index}`}
-                  src={imageUrl}
-                  alt={`${place.name} — galeri ${index + 1}`}
-                  className="place-detail-gallery-item"
-                  loading="lazy"
-                />
-              ))}
-            </div>
-          </section>
-        ) : null}
+        {gallery.length > 0 ? <PlaceDetailGallery images={gallery} placeName={place.name} /> : null}
+
+        <div className="place-detail-bottom-actions">
+          <Link href="/#categories" className="place-detail-primary">
+            Kategorilere Dön
+          </Link>
+        </div>
       </section>
     </main>
   )

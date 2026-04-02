@@ -192,3 +192,32 @@ export async function getPublishedPlaceBySlug(slug: string) {
   } satisfies PublicPlaceDetail
 }
 
+export async function getPublishedPlaceCountsByCategory() {
+  const client = getSupabaseAdminClient()
+
+  if (!client) {
+    throw new Error('Supabase admin bağlantısı hazır değil.')
+  }
+
+  const { data, error } = await client
+    .from('places')
+    .select('category_primary')
+    .eq('status', 'published')
+
+  if (error) {
+    throw new Error('Kategori sayıları okunamadı.')
+  }
+
+  const counts: Record<string, number> = {}
+
+  for (const row of (data ?? []) as Array<{ category_primary: string | null }>) {
+    const categoryId = row.category_primary?.trim()
+    if (!categoryId) {
+      continue
+    }
+    counts[categoryId] = (counts[categoryId] ?? 0) + 1
+  }
+
+  return counts
+}
+

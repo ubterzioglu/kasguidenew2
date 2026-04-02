@@ -5,16 +5,20 @@ import { getSupabaseAdminClient } from '@/lib/supabase-admin'
 
 import { fetchGridSweeps, type GridSweepItem } from './grid-sweep-store'
 import {
+  fetchExistingPlaces,
   fetchRecentRawPlaces,
   persistPlaceFromRaw,
+  persistExistingPlace,
   rejectRawPlace,
   updateRawPlaceStatus,
   type PlaceEditorDraft,
+  type ExistingPlaceItem,
   type RawPlaceSaveAction,
   type RecentRawPlaceItem,
 } from './raw-place-store'
 
 export type { GridSweepItem, PlaceEditorDraft, RawPlaceSaveAction, RecentRawPlaceItem }
+export type { ExistingPlaceItem }
 export type { GridSweepStatus, GridSweepCellStatus, GridSweepCellItem } from './grid-sweep-store'
 
 export type ReviewQueueStatus = 'pending' | 'in_review' | 'approved' | 'merged' | 'rejected'
@@ -165,7 +169,7 @@ export async function getReviewDashboardSnapshot(limit = 276): Promise<ReviewDas
       fetchRecentRawPlaces(client, Math.max(limit, 48)),
       countRows(client, 'review_queue', (q) => q.in('status', ['pending', 'in_review'])),
       countRows(client, 'raw_places', (q) => q.eq('processing_status', 'pending')),
-      countRows(client, 'places', (q) => q.in('status', ['draft', 'review'])),
+      countRows(client, 'places', (q) => q.in('status', ['draft', 'review', 'admin'])),
       countRows(client, 'places', (q) => q.eq('status', 'published')),
       countRows(client, 'grid_sweeps', (q) => q),
       countRows(client, 'grid_sweeps', (q) => q.eq('status', 'running')),
@@ -278,6 +282,45 @@ export async function applyRawPlaceAction(input: {
   })
 
   return getReviewDashboardSnapshot()
+}
+
+export async function getExistingPlacesSnapshot(limit = 400): Promise<{
+  places: ExistingPlaceItem[]
+  categoryOptions: Array<{ id: string; label: string }>
+}> {
+  const client = getSupabaseAdminClient()
+
+  if (!client) {
+    throw new Error('Supabase admin baglantisi hazir degil.')
+  }
+
+  const places = await fetchExistingPlaces(client, limit)
+
+  return {
+    places,
+    categoryOptions: PLACE_CATEGORY_OPTIONS.map((option) => ({ id: option.id, label: option.label })),
+  }
+}
+
+export async function applyExistingPlaceAction(input: {
+  placeId: string
+  draft: PlaceEditorDraft
+}): Promise<{
+  places: ExistingPlaceItem[]
+  categoryOptions: Array<{ id: string; label: string }>
+}> {
+  const client = getSupabaseAdminClient()
+
+  if (!client) {
+    throw new Error('Supabase admin baglantisi hazir degil.')
+  }
+
+  await persistExistingPlace(client, {
+    placeId: input.placeId,
+    draft: input.draft,
+  })
+
+  return getExistingPlacesSnapshot()
 }
 
 async function countRows(

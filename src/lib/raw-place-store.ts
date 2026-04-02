@@ -27,7 +27,7 @@ export type PlaceEditorDraft = {
   phone: string
   website: string
   imageUrls: string[]
-  status: 'draft' | 'review' | 'published' | 'archived'
+  status: 'draft' | 'review' | 'admin' | 'published' | 'archived'
   verificationStatus: 'pending' | 'reviewed' | 'verified' | 'rejected'
 }
 
@@ -47,6 +47,12 @@ export type RecentRawPlaceItem = {
   gridKey: string | null
   cellId: string | null
   googleMapsUri: string | null
+  draft: PlaceEditorDraft
+}
+
+export type ExistingPlaceItem = {
+  id: string
+  updatedAt: string
   draft: PlaceEditorDraft
 }
 
@@ -87,8 +93,12 @@ type PlaceRow = {
   address: string | null
   phone: string | null
   website: string | null
-  status: 'draft' | 'review' | 'published' | 'archived'
+  lat?: number | null
+  lng?: number | null
+  opening_hours?: string | null
+  status: 'draft' | 'review' | 'admin' | 'published' | 'archived'
   verification_status: 'pending' | 'reviewed' | 'verified' | 'rejected'
+  updated_at?: string
 }
 
 type PlaceContentRow = {
@@ -103,6 +113,160 @@ type PlaceImageRow = {
   public_url: string | null
   storage_path: string
   sort_order: number
+}
+
+export async function fetchExistingPlaces(
+  client: NonNullable<ReturnType<typeof getSupabaseAdminClient>>,
+  limit: number,
+): Promise<ExistingPlaceItem[]> {
+  const { data: placeData, error: placeError } = await client
+    .from('places')
+    .select('id, slug, name, category_primary, address, phone, website, status, verification_status, updated_at')
+    .order('updated_at', { ascending: false })
+    .limit(limit)
+
+  if (placeError) {
+    throw new Error('Mevcut mekan kayıtları okunamadı.')
+  }
+
+  const places = (placeData ?? []) as PlaceRow[]
+  const placeIds = places.map((place) => place.id)
+
+  if (placeIds.length === 0) {
+    return []
+  }
+
+  const [contentResult, imagesResult] = await Promise.all([
+    client
+      .from('place_content')
+      .select('place_id, headline, short_text, long_text')
+      .in('place_id', placeIds),
+    client
+      .from('place_images')
+      .select('place_id, public_url, storage_path, sort_order')
+      .in('place_id', placeIds)
+      .order('sort_order', { ascending: true }),
+  ])
+
+  if (contentResult.error) {
+    throw new Error('Mevcut mekan içerikleri okunamadı.')
+  }
+
+  if (imagesResult.error) {
+    throw new Error('Mevcut mekan görselleri okunamadı.')
+  }
+
+  const contentMap = new Map<string, PlaceContentRow>()
+  const imageMap = new Map<string, string[]>()
+
+  for (const row of (contentResult.data ?? []) as PlaceContentRow[]) {
+    contentMap.set(row.place_id, row)
+  }
+
+  for (const row of (imagesResult.data ?? []) as PlaceImageRow[]) {
+    const current = imageMap.get(row.place_id) ?? []
+    current.push(row.public_url || row.storage_path)
+    imageMap.set(row.place_id, current)
+  }
+
+  return places.map((place) => ({
+    id: place.id,
+    updatedAt: place.updated_at ?? new Date().toISOString(),
+    draft: buildDraftFromPlace(place, contentMap.get(place.id) ?? null, imageMap.get(place.id) ?? []),
+  }))
+}
+
+export async function persistExistingPlace(
+  client: NonNullable<ReturnType<typeof getSupabaseAdminClient>>,
+  input: {
+    placeId: string
+    draft: PlaceEditorDraft
+  },
+): Promise<void> {
+  const normalizedName = normalizeText(input.draft.name)
+  const normalizedHeadline = normalizeText(input.draft.headline)
+  const normalizedShortDescription = normalizeText(input.draft.shortDescription)
+  const normalizedLongDescription = normalizeText(input.draft.longDescription)
+  const normalizedCategory = normalizeText(input.draft.categoryPrimary)
+  const normalizedAddress = normalizeText(input.draft.address)
+  const normalizedPhone = normalizePhone(input.draft.phone)
+  const normalizedWebsite = normalizeWebsite(input.draft.website)
+  const normalizedImages = uniqueImageUrls(input.draft.imageUrls)
+
+  if (!normalizedName) {
+    throw new Error('Mekan adı zorunlu.')
+  }
+
+  if (!normalizedCategory) {
+    throw new Error('Kategori seçilmesi zorunlu.')
+  }
+
+  if (!PLACE_CATEGORY_OPTIONS.some((option) => option.id === normalizedCategory)) {
+    throw new Error('Geçersiz kategori seçimi.')
+  }
+
+  if (normalizedImages.length < 1 || normalizedImages.length > 5) {
+    throw new Error('Her mekan için en az 1, en fazla 5 foto gerekli.')
+  }
+
+  const slugBase = slugifyText(input.draft.slug || normalizedName) || `place-${input.placeId.slice(0, 8)}`
+  const slug = await ensureUniqueSlug(client, slugBase, input.placeId)
+
+  const { error: placeError } = await client
+    .from('places')
+    .update({
+      slug,
+      name: normalizedName,
+      category_primary: normalizedCategory,
+      address: normalizedAddress,
+      phone: normalizedPhone,
+      website: normalizedWebsite,
+      status: input.draft.status,
+      verification_status: input.draft.verificationStatus,
+    })
+    .eq('id', input.placeId)
+
+  if (placeError) {
+    throw new Error('Mevcut mekan kaydı güncellenemedi.')
+  }
+
+  const { error: contentError } = await client.from('place_content').upsert(
+    {
+      place_id: input.placeId,
+      headline: normalizedHeadline || normalizedName,
+      short_text: normalizedShortDescription,
+      long_text: normalizedLongDescription,
+      tone_type: 'guide',
+      last_generated_at: null,
+    },
+    { onConflict: 'place_id' },
+  )
+
+  if (contentError) {
+    throw new Error('Mevcut mekan içeriği güncellenemedi.')
+  }
+
+  const { error: imageDeleteError } = await client.from('place_images').delete().eq('place_id', input.placeId)
+
+  if (imageDeleteError) {
+    throw new Error('Mevcut mekan görselleri temizlenemedi.')
+  }
+
+  const { error: imageInsertError } = await client.from('place_images').insert(
+    normalizedImages.map((url, index) => ({
+      place_id: input.placeId,
+      storage_path: url,
+      public_url: url,
+      alt_text: `${normalizedName} fotoğraf ${index + 1}`,
+      source_name: 'admin_manual',
+      is_cover: index === 0,
+      sort_order: index,
+    })),
+  )
+
+  if (imageInsertError) {
+    throw new Error('Mevcut mekan görselleri güncellenemedi.')
+  }
 }
 
 export async function fetchRecentRawPlaces(
@@ -204,7 +368,7 @@ export async function persistPlaceFromRaw(
   const placeId = input.draft.placeId ?? existingPlaceSource?.place_id ?? randomUUID()
   const slugBase = slugifyText(input.draft.slug || normalizedName) || `place-${placeId.slice(0, 8)}`
   const slug = await ensureUniqueSlug(client, slugBase, placeId)
-  const placeStatus = input.publish ? 'published' : 'draft'
+  const placeStatus = input.publish ? 'published' : 'admin'
   const verificationStatus = input.publish ? 'verified' : 'reviewed'
 
   const { error: placeError } = await client.from('places').upsert(
@@ -461,8 +625,36 @@ function buildDraftFromRaw(
     phone: normalizeText(place?.phone) ?? normalizeText(rawRow.phone_raw) ?? '',
     website: normalizeText(place?.website) ?? normalizeText(rawRow.website_raw) ?? '',
     imageUrls: imageUrls.length > 0 ? imageUrls.slice(0, 5) : [''],
-    status: place?.status ?? 'draft',
+    status: place?.status ?? 'admin',
     verificationStatus: place?.verification_status ?? 'pending',
+  }
+}
+
+function buildDraftFromPlace(
+  place: PlaceRow,
+  content: PlaceContentRow | null,
+  imageUrls: string[],
+): PlaceEditorDraft {
+  const categoryPrimary = place.category_primary || 'gezi'
+  const fallbackName = normalizeText(place.name) || 'Mevcut mekan'
+  const categoryLabel = getPlaceCategoryLabel(categoryPrimary)
+
+  return {
+    placeId: place.id,
+    slug: place.slug ?? slugifyText(fallbackName),
+    name: fallbackName,
+    headline: normalizeText(content?.headline) ?? fallbackName,
+    shortDescription:
+      normalizeText(content?.short_text) ??
+      `${fallbackName}, Kaş'ta ${categoryLabel.toLowerCase()} olarak listelenen bir mekan.`,
+    longDescription: normalizeText(content?.long_text) ?? '',
+    categoryPrimary,
+    address: normalizeText(place.address) ?? '',
+    phone: normalizeText(place.phone) ?? '',
+    website: normalizeText(place.website) ?? '',
+    imageUrls: imageUrls.length > 0 ? imageUrls.slice(0, 5) : [''],
+    status: place.status ?? 'admin',
+    verificationStatus: place.verification_status ?? 'pending',
   }
 }
 

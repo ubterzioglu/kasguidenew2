@@ -3,6 +3,7 @@ export type ReviewAction = 'start_review' | 'approve' | 'merge' | 'reject'
 export type GridSweepStatus = 'running' | 'completed' | 'partial' | 'failed'
 export type StatusTone = 'neutral' | 'success' | 'error'
 export type RawPlaceAction = 'save_draft' | 'publish' | 'reject'
+export type ExistingPlaceAction = 'save' | 'publish'
 
 export type GridSweepCellItem = {
   id: string
@@ -55,7 +56,7 @@ export type PlaceEditorDraft = {
   phone: string
   website: string
   imageUrls: string[]
-  status: 'draft' | 'review' | 'published' | 'archived'
+  status: 'draft' | 'review' | 'admin' | 'published' | 'archived'
   verificationStatus: 'pending' | 'reviewed' | 'verified' | 'rejected'
 }
 
@@ -91,6 +92,12 @@ export type ReviewDashboardSnapshot = {
     runningSweeps: number
   }
   categoryOptions: Array<{ id: string; label: string }>
+}
+
+export type ExistingPlaceItem = {
+  id: string
+  updatedAt: string
+  draft: PlaceEditorDraft
 }
 
 export type ReviewQueueItem = {

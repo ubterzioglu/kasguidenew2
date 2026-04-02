@@ -48,6 +48,27 @@ const CATEGORY_ROWS = [
   CATEGORY_IDS.slice(0, CATEGORY_ROW_SPLIT_INDEX),
   CATEGORY_IDS.slice(CATEGORY_ROW_SPLIT_INDEX),
 ]
+const CATEGORY_ICONS: Record<string, string> = {
+  bar: '🍸',
+  meyhane: '🍷',
+  restoran: '🍽️',
+  cafe: '☕',
+  kahvalti: '🍳',
+  oteller: '🛏️',
+  tarih: '🕰️',
+  doga: '🌿',
+  plaj: '🏖️',
+  carsi: '🛍️',
+  gezi: '🧭',
+  dalis: '🤿',
+  aktivite: '⚡',
+  etkinlik: '✨',
+  yazilar: '📝',
+  roportaj: '🎙️',
+  fotograf: '📷',
+  oss: '🧠',
+  'kas-local': '📍',
+}
 
 function resolveCategoryTone(categoryId: string) {
   return (
@@ -58,6 +79,7 @@ function resolveCategoryTone(categoryId: string) {
 
 export function CategorySection() {
   const [activeCategoryIds, setActiveCategoryIds] = useState<string[]>([])
+  const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({})
   const [categoryPlaces, setCategoryPlaces] = useState<CategoryPlace[]>([])
   const [isCategoryLoading, setIsCategoryLoading] = useState(false)
   const [isMobileCategoryMenuOpen, setIsMobileCategoryMenuOpen] = useState(false)
@@ -99,6 +121,8 @@ export function CategorySection() {
 
     const tone = resolveCategoryTone(category.id)
     const isActive = activeCategoryIds.includes(category.id)
+    const icon = CATEGORY_ICONS[category.id] ?? '•'
+    const count = categoryCounts[category.id] ?? 0
 
     return (
       <button
@@ -109,14 +133,50 @@ export function CategorySection() {
         aria-pressed={isActive}
       >
         <span className="category-tile-main">
+          <span className="category-tile-icon" aria-hidden="true">
+            {icon}
+          </span>
+          <span className="category-tile-separator" aria-hidden="true">
+            |
+          </span>
           <strong className="category-tile-label">{category.name}</strong>
           <span className="category-tile-separator" aria-hidden="true">
             |
           </span>
+          <span className="category-tile-count">{count}</span>
         </span>
       </button>
     )
   }
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadCategoryCounts() {
+      try {
+        const response = await fetch('/api/place-counts', { cache: 'no-store' })
+        const payload = (await response.json()) as
+          | { counts?: Record<string, number>; error?: string }
+          | undefined
+
+        if (!response.ok || !payload?.counts || cancelled) {
+          return
+        }
+
+        setCategoryCounts(payload.counts)
+      } catch {
+        if (!cancelled) {
+          setCategoryCounts({})
+        }
+      }
+    }
+
+    void loadCategoryCounts()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -224,6 +284,15 @@ export function CategorySection() {
             <h3 className="section-title" style={{ fontSize: '1.2rem' }}>Kendi Kaş senaryonu kur! Kategorini seç!</h3>
           </div>
           <div className="category-topline-actions">
+            <button
+              type="button"
+              className="category-clear-filters"
+              onClick={() => setActiveCategoryIds([])}
+              disabled={activeCategoryIds.length === 0}
+            >
+              Filtreleri temizle
+            </button>
+            <span className="category-topline-separator" aria-hidden="true"></span>
             <span className="category-filter-count">{`${activeCategoryIds.length} aktif filtre`}</span>
             <button
               type="button"
@@ -236,7 +305,7 @@ export function CategorySection() {
           </div>
         </div>
 
-        <div className="category-pill-list category-pill-list-all" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.8rem' }}>
+        <div className="category-pill-list category-pill-list-all">
           {CATEGORY_IDS.map((categoryId) => renderCategoryTile(categoryId))}
         </div>
 
@@ -339,23 +408,44 @@ export function CategorySection() {
                       <span className="category-place-eyebrow">
                         {CATEGORY_MAP.get(place.categoryPrimary)?.name || place.categoryPrimary}
                       </span>
-                      <h5 className="category-place-title">{place.headline || place.name}</h5>
+                      <h5 className="category-place-title">{place.name}</h5>
                       <p className="category-place-copy">{place.shortDescription}</p>
-                      <div className="category-place-meta">
-                        <span>{place.address || 'Adres bilgisi yakında'}</span>
-                        {place.phone ? <span>{place.phone}</span> : null}
-                        {place.website ? (
-                          <span
-                            onClick={(e) => {
-                              e.preventDefault()
-                              window.open(place.website!, '_blank', 'noopener,noreferrer')
-                            }}
-                            role="link"
-                            tabIndex={0}
-                          >
-                            Website
-                          </span>
-                        ) : null}
+                      <div className="category-place-signals">
+                        <span
+                          className={`category-place-signal${place.address ? ' is-active' : ' is-muted'}`}
+                          aria-label={`Adres ${place.address ? 'mevcut' : 'yok'}`}
+                          title={`Adres ${place.address ? 'mevcut' : 'yok'}`}
+                        >
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                            <path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" stroke="currentColor" strokeWidth="2" />
+                            <circle cx="12" cy="9" r="2.4" fill="currentColor" />
+                          </svg>
+                        </span>
+                        <span
+                          className={`category-place-signal${place.phone ? ' is-active' : ' is-muted'}`}
+                          aria-label={`Telefon ${place.phone ? 'mevcut' : 'yok'}`}
+                          title={`Telefon ${place.phone ? 'mevcut' : 'yok'}`}
+                        >
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                            <path
+                              d="M6.8 3.5h2.6c.5 0 .9.3 1 .7l.8 3.2c.1.4 0 .8-.3 1l-1.7 1.4a14.4 14.4 0 0 0 5 5l1.4-1.7c.3-.3.7-.4 1-.3l3.2.8c.5.1.8.5.8 1v2.6c0 .6-.5 1.1-1.1 1.1C10.7 19.8 4.2 13.3 4.2 4.6c0-.6.5-1.1 1.1-1.1z"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </span>
+                        <span
+                          className={`category-place-signal${place.website ? ' is-active' : ' is-muted'}`}
+                          aria-label={`Website ${place.website ? 'mevcut' : 'yok'}`}
+                          title={`Website ${place.website ? 'mevcut' : 'yok'}`}
+                        >
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+                            <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                          </svg>
+                        </span>
                       </div>
                     </div>
                   </Link>
