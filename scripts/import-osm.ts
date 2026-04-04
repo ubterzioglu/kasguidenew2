@@ -24,17 +24,33 @@ type OverpassResponse = {
   elements: OsmElement[]
 }
 
-type RawPlaceInsert = {
-  source_name: 'osm_overpass'
-  source_id: string
-  name_raw: string | null
+type PlaceUpsert = {
+  slug?: null
+  name: string
+  category_primary: SupportedCategory
   lat: number
   lng: number
-  address_raw: string | null
-  website_raw: string | null
-  phone_raw: string | null
-  category_raw: SupportedCategory
-  raw_payload: Record<string, unknown>
+  address: string | null
+  website: string | null
+  phone: string | null
+  status: 'pending'
+  verification_status: 'pending'
+  headline: string
+  short_description: string
+  long_description: string
+  primary_source_name: 'osm_overpass'
+  primary_source_id: string
+  source_url: null
+  imported_at: string
+  intake_channel: 'sweep'
+  is_sweeped: true
+  source_sweep_id: string | null
+  grid_key: string | null
+  cell_id: string | null
+  google_maps_uri: null
+  images: []
+  source_records: Record<string, unknown>[]
+  raw_snapshot: Record<string, unknown>
 }
 
 type BoundingBox = {
@@ -137,7 +153,7 @@ async function main() {
     ? await createGridSweep(client, options, cells.length)
     : null
 
-  const aggregated: RawPlaceInsert[] = []
+  const aggregated: PlaceUpsert[] = []
   const stats = {
     totalFetched: 0,
     missingName: 0,
@@ -160,7 +176,7 @@ async function main() {
         const response = await fetchOverpass(query)
         const normalized = response.elements
           .map((element) => mapElementToRawPlace(element, stats))
-          .filter((place): place is RawPlaceInsert => place !== null)
+          .filter((place): place is PlaceUpsert => place !== null)
 
         aggregated.push(...normalized)
         progress.processedCells += 1
@@ -223,14 +239,18 @@ async function main() {
     const response = await fetchOverpass(query)
     const normalized = response.elements
       .map((element) => mapElementToRawPlace(element, stats))
-      .filter((place): place is RawPlaceInsert => place !== null)
+      .filter((place): place is PlaceUpsert => place !== null)
 
     aggregated.push(...normalized)
     stats.totalFetched += response.elements.length
   }
 
   const deduped = dedupeRawPlaces(aggregated)
-  const limited = options.limit > 0 ? deduped.slice(0, options.limit) : deduped
+  const limitedBase = options.limit > 0 ? deduped.slice(0, options.limit) : deduped
+  const limited = limitedBase.map((row) => ({
+    ...row,
+    source_sweep_id: sweepId,
+  }))
 
   console.log(
     JSON.stringify(
@@ -275,8 +295,8 @@ async function main() {
 
   for (const chunk of chunkArray(limited, INSERT_CHUNK_SIZE)) {
     const { data, error } = await client
-      .from('raw_places')
-      .upsert(chunk, { onConflict: 'source_name,source_id' })
+      .from('places')
+      .upsert(chunk, { onConflict: 'primary_source_name,primary_source_id' })
       .select('id')
 
     if (error) {
@@ -289,7 +309,7 @@ async function main() {
   console.log(
     JSON.stringify(
       {
-        message: 'raw_places import tamamlandi',
+        message: 'places import tamamlandi',
         inserted,
         totalAttempted: limited.length,
       },
@@ -549,7 +569,7 @@ async function fetchOverpass(query: string) {
 function mapElementToRawPlace(
   element: OsmElement,
   stats: { missingName: number; missingCoordinates: number; skippedCategory: number },
-): RawPlaceInsert | null {
+): PlaceUpsert | null {
   const tags = element.tags ?? {}
   const lat = element.lat ?? element.center?.lat ?? null
   const lng = element.lon ?? element.center?.lon ?? null
@@ -571,17 +591,51 @@ function mapElementToRawPlace(
     stats.missingName += 1
   }
 
+  const sourceId = `${element.type}/${element.id}`
+  const importedAt = new Date().toISOString()
+  const finalName = name ?? `OSM ${sourceId}`
+
   return {
-    source_name: 'osm_overpass',
-    source_id: `${element.type}/${element.id}`,
-    name_raw: name,
+    slug: null,
+    name: finalName,
+    category_primary: category,
+    headline: finalName,
+    short_description: finalName,
+    long_description: '',
     lat,
     lng,
-    address_raw: cleanText(buildAddress(tags)),
-    website_raw: normalizeWebsite(extractWebsite(tags)),
-    phone_raw: cleanText(extractPhone(tags)),
-    category_raw: category,
-    raw_payload: {
+    address: cleanText(buildAddress(tags)),
+    website: normalizeWebsite(extractWebsite(tags)),
+    phone: cleanText(extractPhone(tags)),
+    status: 'pending',
+    verification_status: 'pending',
+    primary_source_name: 'osm_overpass',
+    primary_source_id: sourceId,
+    source_url: null,
+    imported_at: importedAt,
+    intake_channel: 'sweep',
+    is_sweeped: true,
+    source_sweep_id: null,
+    grid_key: null,
+    cell_id: null,
+    google_maps_uri: null,
+    images: [],
+    source_records: [{
+      source_name: 'osm_overpass',
+      source_id: sourceId,
+      source_url: null,
+      is_primary: true,
+      first_seen_at: importedAt,
+      last_seen_at: importedAt,
+    }],
+    raw_snapshot: {
+      source_name: 'osm_overpass',
+      source_id: sourceId,
+      name_raw: name,
+      address_raw: cleanText(buildAddress(tags)),
+      website_raw: normalizeWebsite(extractWebsite(tags)),
+      phone_raw: cleanText(extractPhone(tags)),
+      category_raw: category,
       osm: {
         type: element.type,
         id: element.id,
@@ -591,11 +645,11 @@ function mapElementToRawPlace(
   }
 }
 
-function dedupeRawPlaces(rows: RawPlaceInsert[]) {
-  const map = new Map<string, RawPlaceInsert>()
+function dedupeRawPlaces(rows: PlaceUpsert[]) {
+  const map = new Map<string, PlaceUpsert>()
 
   for (const row of rows) {
-    map.set(`${row.source_name}:${row.source_id}`, row)
+    map.set(`${row.primary_source_name}:${row.primary_source_id}`, row)
   }
 
   return [...map.values()]
@@ -692,7 +746,7 @@ async function runSingleCellSweep(
     skippedCategory: 0,
   }
   
-  const rawPlaces: RawPlaceInsert[] = []
+  const rawPlaces: PlaceUpsert[] = []
   
   for (const element of response.elements) {
     const rawPlace = mapElementToRawPlace(element, stats)
@@ -702,12 +756,15 @@ async function runSingleCellSweep(
   }
   
   // Dedupe and insert
-  const deduped = dedupeRawPlaces(rawPlaces)
+  const deduped = dedupeRawPlaces(rawPlaces).map((row) => ({
+    ...row,
+    source_sweep_id: sweepId,
+  }))
   
   if (deduped.length > 0) {
     const { error } = await client
-      .from('raw_places')
-      .upsert(deduped, { onConflict: 'source_name,source_id' })
+      .from('places')
+      .upsert(deduped, { onConflict: 'primary_source_name,primary_source_id' })
     
     if (error) {
       throw error
@@ -742,9 +799,9 @@ async function runSingleCellSweep(
 }
 
 
-function summarizeCategories(rows: RawPlaceInsert[]) {
+function summarizeCategories(rows: PlaceUpsert[]) {
   return rows.reduce<Record<string, number>>((accumulator, row) => {
-    accumulator[row.category_raw] = (accumulator[row.category_raw] ?? 0) + 1
+    accumulator[row.category_primary] = (accumulator[row.category_primary] ?? 0) + 1
     return accumulator
   }, {})
 }
@@ -1018,7 +1075,7 @@ async function runCellIdSweep(
     skippedCategory: 0,
   }
   
-  const rawPlaces: RawPlaceInsert[] = []
+  const rawPlaces: PlaceUpsert[] = []
   
   for (const element of response.elements) {
     const rawPlace = mapElementToRawPlace(element, stats)
@@ -1028,12 +1085,15 @@ async function runCellIdSweep(
   }
   
   // Dedupe and insert
-  const deduped = dedupeRawPlaces(rawPlaces)
+  const deduped = dedupeRawPlaces(rawPlaces).map((row) => ({
+    ...row,
+    source_sweep_id: sweepId,
+  }))
   
   if (deduped.length > 0) {
     const { error } = await client
-      .from('raw_places')
-      .upsert(deduped, { onConflict: 'source_name,source_id' })
+      .from('places')
+      .upsert(deduped, { onConflict: 'primary_source_name,primary_source_id' })
     
     if (error) {
       throw error

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Supabase Table Report - 2026-04-04</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f6f7fb;
+        --card: #ffffff;
+        --text: #172033;
+        --muted: #5f6b85;
+        --line: #d9dfeb;
+        --accent: #1b66ff;
+        --accent-soft: #eaf1ff;
+        --warn: #8a5a00;
+        --warn-bg: #fff4db;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+      }
+
+      .wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #ffffff 0%, #eef4ff 100%);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 24px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0 0 12px;
+        line-height: 1.2;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.35rem;
+        margin-top: 28px;
+      }
+
+      h3 {
+        font-size: 1.05rem;
+        margin-top: 20px;
+      }
+
+      p {
+        margin: 0 0 12px;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .notice {
+        background: var(--warn-bg);
+        color: var(--warn);
+        border: 1px solid #f0d18b;
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-top: 18px;
+      }
+
+      .section {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 24px;
+        margin-bottom: 20px;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .pill {
+        background: var(--accent-soft);
+        color: var(--accent);
+        border: 1px solid #cfe0ff;
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 0.92rem;
+        font-weight: 600;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 14px;
+        font-size: 0.95rem;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 12px 10px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      th {
+        background: #f8faff;
+      }
+
+      code {
+        background: #f1f4fa;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 0.93em;
+      }
+
+      ul {
+        margin: 10px 0 0 20px;
+        padding: 0;
+      }
+
+      li {
+        margin: 8px 0;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .table-block {
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+        margin-top: 16px;
+      }
+
+      .small {
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
+
+      @media (max-width: 760px) {
+        .wrap {
+          padding: 20px 14px 48px;
+        }
+
+        .hero,
+        .section {
+          padding: 18px;
+          border-radius: 14px;
+        }
+
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+          display: block;
+        }
+
+        thead {
+          display: none;
+        }
+
+        tr {
+          border: 1px solid var(--line);
+          border-radius: 12px;
+          margin-bottom: 12px;
+          overflow: hidden;
+        }
+
+        td {
+          border-bottom: 1px solid var(--line);
+        }
+
+        td:last-child {
+          border-bottom: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="hero">
+        <h1>Supabase Table Report</h1>
+        <p class="meta">Date: 2026-04-04</p>
+        <p class="meta">Source of truth: <code>supabase inspect db table-stats --linked</code></p>
+        <p class="meta">Repo scanned with: <code>rg</code> over <code>src</code>, <code>scripts</code>, <code>db</code>, <code>supabase</code></p>
+
+        <div class="pill-row">
+          <span class="pill">Places pipeline is primary</span>
+          <span class="pill">Legacy items model still present</span>
+          <span class="pill">Hero slides has CMS table</span>
+        </div>
+
+        <div class="notice">
+          Pending remote migration detected: <code>20260402190000_add_kasguide_badge_to_places.sql</code>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Executive Summary</h2>
+        <p>The active database is centered around the place ingestion and publishing pipeline. The most heavily used production tables are <code>places</code>, <code>raw_places</code>, <code>place_sources</code>, <code>place_content</code>, and <code>review_queue</code>.</p>
+        <p>The repo expects <code>public.places.kasguide_badge</code>, but the linked remote database had not applied that migration at the time of inspection.</p>
+      </section>
+
+      <section class="section">
+        <h2>Remote Tables</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Table</th>
+              <th>Estimated Rows</th>
+              <th>Total Size</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>public.places</code></td><td>629</td><td>336 kB</td><td>Main published/admin place records</td></tr>
+            <tr><td><code>public.raw_places</code></td><td>609</td><td>880 kB</td><td>Imported raw source data</td></tr>
+            <tr><td><code>public.place_sources</code></td><td>610</td><td>320 kB</td><td>Maps raw sources to canonical places</td></tr>
+            <tr><td><code>public.place_content</code></td><td>629</td><td>216 kB</td><td>Copy/headline/long text for places</td></tr>
+            <tr><td><code>public.place_images</code></td><td>22</td><td>48 kB</td><td>Gallery/cover image records</td></tr>
+            <tr><td><code>public.review_queue</code></td><td>353</td><td>192 kB</td><td>Manual review / dedupe queue</td></tr>
+            <tr><td><code>public.grid_sweeps</code></td><td>2</td><td>64 kB</td><td>Sweep sessions for ingest jobs</td></tr>
+            <tr><td><code>public.grid_sweep_cells</code></td><td>2</td><td>80 kB</td><td>Per-cell sweep progress</td></tr>
+            <tr><td><code>public.hero_slides</code></td><td>2</td><td>48 kB</td><td>Homepage hero carousel</td></tr>
+            <tr><td><code>public.items</code></td><td>357</td><td>1608 kB</td><td>Legacy/unified content model</td></tr>
+            <tr><td><code>public.articles</code></td><td>2</td><td>96 kB</td><td>Article content</td></tr>
+            <tr><td><code>public.article_tags</code></td><td>5</td><td>24 kB</td><td>Article tags</td></tr>
+            <tr><td><code>public.categories</code></td><td>19</td><td>40 kB</td><td>Taxonomy/reference data</td></tr>
+            <tr><td><code>public.badges</code></td><td>16</td><td>48 kB</td><td>Reference badges</td></tr>
+            <tr><td><code>public.faqs</code></td><td>0</td><td>16 kB</td><td>FAQ entries</td></tr>
+            <tr><td><code>public.faq_series</code></td><td>0</td><td>24 kB</td><td>FAQ grouping</td></tr>
+            <tr><td><code>public.admin_users</code></td><td>0</td><td>24 kB</td><td>Admin users table</td></tr>
+            <tr><td><code>public.audit_log</code></td><td>0</td><td>48 kB</td><td>Audit trail table</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <h2>Table Usage Map</h2>
+
+        <h3>Core place pipeline</h3>
+
+        <div class="table-block">
+          <p><strong><code>places</code></strong></p>
+          <ul>
+            <li>Main runtime read model for public pages and admin editing.</li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\public-place-store.ts">src/lib/public-place-store.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\raw-place-store.ts">src/lib/raw-place-store.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\place-persistence.ts">src/lib/place-persistence.ts</a></li>
+            <li>Used in scripts such as <a href="C:\.temp_private\kasguidenew2\scripts\normalize-places.ts">scripts/normalize-places.ts</a>, <a href="C:\.temp_private\kasguidenew2\scripts\publish-reviewed.ts">scripts/publish-reviewed.ts</a>, and <a href="C:\.temp_private\kasguidenew2\scripts\seed-sample-bar.ts">scripts/seed-sample-bar.ts</a></li>
+          </ul>
+        </div>
+
+        <div class="table-block">
+          <p><strong><code>raw_places</code></strong></p>
+          <ul>
+            <li>Landing table for imported Google/OSM/raw venue data.</li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\raw-place-store.ts">src/lib/raw-place-store.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\place-persistence.ts">src/lib/place-persistence.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\scripts\import-google-grid.ts">scripts/import-google-grid.ts</a> and <a href="C:\.temp_private\kasguidenew2\scripts\import-osm.ts">scripts/import-osm.ts</a></li>
+          </ul>
+        </div>
+
+        <div class="table-block">
+          <p><strong><code>place_sources</code></strong></p>
+          <ul>
+            <li>Canonical link table between <code>raw_places</code> and <code>places</code>.</li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\place-persistence.ts">src/lib/place-persistence.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\scripts\normalize-places.ts">scripts/normalize-places.ts</a> and <a href="C:\.temp_private\kasguidenew2\scripts\consolidate-raw-into-places.ts">scripts/consolidate-raw-into-places.ts</a></li>
+          </ul>
+        </div>
+
+        <div class="table-block">
+          <p><strong><code>place_content</code></strong></p>
+          <ul>
+            <li>Stores editorial place copy: headline, short text, long text.</li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\public-place-store.ts">src/lib/public-place-store.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\raw-place-store.ts">src/lib/raw-place-store.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\place-persistence.ts">src/lib/place-persistence.ts</a></li>
+          </ul>
+        </div>
+
+        <div class="table-block">
+          <p><strong><code>place_images</code></strong></p>
+          <ul>
+            <li>Stores place gallery and cover image ordering.</li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\public-place-store.ts">src/lib/public-place-store.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\raw-place-store.ts">src/lib/raw-place-store.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\place-persistence.ts">src/lib/place-persistence.ts</a></li>
+          </ul>
+        </div>
+
+        <div class="table-block">
+          <p><strong><code>review_queue</code></strong></p>
+          <ul>
+            <li>Manual review / merge / reject workflow for normalized places.</li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\place-review-store.ts">src/lib/place-review-store.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\place-persistence.ts">src/lib/place-persistence.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\scripts\normalize-places.ts">scripts/normalize-places.ts</a> and <a href="C:\.temp_private\kasguidenew2\scripts\publish-reviewed.ts">scripts/publish-reviewed.ts</a></li>
+          </ul>
+        </div>
+
+        <h3>Ingestion tracking</h3>
+
+        <div class="table-block">
+          <p><strong><code>grid_sweeps</code></strong></p>
+          <ul>
+            <li>Parent table for sweep jobs.</li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\grid-sweep-store.ts">src/lib/grid-sweep-store.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\scripts\import-google-grid.ts">scripts/import-google-grid.ts</a> and <a href="C:\.temp_private\kasguidenew2\scripts\import-osm.ts">scripts/import-osm.ts</a></li>
+          </ul>
+        </div>
+
+        <div class="table-block">
+          <p><strong><code>grid_sweep_cells</code></strong></p>
+          <ul>
+            <li>Child table for per-cell ingest status.</li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\grid-sweep-store.ts">src/lib/grid-sweep-store.ts</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\scripts\import-google-grid.ts">scripts/import-google-grid.ts</a> and <a href="C:\.temp_private\kasguidenew2\scripts\import-osm.ts">scripts/import-osm.ts</a></li>
+          </ul>
+        </div>
+
+        <h3>Homepage CMS</h3>
+
+        <div class="table-block">
+          <p><strong><code>hero_slides</code></strong></p>
+          <ul>
+            <li>Homepage hero carousel CMS table.</li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\src\lib\hero-slide-store.ts">src/lib/hero-slide-store.ts</a></li>
+            <li>Used by admin API in <a href="C:\.temp_private\kasguidenew2\src\app\api\admin\hero-slides\route.ts">src/app/api/admin/hero-slides/route.ts</a></li>
+          </ul>
+        </div>
+
+        <h3>Legacy / reference / partially active tables</h3>
+
+        <div class="table-block">
+          <p><strong><code>items</code></strong></p>
+          <ul>
+            <li>Legacy unified content model used mainly by import and migration scripts.</li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\db\import-static-to-supabase.js">db/import-static-to-supabase.js</a></li>
+            <li>Used in <a href="C:\.temp_private\kasguidenew2\scripts\backfill-legacy-items-to-review.ts">scripts/backfill-legacy-items-to-review.ts</a></li>
+          </ul>
+        </div>
+
+        <div class="table-block">
+          <p><strong><code>badges</code></strong></p>
+          <ul>
+            <li>Reference data in the legacy model.</li>
+            <li>Current place detail page uses hardcoded or category-driven guide badges in UI instead of reading this table directly.</li>
+            <li>See <a href="C:\.temp_private\kasguidenew2\src\app\mekan\[slug]\page.tsx">src/app/mekan/[slug]/page.tsx</a></li>
+          </ul>
+        </div>
+
+        <div class="table-block">
+          <p><strong><code>faqs</code>, <code>faq_series</code>, <code>admin_users</code>, <code>audit_log</code></strong></p>
+          <ul>
+            <li>Present in remote schema.</li>
+            <li>No meaningful live runtime usage found in the current app flow.</li>
+            <li>Mostly referenced in schema, reset, or migration scripts.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Practical Observations</h2>
+        <ul>
+          <li>The current app is primarily built around the place ingestion stack, not the older unified <code>items</code> model.</li>
+          <li><code>public.places</code> is the hottest table by sequential scans and is central to both public pages and admin flows.</li>
+          <li><code>public.items</code> still exists and is sizeable, but appears more legacy and migration-oriented than active runtime data.</li>
+          <li><code>public.badges</code> exists, but current "Kas Guide" badges are generated in code instead of being loaded from that table.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Recommended Next Steps</h2>
+        <ul>
+          <li>Apply the pending migration for <code>kasguide_badge</code> with <code>supabase db push --include-all</code>.</li>
+          <li>Decide whether <code>items</code> remains a supported model or should be formally deprecated.</li>
+          <li>If needed, create a phase-2 report with column lineage, API-to-table mapping, and a read/write matrix.</li>
+        </ul>
+        <p class="small">HTML version generated from the Markdown report for quick browser viewing.</p>
+      </section>
+    </main>
+  </body>
+</html>

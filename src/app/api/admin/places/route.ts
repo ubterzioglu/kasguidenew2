@@ -4,10 +4,10 @@ import { isAdminApiConfigured, isAdminRequestAuthorized } from '@/lib/admin-auth
 import { jsonFail, jsonOk, readLimit } from '@/lib/api-helpers'
 import { ExistingPlaceSaveBodySchema } from '@/lib/api-schemas'
 import {
-  applyExistingPlaceAction,
-  getExistingPlacesSnapshot,
-  isPlaceReviewStoreConfigured,
-} from '@/lib/place-review-store'
+  applyAdminPlaceAction,
+  getAdminPlacesSnapshot,
+  isPlaceAdminStoreConfigured,
+} from '@/lib/place-admin-store'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,7 +16,7 @@ function getAdminAccessError(request: Request): NextResponse | null {
     return jsonFail('ADMIN_PASSWORD tanimli degil.', 503)
   }
 
-  if (!isPlaceReviewStoreConfigured()) {
+  if (!isPlaceAdminStoreConfigured()) {
     return jsonFail('Supabase review deposu hazir degil.', 503)
   }
 
@@ -35,8 +35,8 @@ export async function GET(request: Request) {
   }
 
   try {
-    const limit = readLimit(new URL(request.url).searchParams.get('limit'))
-    const snapshot = await getExistingPlacesSnapshot(limit)
+    const limit = readLimit(new URL(request.url).searchParams.get('limit'), 2000)
+    const snapshot = await getAdminPlacesSnapshot(limit)
 
     return jsonOk(snapshot, { headers: { 'Cache-Control': 'no-store' } })
   } catch (error) {
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
   const { placeId, draft } = parsed.data
 
   try {
-    const snapshot = await applyExistingPlaceAction({ placeId, draft })
+    const snapshot = await applyAdminPlaceAction({ placeId, draft })
     return jsonOk(snapshot)
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Mekan kaydi guncellenemedi.'

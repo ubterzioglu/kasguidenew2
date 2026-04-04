@@ -1,2 +1,8 @@
 {"t":0,"agent":"af4c327","agent_type":"Explore","event":"agent_start","parent_mode":"none"}
 {"t":0,"agent":"af4c327","agent_type":"Explore","event":"agent_stop","success":true,"duration_ms":580027}
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"ai-slop-cleaner"}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:ai-slop-cleaner"}
+{"t":0,"agent":"a2fdf8d","agent_type":"planner","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a2fdf8d","agent_type":"planner","event":"agent_stop","success":true,"duration_ms":223361}
+{"t":0,"agent":"a121ffa","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"a56888e","agent_type":"unknown","event":"agent_stop","success":true}

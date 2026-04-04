@@ -116,9 +116,13 @@ export default function AdminHomePage() {
           </div>
 
           <section className="admin-nav-grid admin-nav-grid-simple">
-            <Link href="/admin/review" className="admin-nav-card admin-nav-card-simple">
-              <strong>Mekan review</strong>
-              <p>Grid sweep, ham mekanlar ve review kuyrugu</p>
+            <Link href="/admin/sweeps" className="admin-nav-card admin-nav-card-simple">
+              <strong>Sweeps</strong>
+              <p>Sweep oturumlari ve sweep kaynakli mekanlar</p>
+            </Link>
+            <Link href="/admin/places" className="admin-nav-card admin-nav-card-simple">
+              <strong>Mekanlar</strong>
+              <p>Butun mekanlari tek tabloda yonet</p>
             </Link>
             <Link href="/admin/hero-slides" className="admin-nav-card admin-nav-card-simple">
               <strong>Hero alani</strong>

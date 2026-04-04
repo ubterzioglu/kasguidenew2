@@ -16,5 +16,8 @@ export type {
   ExistingPlaceItem,
   ReviewQueueItem,
   ReviewDashboardSnapshot,
+  SweepDashboardSnapshot,
+  AdminPlacesSnapshot,
+  PlaceIntakeChannel,
   PanelStatus,
 } from '@/types/review'

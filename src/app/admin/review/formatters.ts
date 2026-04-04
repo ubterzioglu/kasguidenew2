@@ -1,4 +1,4 @@
-import { GridSweepStatus, GridSweepCellItem, ReviewQueueStatus } from './types'
+import { GridSweepCellItem, GridSweepStatus, ReviewQueueStatus } from './types'
 
 export function decodeLabel(value: string) {
   try {
@@ -54,11 +54,11 @@ export function formatReviewStatus(status: ReviewQueueStatus) {
 }
 
 export function mapProcessingStatusTone(status: string) {
-  if (status === 'review' || status === 'normalized') {
+  if (status === 'review' || status === 'admin' || status === 'published') {
     return 'completed'
   }
 
-  if (status === 'rejected' || status === 'error') {
+  if (status === 'rejected' || status === 'error' || status === 'merged') {
     return 'failed'
   }
 
@@ -68,13 +68,19 @@ export function mapProcessingStatusTone(status: string) {
 export function formatProcessingStatus(status: string) {
   switch (status) {
     case 'pending':
-      return 'Ham kayıt'
+      return 'Ham kayit'
     case 'review':
-      return 'Admin bekliyor'
-    case 'normalized':
-      return 'Hazirlandi'
+      return 'Incelemede'
+    case 'admin':
+      return 'Admin kaydi'
+    case 'published':
+      return 'Yayinda'
+    case 'archived':
+      return 'Arsivde'
     case 'rejected':
       return 'Reddedildi'
+    case 'merged':
+      return 'Birlestirildi'
     case 'error':
       return 'Hata'
     default:
@@ -84,16 +90,22 @@ export function formatProcessingStatus(status: string) {
 
 export function formatPlaceStatus(status: string) {
   switch (status) {
-    case 'draft':
-      return 'Taslak'
+    case 'pending':
+      return 'Bekliyor'
     case 'review':
       return 'Review'
     case 'admin':
       return 'Admin'
     case 'published':
-      return 'Yayında'
+      return 'Yayinda'
     case 'archived':
       return 'Arsiv'
+    case 'rejected':
+      return 'Reddedildi'
+    case 'merged':
+      return 'Birlestirildi'
+    case 'error':
+      return 'Hata'
     default:
       return status
   }

@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd \\\"C:/.temp_private/kasguidenew2\\\" && grep -rn \\\"from '@/lib/supabase'.*Item\\\\|import.*Item.*supabase\\\" src/ && echo \\\"Item interface check done\\\" && grep -n \\\"interface Item\\\" src/lib/s...",
+  "error": "Exit code 1",
+  "timestamp": "2026-04-02T20:18:30.123Z",
+  "retry_count": 1
+}

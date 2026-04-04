@@ -167,7 +167,7 @@ export function HeroCarousel() {
 
               <div className="hero-featured-actions">
                 <a href="#categories" className="hero-primary-action">
-                  Keşfetmeye Başla
+                  Tatilimi planla!
                 </a>
                 <a href="#routes" className="hero-secondary-action">
                   Ben Yerlisiyim!

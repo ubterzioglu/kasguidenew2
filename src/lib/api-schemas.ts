@@ -15,7 +15,7 @@ export const PlaceEditorDraftSchema = z.object({
   phone: z.string(),
   website: z.string(),
   imageUrls: z.array(z.string()).max(5),
-  status: z.enum(['draft', 'review', 'admin', 'published', 'archived']),
+  status: z.enum(['pending', 'review', 'admin', 'published', 'archived', 'rejected', 'merged', 'error']),
   verificationStatus: z.enum(['pending', 'reviewed', 'verified', 'rejected']),
 })
 
@@ -30,6 +30,12 @@ export const ReviewActionBodySchema = z.object({
 
 export const RawPlaceSaveBodySchema = z.object({
   rawPlaceId: z.string().min(1),
+  action: z.enum(['save_draft', 'publish', 'reject']),
+  draft: PlaceEditorDraftSchema.optional(),
+})
+
+export const SweepPlaceSaveBodySchema = z.object({
+  placeId: z.string().min(1),
   action: z.enum(['save_draft', 'publish', 'reject']),
   draft: PlaceEditorDraftSchema.optional(),
 })

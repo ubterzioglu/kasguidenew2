@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npx tsc:*)",
       "Read(//c/.temp_private/kasguidenew2/**)",
-      "Bash(wc -l \"/c/.temp_private/kasguidenew2/src\"/**/*.tsx)"
+      "Bash(wc -l \"/c/.temp_private/kasguidenew2/src\"/**/*.tsx)",
+      "Bash(npm install:*)"
     ]
   }
 }

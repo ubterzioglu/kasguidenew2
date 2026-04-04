@@ -35,17 +35,33 @@ type GooglePlace = {
   businessStatus?: string
 }
 
-type RawPlaceInsert = {
-  source_name: 'google_places'
-  source_id: string
-  name_raw: string | null
+type PlaceUpsert = {
+  slug?: null
+  name: string
+  category_primary: string
+  address: string | null
   lat: number | null
   lng: number | null
-  address_raw: string | null
-  website_raw: string | null
-  phone_raw: string | null
-  category_raw: string | null
-  raw_payload: Record<string, unknown>
+  phone: string | null
+  website: string | null
+  status: 'pending'
+  verification_status: 'pending'
+  headline: string
+  short_description: string
+  long_description: string
+  primary_source_name: 'google_places'
+  primary_source_id: string
+  source_url: string | null
+  imported_at: string
+  intake_channel: 'sweep'
+  is_sweeped: true
+  source_sweep_id: string | null
+  grid_key: string
+  cell_id: string
+  google_maps_uri: string | null
+  images: []
+  source_records: Record<string, unknown>[]
+  raw_snapshot: Record<string, unknown>
 }
 
 type GridTarget = {
@@ -178,7 +194,7 @@ async function main() {
         cellSizeMeters,
       })
 
-  const byPlaceId = new Map<string, RawPlaceInsert>()
+  const byPlaceId = new Map<string, PlaceUpsert>()
   const typeResults: GridSearchTypeResult[] = []
   let totalFetched = 0
   let apiCalls = 0
@@ -207,21 +223,21 @@ async function main() {
           continue
         }
 
-        const existing = byPlaceId.get(mapped.source_id)
+        const existing = byPlaceId.get(mapped.primary_source_id)
         if (!existing) {
-          byPlaceId.set(mapped.source_id, mapped)
+          byPlaceId.set(mapped.primary_source_id, mapped)
           continue
         }
 
-        const existingGoogle = existing.raw_payload.google as Record<string, unknown>
+        const existingGoogle = existing.raw_snapshot.google as Record<string, unknown>
         const existingMatchedTypes = Array.isArray(existingGoogle.matchedTypes)
           ? (existingGoogle.matchedTypes as string[])
           : []
 
-        byPlaceId.set(mapped.source_id, {
+        byPlaceId.set(mapped.primary_source_id, {
           ...existing,
-          raw_payload: {
-            ...existing.raw_payload,
+          raw_snapshot: {
+            ...existing.raw_snapshot,
             google: {
               ...existingGoogle,
               matchedTypes: Array.from(new Set([...existingMatchedTypes, type])),
@@ -246,7 +262,10 @@ async function main() {
     }
   }
 
-  const uniqueRows = [...byPlaceId.values()]
+  const uniqueRows = [...byPlaceId.values()].map((row) => ({
+    ...row,
+    source_sweep_id: sweepId,
+  }))
   const failedTypes = typeResults.filter((item) => item.failed).map((item) => item.type)
   const summary = {
     gridX: target.gridX,
@@ -273,8 +292,8 @@ async function main() {
 
     for (const chunk of chunkArray(uniqueRows, 100)) {
       const { data, error } = await client
-        .from('raw_places')
-        .upsert(chunk, { onConflict: 'source_name,source_id' })
+        .from('places')
+        .upsert(chunk, { onConflict: 'primary_source_name,primary_source_id' })
         .select('id')
 
       if (error) {
@@ -422,24 +441,57 @@ function resolveGridTarget(input: {
   }
 }
 
-function mapPlaceToRawInsert(place: GooglePlace, matchedType: string, target: GridTarget): RawPlaceInsert | null {
+function mapPlaceToRawInsert(place: GooglePlace, matchedType: string, target: GridTarget): PlaceUpsert | null {
   const sourceId = place.id ?? null
 
   if (!sourceId) {
     return null
   }
 
+  const name = place.displayName?.text?.trim() || `Google Place ${sourceId}`
+  const importedAt = new Date().toISOString()
+
   return {
-    source_name: 'google_places',
-    source_id: sourceId,
-    name_raw: place.displayName?.text?.trim() || null,
+    slug: null,
+    name,
+    category_primary: place.primaryType ?? matchedType ?? 'gezi',
+    headline: name,
+    short_description: name,
+    long_description: '',
     lat: place.location?.latitude ?? null,
     lng: place.location?.longitude ?? null,
-    address_raw: place.formattedAddress?.trim() || null,
-    website_raw: place.websiteUri?.trim() || null,
-    phone_raw: place.internationalPhoneNumber?.trim() || place.nationalPhoneNumber?.trim() || null,
-    category_raw: place.primaryType ?? matchedType,
-    raw_payload: {
+    address: place.formattedAddress?.trim() || null,
+    website: place.websiteUri?.trim() || null,
+    phone: place.internationalPhoneNumber?.trim() || place.nationalPhoneNumber?.trim() || null,
+    status: 'pending',
+    verification_status: 'pending',
+    primary_source_name: 'google_places',
+    primary_source_id: sourceId,
+    source_url: place.googleMapsUri?.trim() || null,
+    imported_at: importedAt,
+    intake_channel: 'sweep',
+    is_sweeped: true,
+    source_sweep_id: null,
+    grid_key: target.gridKey,
+    cell_id: target.cellId,
+    google_maps_uri: place.googleMapsUri?.trim() || null,
+    images: [],
+    source_records: [{
+      source_name: 'google_places',
+      source_id: sourceId,
+      source_url: place.googleMapsUri?.trim() || null,
+      is_primary: true,
+      first_seen_at: importedAt,
+      last_seen_at: importedAt,
+    }],
+    raw_snapshot: {
+      source_name: 'google_places',
+      source_id: sourceId,
+      name_raw: place.displayName?.text?.trim() || null,
+      address_raw: place.formattedAddress?.trim() || null,
+      website_raw: place.websiteUri?.trim() || null,
+      phone_raw: place.internationalPhoneNumber?.trim() || place.nationalPhoneNumber?.trim() || null,
+      category_raw: place.primaryType ?? matchedType,
       google: {
         place,
         matchedTypes: [matchedType],

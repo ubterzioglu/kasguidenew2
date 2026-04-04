@@ -10,6 +10,17 @@ export type GridSweepStatus = 'running' | 'completed' | 'partial' | 'failed'
 export type StatusTone = 'neutral' | 'success' | 'error'
 export type RawPlaceAction = 'save_draft' | 'publish' | 'reject'
 export type ExistingPlaceAction = 'save' | 'publish'
+export type PlaceIntakeChannel = 'sweep' | 'manual' | 'import' | 'migrated'
+export type PlaceStatus =
+  | 'pending'
+  | 'review'
+  | 'admin'
+  | 'published'
+  | 'archived'
+  | 'rejected'
+  | 'merged'
+  | 'error'
+export type PlaceVerificationStatus = 'pending' | 'reviewed' | 'verified' | 'rejected'
 
 export type GridSweepCellItem = {
   id: string
@@ -63,12 +74,15 @@ export type PlaceEditorDraft = {
   phone: string
   website: string
   imageUrls: string[]
-  status: 'draft' | 'review' | 'admin' | 'published' | 'archived'
-  verificationStatus: 'pending' | 'reviewed' | 'verified' | 'rejected'
+  status: PlaceStatus
+  verificationStatus: PlaceVerificationStatus
 }
 
 export type RecentRawPlaceItem = {
   id: string
+  intakeChannel: PlaceIntakeChannel
+  isSweeped: boolean
+  sweepId: string | null
   sourceName: string
   sourceId: string
   nameRaw: string | null
@@ -88,6 +102,11 @@ export type RecentRawPlaceItem = {
 
 export type ExistingPlaceItem = {
   id: string
+  intakeChannel: PlaceIntakeChannel
+  isSweeped: boolean
+  sweepId: string | null
+  sourceName: string | null
+  sourceId: string | null
   updatedAt: string
   draft: PlaceEditorDraft
 }
@@ -135,6 +154,30 @@ export type ReviewDashboardSnapshot = {
     publishedPlaces: number
     trackedSweeps: number
     runningSweeps: number
+  }
+  categoryOptions: Array<{ id: string; label: string }>
+}
+
+export type SweepDashboardSnapshot = {
+  sweeps: GridSweepItem[]
+  sweepPlaces: RecentRawPlaceItem[]
+  stats: {
+    trackedSweeps: number
+    runningSweeps: number
+    sweepPlaces: number
+    pendingSweepPlaces: number
+    publishedSweepPlaces: number
+  }
+  categoryOptions: Array<{ id: string; label: string }>
+}
+
+export type AdminPlacesSnapshot = {
+  places: ExistingPlaceItem[]
+  stats: {
+    totalPlaces: number
+    publishedPlaces: number
+    draftPlaces: number
+    sweepedPlaces: number
   }
   categoryOptions: Array<{ id: string; label: string }>
 }
