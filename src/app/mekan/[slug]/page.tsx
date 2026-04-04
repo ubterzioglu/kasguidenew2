@@ -9,6 +9,21 @@ import { PlaceDetailGallery } from './place-detail-gallery'
 export const revalidate = 3600 // 1 hour caching
 
 type DetailSignalKey = 'address' | 'phone' | 'website'
+type CategoryBadgeMap = Record<string, string[]>
+
+const CATEGORY_BADGES: CategoryBadgeMap = {
+  bar: ['Kas Guide Onerir', 'Aksam Baslangici'],
+  meyhane: ['Kas Guide Onerir', 'Yerel Favori'],
+  restoran: ['Kas Guide Onerir', 'Tekrar Gidilir'],
+  cafe: ['Kas Guide Onerir', 'Gun Icine Uygun'],
+  kahvalti: ['Kas Guide Onerir', 'Sabah Ruhu'],
+  plaj: ['Kas Guide Onerir', 'Kas Ruhu Var'],
+  oteller: ['Kas Guide Onerir', 'Konfor Noktasi'],
+  dalis: ['Kas Guide Onerir', 'Deniz Rotasi'],
+  aktivite: ['Kas Guide Onerir', 'Deneyim Odakli'],
+  gezi: ['Kas Guide Onerir', 'Kesif Noktasi'],
+  carsi: ['Kas Guide Onerir', 'Yerel Rota'],
+}
 
 function renderDetailSignalIcon(key: DetailSignalKey) {
   if (key === 'address') {
@@ -45,6 +60,10 @@ function renderDetailSignalIcon(key: DetailSignalKey) {
       />
     </svg>
   )
+}
+
+function getGuideBadges(categoryPrimary: string) {
+  return CATEGORY_BADGES[categoryPrimary] ?? ['Kas Guide Onerir']
 }
 
 type PlaceDetailPageProps = {
@@ -100,6 +119,8 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
     place.imageUrls[0] ||
     'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1600&q=80'
   const gallery = place.imageUrls.slice(1, 5)
+  const categoryClassLabel = getPlaceCategoryLabel(place.categoryPrimary)
+  const guideBadges = getGuideBadges(place.categoryPrimary)
   const detailSignals = [
     {
       key: 'address',
@@ -132,35 +153,49 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
         </div>
 
         <section className="place-detail-status-card">
-          <div className="place-detail-status-grid">
-            {detailSignals.map((signal) => (
-              signal.key === 'website' && place.website ? (
-                <a
-                  key={signal.key}
-                  href={place.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`place-detail-status-item place-detail-status-item-link${signal.active ? ' is-active' : ' is-muted'}`}
-                  aria-label="Website mevcut"
-                  title="Website mevcut"
-                >
-                  <span className="place-detail-status-icon" aria-hidden="true">
-                    {renderDetailSignalIcon(signal.key)}
-                  </span>
-                </a>
-              ) : (
-                <article
-                  key={signal.key}
-                  className={`place-detail-status-item${signal.active ? ' is-active' : ' is-muted'}`}
-                  aria-label={`${signal.key} ${signal.active ? 'mevcut' : 'yok'}`}
-                  title={`${signal.key} ${signal.active ? 'mevcut' : 'yok'}`}
-                >
-                  <span className="place-detail-status-icon" aria-hidden="true">
-                    {renderDetailSignalIcon(signal.key)}
-                  </span>
-                </article>
-              )
-            ))}
+          <div className="place-detail-status-row">
+            <div className="place-detail-status-grid">
+              {detailSignals.map((signal) => (
+                signal.key === 'website' && place.website ? (
+                  <a
+                    key={signal.key}
+                    href={place.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`place-detail-status-item place-detail-status-item-link${signal.active ? ' is-active' : ' is-muted'}`}
+                    aria-label="Website mevcut"
+                    title="Website mevcut"
+                  >
+                    <span className="place-detail-status-icon" aria-hidden="true">
+                      {renderDetailSignalIcon(signal.key)}
+                    </span>
+                  </a>
+                ) : (
+                  <article
+                    key={signal.key}
+                    className={`place-detail-status-item${signal.active ? ' is-active' : ' is-muted'}`}
+                    aria-label={`${signal.key} ${signal.active ? 'mevcut' : 'yok'}`}
+                    title={`${signal.key} ${signal.active ? 'mevcut' : 'yok'}`}
+                  >
+                    <span className="place-detail-status-icon" aria-hidden="true">
+                      {renderDetailSignalIcon(signal.key)}
+                    </span>
+                  </article>
+                )
+              ))}
+            </div>
+
+            <span className="place-detail-inline-divider" aria-hidden="true" />
+            <strong className="place-detail-class-label">{categoryClassLabel}</strong>
+            <span className="place-detail-inline-divider" aria-hidden="true" />
+
+            <div className="place-detail-guide-badges" aria-label="Kas Guide badgeleri">
+              {guideBadges.map((badge) => (
+                <span key={badge} className="place-detail-guide-badge">
+                  {badge}
+                </span>
+              ))}
+            </div>
           </div>
         </section>
 

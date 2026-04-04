@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import { CATEGORIES } from '@/lib/supabase'
+import { CATEGORY_IDS, CATEGORY_MAP } from '@/lib/categories'
 
 type CategoryPlace = {
   id: string
@@ -18,64 +18,6 @@ type CategoryPlace = {
   imageUrl: string | null
 }
 
-const CATEGORY_GROUPS = [
-  {
-    title: 'YEME & İÇME & KONAKLAMA',
-    tone: 'food',
-    ids: ['bar', 'meyhane', 'restoran', 'cafe', 'kahvalti', 'oteller'],
-  },
-  {
-    title: 'GEZİ & KEŞİF',
-    tone: 'explore',
-    ids: ['tarih', 'doga', 'plaj', 'carsi', 'gezi'],
-  },
-  {
-    title: 'AKTİVİTE & EĞLENCE',
-    tone: 'fun',
-    ids: ['dalis', 'aktivite', 'etkinlik'],
-  },
-  {
-    title: 'İÇERİK & MEDYA',
-    tone: 'editorial',
-    ids: ['yazilar', 'roportaj', 'fotograf', 'oss', 'kas-local'],
-  },
-] as const
-
-const CATEGORY_IDS = CATEGORY_GROUPS.flatMap((group) => group.ids)
-const CATEGORY_MAP = new Map(CATEGORIES.map((category) => [category.id, category]))
-const CATEGORY_ROW_SPLIT_INDEX = Math.ceil(CATEGORY_IDS.length / 2)
-const CATEGORY_ROWS = [
-  CATEGORY_IDS.slice(0, CATEGORY_ROW_SPLIT_INDEX),
-  CATEGORY_IDS.slice(CATEGORY_ROW_SPLIT_INDEX),
-]
-const CATEGORY_ICONS: Record<string, string> = {
-  bar: '🍸',
-  meyhane: '🍷',
-  restoran: '🍽️',
-  cafe: '☕',
-  kahvalti: '🍳',
-  oteller: '🛏️',
-  tarih: '🕰️',
-  doga: '🌿',
-  plaj: '🏖️',
-  carsi: '🛍️',
-  gezi: '🧭',
-  dalis: '🤿',
-  aktivite: '⚡',
-  etkinlik: '✨',
-  yazilar: '📝',
-  roportaj: '🎙️',
-  fotograf: '📷',
-  oss: '🧠',
-  'kas-local': '📍',
-}
-
-function resolveCategoryTone(categoryId: string) {
-  return (
-    CATEGORY_GROUPS.find((group) => (group.ids as readonly string[]).includes(categoryId))?.tone ??
-    'food'
-  )
-}
 
 export function CategorySection() {
   const [activeCategoryIds, setActiveCategoryIds] = useState<string[]>([])
@@ -97,7 +39,7 @@ export function CategorySection() {
       place.headline,
       place.shortDescription,
       place.address ?? '',
-      CATEGORY_MAP.get(place.categoryPrimary)?.name ?? '',
+      CATEGORY_MAP.get(place.categoryPrimary)?.label ?? '',
     ]
       .join(' ')
       .toLocaleLowerCase('tr')
@@ -119,9 +61,9 @@ export function CategorySection() {
       return null
     }
 
-    const tone = resolveCategoryTone(category.id)
+    const tone = CATEGORY_MAP.get(category.id)?.tone ?? 'food'
     const isActive = activeCategoryIds.includes(category.id)
-    const icon = CATEGORY_ICONS[category.id] ?? '•'
+    const icon = category.icon ?? '•'
     const count = categoryCounts[category.id] ?? 0
 
     return (
@@ -139,7 +81,7 @@ export function CategorySection() {
           <span className="category-tile-separator" aria-hidden="true">
             |
           </span>
-          <strong className="category-tile-label">{category.name}</strong>
+          <strong className="category-tile-label">{category.label}</strong>
           <span className="category-tile-separator" aria-hidden="true">
             |
           </span>
@@ -190,7 +132,7 @@ export function CategorySection() {
       }
 
       const selectedCategoryNames = activeCategoryIds
-        .map((categoryId) => CATEGORY_MAP.get(categoryId)?.name || categoryId)
+        .map((categoryId) => CATEGORY_MAP.get(categoryId)?.label || categoryId)
         .filter(Boolean)
 
       setIsCategoryLoading(true)
@@ -281,7 +223,7 @@ export function CategorySection() {
       <div className="category-section-shell">
         <div className="category-topline">
           <div>
-            <h3 className="section-title" style={{ fontSize: '1.2rem' }}>Kendi Kaş senaryonu kur! Kategorini seç!</h3>
+            <h3 className="section-title">Kendi Kaş senaryonu kur! Kategorini seç!</h3>
           </div>
           <div className="category-topline-actions">
             <button
@@ -344,7 +286,7 @@ export function CategorySection() {
                     checked={checked}
                     onChange={() => toggleCategoryFilter(categoryId)}
                   />
-                  <span>{category.name}</span>
+                  <span>{category.label}</span>
                 </label>
               )
             })}
@@ -406,7 +348,7 @@ export function CategorySection() {
                     />
                     <div className="category-place-body">
                       <span className="category-place-eyebrow">
-                        {CATEGORY_MAP.get(place.categoryPrimary)?.name || place.categoryPrimary}
+                        {CATEGORY_MAP.get(place.categoryPrimary)?.label || place.categoryPrimary}
                       </span>
                       <h5 className="category-place-title">{place.name}</h5>
                       <p className="category-place-copy">{place.shortDescription}</p>

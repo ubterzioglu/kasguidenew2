@@ -3,10 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 
-import {
-  clearStoredAdminPassword,
-  storeAdminPassword,
-} from '@/lib/admin-password-client'
+import { clearStoredAdminPassword, storeAdminPassword } from '@/lib/admin-password-client'
 
 type StatusTone = 'neutral' | 'success' | 'error'
 
@@ -30,7 +27,7 @@ export default function AdminHomePage() {
     const password = adminPassword.trim()
 
     if (!password) {
-      setStatus({ tone: 'error', message: 'Devam etmek için admin parolasını girin.' })
+      setStatus({ tone: 'error', message: 'Devam etmek icin admin sifresini girin.' })
       return
     }
 
@@ -48,14 +45,14 @@ export default function AdminHomePage() {
       const payload = (await response.json().catch(() => null)) as { error?: string } | null
 
       if (!response.ok) {
-        throw new Error(payload?.error || 'Parola doğrulanamadı.')
+        throw new Error(payload?.error || 'Parola dogrulanamadi.')
       }
 
       storeAdminPassword(password)
       setIsAuthorized(true)
-      setStatus({ tone: 'success', message: 'Giriş başarılı. Devam etmek istediğin alanı seç.' })
+      setStatus({ tone: 'success', message: 'Giris basarili. Devam etmek istedigin alani sec.' })
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Parola doğrulanamadı.'
+      const message = error instanceof Error ? error.message : 'Parola dogrulanamadi.'
 
       clearStoredAdminPassword()
       setIsAuthorized(false)
@@ -63,7 +60,7 @@ export default function AdminHomePage() {
         tone: 'error',
         message:
           message === 'Yetkisiz istek.'
-            ? 'Admin parolası hatalı. ADMIN_PASSWORD değiştiyse dev serverı veya deploymentı yeniden başlatın.'
+            ? 'Admin sifresi hatali. ADMIN_PASSWORD degistiyse sunucuyu yeniden baslatin.'
             : message,
       })
     } finally {
@@ -79,37 +76,31 @@ export default function AdminHomePage() {
   }
 
   return (
-    <main className="container admin-shell admin-entry-shell">
+    <main className={`${isAuthorized ? 'container ' : ''}admin-shell admin-entry-shell${!isAuthorized ? ' admin-entry-shell-dark' : ''}`}>
       {!isAuthorized ? (
-        <section className="admin-gate-card">
-          <span className="admin-eyebrow">Admin Girişi</span>
-          <h1 className="admin-gate-title">Admin parolası</h1>
-          <label className="admin-field">
-            <input
-              className="admin-input"
-              type="password"
-              placeholder="ADMIN_PASSWORD"
-              value={adminPassword}
-              onChange={(event) => setAdminPassword(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  void validatePassword()
-                }
-              }}
-              autoFocus
-            />
-          </label>
+        <section className="admin-gate-plain">
+          <input
+            className="admin-input"
+            type="password"
+            placeholder="ADMIN_PASSWORD"
+            value={adminPassword}
+            onChange={(event) => setAdminPassword(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                void validatePassword()
+              }
+            }}
+            autoFocus
+          />
 
-          <div className="admin-toolbar-actions">
-            <button
-              type="button"
-              className="admin-button admin-button-primary"
-              onClick={() => void validatePassword()}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Kontrol ediliyor...' : 'Giriş yap'}
-            </button>
-          </div>
+          <button
+            type="button"
+            className="admin-button admin-button-primary"
+            onClick={() => void validatePassword()}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Kontrol ediliyor...' : 'Giris yap'}
+          </button>
 
           {status.message ? (
             <div className={`admin-status admin-status-${status.tone}`}>
@@ -127,11 +118,11 @@ export default function AdminHomePage() {
           <section className="admin-nav-grid admin-nav-grid-simple">
             <Link href="/admin/review" className="admin-nav-card admin-nav-card-simple">
               <strong>Mekan review</strong>
-              <p>Grid sweep, ham mekanlar ve review kuyruğu</p>
+              <p>Grid sweep, ham mekanlar ve review kuyrugu</p>
             </Link>
             <Link href="/admin/hero-slides" className="admin-nav-card admin-nav-card-simple">
-              <strong>Hero alanı</strong>
-              <p>Slide fotoğrafları, başlıklar, alt başlıklar ve tagler</p>
+              <strong>Hero alani</strong>
+              <p>Slide fotograflari, basliklar, alt basliklar ve tagler</p>
             </Link>
           </section>
 
@@ -141,7 +132,7 @@ export default function AdminHomePage() {
               className="admin-button admin-button-secondary"
               onClick={resetGate}
             >
-              Çıkış yap
+              Cikis yap
             </button>
           </div>
         </section>

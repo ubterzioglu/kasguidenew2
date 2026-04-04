@@ -1,111 +1,50 @@
 import { NextResponse } from 'next/server'
 
-import { isAdminApiConfigured, isAdminRequestAuthorized } from '@/lib/admin-auth'
-import {
-  applyReviewAction,
-  getReviewDashboardSnapshot,
-  isPlaceReviewStoreConfigured,
-  type ReviewAction,
-} from '@/lib/place-review-store'
+import { getReviewAdminAccessError, jsonFail, jsonOk, readLimit } from '@/lib/api-helpers'
+import { ReviewActionBodySchema } from '@/lib/api-schemas'
+import { applyReviewAction, getReviewDashboardSnapshot } from '@/lib/place-review-store'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: Request) {
-  const authError = getAdminAccessError(request)
+  const authError = getReviewAdminAccessError(request)
 
   if (authError) {
     return authError
   }
 
-  const limit = readLimit(new URL(request.url).searchParams.get('limit'))
+  const limit = readLimit(new URL(request.url).searchParams.get('limit'), 1000)
   const snapshot = await getReviewDashboardSnapshot(limit)
 
-  return NextResponse.json(snapshot, {
-    headers: {
-      'Cache-Control': 'no-store',
-    },
-  })
+  return jsonOk(snapshot, { headers: { 'Cache-Control': 'no-store' } })
 }
 
 export async function POST(request: Request) {
-  const authError = getAdminAccessError(request)
+  const authError = getReviewAdminAccessError(request)
 
   if (authError) {
     return authError
   }
 
-  const body = await request.json().catch(() => null)
+  const rawBody = await request.json().catch(() => null)
+  const parsed = ReviewActionBodySchema.safeParse(rawBody)
 
-  if (!body || typeof body !== 'object') {
-    return NextResponse.json({ error: 'Gecersiz istek govdesi.' }, { status: 400 })
+  if (!parsed.success) {
+    return jsonFail(`Gecersiz istek: ${parsed.error.issues[0]?.message ?? 'bilinmeyen hata'}`)
   }
 
-  const reviewId = readStringField(body, 'reviewId')
-  const action = readActionField(body, 'action')
-  const notes = readOptionalStringField(body, 'notes')
-  const candidatePlaceId = readOptionalStringField(body, 'candidatePlaceId')
-
-  if (!reviewId || !action) {
-    return NextResponse.json({ error: 'reviewId ve action zorunlu.' }, { status: 400 })
-  }
+  const { reviewId, action, notes, candidatePlaceId } = parsed.data
 
   try {
     const snapshot = await applyReviewAction({
       reviewId,
       action,
-      notes,
-      candidatePlaceId,
+      notes: notes ?? null,
+      candidatePlaceId: candidatePlaceId ?? null,
     })
-
-    return NextResponse.json(snapshot)
+    return jsonOk(snapshot)
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Review aksiyonu tamamlanamadi.'
-    return NextResponse.json({ error: message }, { status: 400 })
+    return jsonFail(message)
   }
-}
-
-function getAdminAccessError(request: Request) {
-  if (!isAdminApiConfigured()) {
-    return NextResponse.json({ error: 'ADMIN_PASSWORD tanimli degil.' }, { status: 503 })
-  }
-
-  if (!isPlaceReviewStoreConfigured()) {
-    return NextResponse.json({ error: 'Supabase review deposu hazir degil.' }, { status: 503 })
-  }
-
-  if (!isAdminRequestAuthorized(request)) {
-    return NextResponse.json({ error: 'Yetkisiz istek.' }, { status: 401 })
-  }
-
-  return null
-}
-
-function readLimit(value: string | null) {
-  const parsed = Number.parseInt(value ?? '24', 10)
-
-  if (!Number.isFinite(parsed)) {
-    return 24
-  }
-
-  return Math.max(1, Math.min(parsed, 1000))
-}
-
-function readStringField(body: object, field: string) {
-  const value = Reflect.get(body, field)
-  return typeof value === 'string' && value.trim() ? value.trim() : null
-}
-
-function readOptionalStringField(body: object, field: string) {
-  const value = Reflect.get(body, field)
-  return typeof value === 'string' && value.trim() ? value.trim() : null
-}
-
-function readActionField(body: object, field: string): ReviewAction | null {
-  const value = Reflect.get(body, field)
-
-  if (value === 'start_review' || value === 'approve' || value === 'merge' || value === 'reject') {
-    return value
-  }
-
-  return null
 }

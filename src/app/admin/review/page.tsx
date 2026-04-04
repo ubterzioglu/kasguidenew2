@@ -5,16 +5,10 @@ import { useState } from 'react'
 
 import { useReviewDashboard } from './useReviewDashboard'
 import { AdminHero } from './components/AdminHero'
+import { PlaceEditorForm } from './components/PlaceEditorForm'
 import { SweepBoard } from './components/SweepBoard'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Select } from '@/components/ui/select'
-import {
-  formatDate,
-  formatPlaceStatus,
-  formatVerificationStatus,
-} from './formatters'
+import { formatDate, formatPlaceStatus, formatVerificationStatus } from './formatters'
 
 export default function ReviewAdminPage() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -51,6 +45,8 @@ export default function ReviewAdminPage() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   )
+
+  const categoryOptions = snapshot.categoryOptions.map((opt) => ({ value: opt.id, label: opt.label }))
 
   return (
     <main className="container admin-shell">
@@ -134,8 +130,8 @@ export default function ReviewAdminPage() {
                       {formatPlaceStatus(draft.status)}
                     </span>
                     <div className="place-review-single-actions">
-                      <span style={{ fontSize: '0.8rem', color: '#35c8b4' }}>{nonEmptyImageCount}/5 foto</span>
-                      <strong style={{ fontSize: '0.85rem', color: isOpen ? '#fff' : '#35c8b4' }}>
+                      <span className="place-review-photo-count">{nonEmptyImageCount}/5 foto</span>
+                      <strong className="place-review-edit-label">
                         {isOpen ? 'Editoru kapat' : 'Duzenle'}
                       </strong>
                     </div>
@@ -180,128 +176,44 @@ export default function ReviewAdminPage() {
                       </div>
                     </div>
 
-                    <div className="place-editor-grid">
-                      <Input
-                        label="Mekan adi"
-                        value={draft.name}
-                        onChange={(event) => updateDraftField(item.id, 'name', event.target.value)}
-                      />
-
-                      <Input
-                        label="Mekan basligi"
-                        value={draft.headline}
-                        onChange={(event) => updateDraftField(item.id, 'headline', event.target.value)}
-                      />
-
-                      <Textarea
-                        label="Kisa aciklama"
-                        isWide
-                        rows={3}
-                        value={draft.shortDescription}
-                        onChange={(event) => updateDraftField(item.id, 'shortDescription', event.target.value)}
-                      />
-
-                      <Textarea
-                        label="Detayli aciklama"
-                        isWide
-                        rows={5}
-                        value={draft.longDescription}
-                        onChange={(event) => updateDraftField(item.id, 'longDescription', event.target.value)}
-                      />
-
-                      <Select
-                        label="Kategori"
-                        value={draft.categoryPrimary}
-                        onChange={(event) => updateDraftField(item.id, 'categoryPrimary', event.target.value)}
-                        options={snapshot.categoryOptions.map((opt) => ({ value: opt.id, label: opt.label }))}
-                      />
-
-                      <Input
-                        label="Website"
-                        value={draft.website}
-                        onChange={(event) => updateDraftField(item.id, 'website', event.target.value)}
-                        placeholder="https://..."
-                      />
-
-                      <Input
-                        label="Adres"
-                        isWide
-                        value={draft.address}
-                        onChange={(event) => updateDraftField(item.id, 'address', event.target.value)}
-                      />
-
-                      <Input
-                        label="Telefon"
-                        value={draft.phone}
-                        onChange={(event) => updateDraftField(item.id, 'phone', event.target.value)}
-                      />
-                    </div>
-
-                    <div className="place-photo-panel">
-                      <div className="place-photo-header">
-                        <div>
-                          <h4>Fotograflar</h4>
-                          <p>Her mekan icin en az 1, en fazla 5 foto URL gir. Ilk foto kapak olarak kullanilir.</p>
-                        </div>
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          onClick={() => addImageField(item.id)}
-                          disabled={draft.imageUrls.length >= 5}
-                        >
-                          Foto ekle
-                        </Button>
-                      </div>
-
-                      <div className="place-photo-list">
-                        {draft.imageUrls.map((imageUrl, index) => (
-                          <div key={`${item.id}-image-${index}`} className="place-photo-row">
-                            <Input
-                              label={`Foto URL #${index + 1}`}
-                              isWide
-                              value={imageUrl}
-                              onChange={(event) => updateImageField(item.id, index, event.target.value)}
-                              placeholder="https://..."
-                            />
-                            <Button type="button" variant="ghost" onClick={() => removeImageField(item.id, index)}>
-                              Kaldir
-                            </Button>
-                            {imageUrl.trim() ? (
-                              <img src={imageUrl} alt="Onizleme" className="place-photo-preview" />
-                            ) : (
-                              <div className="place-photo-placeholder">Onizleme yok</div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="place-editor-actions">
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() => runRawPlaceAction(item.id, 'save_draft')}
-                        disabled={isBusy}
-                      >
-                        {isBusy ? 'Kaydediliyor...' : 'Taslagi kaydet'}
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="primary"
-                        onClick={() => runRawPlaceAction(item.id, 'publish')}
-                        disabled={isBusy}
-                      >
-                        {isBusy ? 'Yayina hazirlaniyor...' : 'Onayla ve yayina al'}
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="danger"
-                        onClick={() => runRawPlaceAction(item.id, 'reject')}
-                        disabled={isBusy}
-                      >
-                        Reddet
-                      </Button>
-                    </div>
+                    <PlaceEditorForm
+                      itemId={item.id}
+                      draft={draft}
+                      categoryOptions={categoryOptions}
+                      photoHint="Her mekan icin en az 1, en fazla 5 foto URL gir. Ilk foto kapak olarak kullanilir."
+                      onUpdateField={(field, value) => updateDraftField(item.id, field, value)}
+                      onUpdateImage={(index, value) => updateImageField(item.id, index, value)}
+                      onAddImage={() => addImageField(item.id)}
+                      onRemoveImage={(index) => removeImageField(item.id, index)}
+                      actions={
+                        <>
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={() => runRawPlaceAction(item.id, 'save_draft')}
+                            disabled={isBusy}
+                          >
+                            {isBusy ? 'Kaydediliyor...' : 'Taslagi kaydet'}
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="primary"
+                            onClick={() => runRawPlaceAction(item.id, 'publish')}
+                            disabled={isBusy}
+                          >
+                            {isBusy ? 'Yayina hazirlaniyor...' : 'Onayla ve yayina al'}
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="danger"
+                            onClick={() => runRawPlaceAction(item.id, 'reject')}
+                            disabled={isBusy}
+                          >
+                            Reddet
+                          </Button>
+                        </>
+                      }
+                    />
                   </div>
                 ) : null}
               </article>
@@ -309,10 +221,7 @@ export default function ReviewAdminPage() {
           })}
 
           {totalPages > 1 ? (
-            <div
-              className="admin-pagination"
-              style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '1rem' }}
-            >
+            <div className="admin-pagination">
               <Button
                 type="button"
                 variant="secondary"
@@ -321,7 +230,7 @@ export default function ReviewAdminPage() {
               >
                 Onceki Sayfa
               </Button>
-              <span style={{ color: '#fff', alignSelf: 'center' }}>
+              <span className="admin-pagination-label">
                 Sayfa {currentPage} / {totalPages}
               </span>
               <Button
@@ -382,8 +291,8 @@ export default function ReviewAdminPage() {
                       {formatPlaceStatus(draft.status)}
                     </span>
                     <div className="place-review-single-actions">
-                      <span style={{ fontSize: '0.8rem', color: '#35c8b4' }}>{nonEmptyImageCount}/5 foto</span>
-                      <strong style={{ fontSize: '0.85rem', color: isOpen ? '#fff' : '#35c8b4' }}>
+                      <span className="place-review-photo-count">{nonEmptyImageCount}/5 foto</span>
+                      <strong className="place-review-edit-label">
                         {isOpen ? 'Editoru kapat' : 'Duzenle'}
                       </strong>
                     </div>
@@ -411,132 +320,36 @@ export default function ReviewAdminPage() {
                       </div>
                     </div>
 
-                    <div className="place-editor-grid">
-                      <Input
-                        label="Mekan adi"
-                        value={draft.name}
-                        onChange={(event) => updateExistingDraftField(item.id, 'name', event.target.value)}
-                      />
-
-                      <Input
-                        label="Mekan basligi"
-                        value={draft.headline}
-                        onChange={(event) => updateExistingDraftField(item.id, 'headline', event.target.value)}
-                      />
-
-                      <Textarea
-                        label="Kisa aciklama"
-                        isWide
-                        rows={3}
-                        value={draft.shortDescription}
-                        onChange={(event) =>
-                          updateExistingDraftField(item.id, 'shortDescription', event.target.value)
-                        }
-                      />
-
-                      <Textarea
-                        label="Detayli aciklama"
-                        isWide
-                        rows={5}
-                        value={draft.longDescription}
-                        onChange={(event) =>
-                          updateExistingDraftField(item.id, 'longDescription', event.target.value)
-                        }
-                      />
-
-                      <Select
-                        label="Kategori"
-                        value={draft.categoryPrimary}
-                        onChange={(event) =>
-                          updateExistingDraftField(item.id, 'categoryPrimary', event.target.value)
-                        }
-                        options={snapshot.categoryOptions.map((opt) => ({ value: opt.id, label: opt.label }))}
-                      />
-
-                      <Input
-                        label="Website"
-                        value={draft.website}
-                        onChange={(event) => updateExistingDraftField(item.id, 'website', event.target.value)}
-                        placeholder="https://..."
-                      />
-
-                      <Input
-                        label="Adres"
-                        isWide
-                        value={draft.address}
-                        onChange={(event) => updateExistingDraftField(item.id, 'address', event.target.value)}
-                      />
-
-                      <Input
-                        label="Telefon"
-                        value={draft.phone}
-                        onChange={(event) => updateExistingDraftField(item.id, 'phone', event.target.value)}
-                      />
-                    </div>
-
-                    <div className="place-photo-panel">
-                      <div className="place-photo-header">
-                        <div>
-                          <h4>Fotograflar</h4>
-                          <p>Detay sayfasi hucreleri icin en az 1, en fazla 5 foto URL gir.</p>
-                        </div>
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          onClick={() => addExistingImageField(item.id)}
-                          disabled={draft.imageUrls.length >= 5}
-                        >
-                          Foto ekle
-                        </Button>
-                      </div>
-
-                      <div className="place-photo-list">
-                        {draft.imageUrls.map((imageUrl, index) => (
-                          <div key={`${item.id}-existing-image-${index}`} className="place-photo-row">
-                            <Input
-                              label={`Foto URL #${index + 1}`}
-                              isWide
-                              value={imageUrl}
-                              onChange={(event) =>
-                                updateExistingImageField(item.id, index, event.target.value)
-                              }
-                              placeholder="https://..."
-                            />
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              onClick={() => removeExistingImageField(item.id, index)}
-                            >
-                              Kaldir
-                            </Button>
-                            {imageUrl.trim() ? (
-                              <img src={imageUrl} alt="Onizleme" className="place-photo-preview" />
-                            ) : (
-                              <div className="place-photo-placeholder">Onizleme yok</div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="place-editor-actions">
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() => runExistingPlaceAction(item.id, 'save')}
-                        disabled={isBusy}
-                      >
-                        {isBusy ? 'Kaydediliyor...' : 'Degisiklikleri kaydet'}
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="primary"
-                        onClick={() => runExistingPlaceAction(item.id, 'publish')}
-                        disabled={isBusy}
-                      >
-                        {isBusy ? 'Yayina hazirlaniyor...' : 'Yayina al'}
-                      </Button>
-                    </div>
+                    <PlaceEditorForm
+                      itemId={item.id}
+                      draft={draft}
+                      categoryOptions={categoryOptions}
+                      photoHint="Detay sayfasi hucreleri icin en az 1, en fazla 5 foto URL gir."
+                      onUpdateField={(field, value) => updateExistingDraftField(item.id, field, value)}
+                      onUpdateImage={(index, value) => updateExistingImageField(item.id, index, value)}
+                      onAddImage={() => addExistingImageField(item.id)}
+                      onRemoveImage={(index) => removeExistingImageField(item.id, index)}
+                      actions={
+                        <>
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={() => runExistingPlaceAction(item.id, 'save')}
+                            disabled={isBusy}
+                          >
+                            {isBusy ? 'Kaydediliyor...' : 'Degisiklikleri kaydet'}
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="primary"
+                            onClick={() => runExistingPlaceAction(item.id, 'publish')}
+                            disabled={isBusy}
+                          >
+                            {isBusy ? 'Yayina hazirlaniyor...' : 'Yayina al'}
+                          </Button>
+                        </>
+                      }
+                    />
                   </div>
                 ) : null}
               </article>

@@ -170,7 +170,7 @@ export function HeroCarousel() {
                   Keşfetmeye Başla
                 </a>
                 <a href="#routes" className="hero-secondary-action">
-                  Hazır Rotaları Gör
+                  Ben Yerlisiyim!
                 </a>
               </div>
             </div>

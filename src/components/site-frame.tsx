@@ -30,7 +30,7 @@ export function SiteFrame({ children }: SiteFrameProps) {
               Kategoriler
             </Link>
             <span className="header-inline-separator" aria-hidden="true"></span>
-            <Link href="/#contact" className="header-inline-item">
+            <Link href="/iletisim" className="header-inline-item">
               İletişim
             </Link>
             <span className="header-inline-separator" aria-hidden="true"></span>
@@ -63,7 +63,7 @@ export function SiteFrame({ children }: SiteFrameProps) {
               <Link href="/#categories" className="header-mobile-link">
                 Kategoriler
               </Link>
-              <Link href="/#contact" className="header-mobile-link">
+              <Link href="/iletisim" className="header-mobile-link">
                 İletişim
               </Link>
               <a

@@ -703,6 +703,27 @@ html {
   padding-bottom: 4rem;
 }
 
+.admin-entry-shell-dark {
+  min-height: 100vh;
+  padding: 2.5rem 1.25rem;
+  background: #000;
+  border-radius: 0;
+}
+
+.admin-gate-copy {
+  margin: 0.95rem 0 1rem;
+  color: rgba(245, 245, 245, 0.8);
+  font-size: 0.97rem;
+  line-height: 1.6;
+}
+
+.admin-gate-plain {
+  max-width: 560px;
+  margin: 3rem auto 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
 .admin-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.8fr);
@@ -4286,6 +4307,50 @@ body {
   gap: 0.72rem;
 }
 
+.place-detail-status-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.place-detail-inline-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(0, 168, 150, 0.28);
+}
+
+.place-detail-class-label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--med-primary-deep);
+  text-transform: uppercase;
+}
+
+.place-detail-guide-badges {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.place-detail-guide-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.38rem 0.68rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 168, 150, 0.16);
+  background: rgba(0, 168, 150, 0.08);
+  color: var(--med-primary-deep);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
 .place-detail-status-item {
   display: flex;
   align-items: center;
@@ -4403,6 +4468,14 @@ body {
 
   .place-detail-status-grid {
     justify-content: flex-start;
+  }
+
+  .place-detail-status-row {
+    justify-content: flex-start;
+  }
+
+  .place-detail-inline-divider {
+    display: none;
   }
 
   .place-detail-gallery-grid {
@@ -4550,6 +4623,36 @@ body {
   flex-direction: column;
   align-items: flex-end;
   gap: 0.25rem;
+}
+
+.place-review-photo-count {
+  font-size: 0.8rem;
+  color: #35c8b4;
+}
+
+.place-review-edit-label {
+  font-size: 0.85rem;
+  color: #35c8b4;
+}
+
+.place-review-card.is-open .place-review-edit-label {
+  color: #fff;
+}
+
+.admin-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.admin-pagination-label {
+  color: #fff;
+  align-self: center;
+}
+
+.home-categories-section .section-title {
+  font-size: 1.2rem;
 }
 
 .place-review-summary:hover {
@@ -4767,13 +4870,16 @@ body {
 }
 
 .hero-aside-link-cta {
-  min-height: 40px;
-  padding: 0.55rem 0.9rem;
-  border-radius: 14px;
-  font-size: 0.92rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  width: fit-content;
+  padding: 0.42rem 0.78rem;
+  border-radius: 12px;
+  font-size: 0.84rem;
   font-weight: 700;
-  margin-top: 0.7rem;
-  margin-inline: auto;
+  margin: 0.55rem auto 0;
 }
 
 @media (max-width: 760px) {
