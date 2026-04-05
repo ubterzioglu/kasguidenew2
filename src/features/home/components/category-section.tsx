@@ -1,23 +1,21 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { CATEGORY_IDS, CATEGORY_MAP } from '@/lib/categories'
 
-type CategoryPlace = {
-  id: string
-  slug: string
-  name: string
-  headline: string
-  shortDescription: string
-  categoryPrimary: string
-  address: string | null
-  phone: string | null
-  website: string | null
-  imageUrl: string | null
-}
+import { CategoryPlaceCard } from './category-place-card'
+import { CategoryTileStrip } from './category-tile-strip'
+import type { CategoryPlace } from './types'
 
+const MAX_HOME_RESULTS = 4
+
+type PlacesEnvelope = {
+  places?: CategoryPlace[]
+  hasMore?: boolean
+  error?: string
+}
 
 export function CategorySection() {
   const [activeCategoryIds, setActiveCategoryIds] = useState<string[]>([])
@@ -27,24 +25,32 @@ export function CategorySection() {
   const [isMobileCategoryMenuOpen, setIsMobileCategoryMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [categoryStatus, setCategoryStatus] = useState('')
+  const [hasMoreResults, setHasMoreResults] = useState(false)
 
   const normalizedSearchQuery = searchQuery.trim().toLocaleLowerCase('tr')
-  const filteredCategoryPlaces = categoryPlaces.filter((place) => {
-    if (!normalizedSearchQuery) {
-      return true
-    }
+  const filteredCategoryPlaces = useMemo(() => {
+    return categoryPlaces.filter((place) => {
+      if (!normalizedSearchQuery) {
+        return true
+      }
 
-    return [
-      place.name,
-      place.headline,
-      place.shortDescription,
-      place.address ?? '',
-      CATEGORY_MAP.get(place.categoryPrimary)?.label ?? '',
-    ]
-      .join(' ')
-      .toLocaleLowerCase('tr')
-      .includes(normalizedSearchQuery)
-  })
+      return [
+        place.name,
+        place.headline,
+        place.shortDescription,
+        place.address ?? '',
+        CATEGORY_MAP.get(place.categoryPrimary)?.label ?? '',
+      ]
+        .join(' ')
+        .toLocaleLowerCase('tr')
+        .includes(normalizedSearchQuery)
+    })
+  }, [categoryPlaces, normalizedSearchQuery])
+
+  const limitedCategoryPlaces = filteredCategoryPlaces.slice(0, MAX_HOME_RESULTS)
+  const resultHref = activeCategoryIds.length > 0
+    ? `/result?categories=${encodeURIComponent(activeCategoryIds.join(','))}`
+    : '/result'
 
   function toggleCategoryFilter(categoryId: string) {
     setActiveCategoryIds((current) =>
@@ -54,52 +60,13 @@ export function CategorySection() {
     )
   }
 
-  function renderCategoryTile(categoryId: string) {
-    const category = CATEGORY_MAP.get(categoryId)
-
-    if (!category) {
-      return null
-    }
-
-    const tone = CATEGORY_MAP.get(category.id)?.tone ?? 'food'
-    const isActive = activeCategoryIds.includes(category.id)
-    const icon = category.icon ?? '•'
-    const count = categoryCounts[category.id] ?? 0
-
-    return (
-      <button
-        key={category.id}
-        type="button"
-        className={`category-tile category-tile-${tone}${isActive ? ' is-active' : ''}`}
-        onClick={() => toggleCategoryFilter(category.id)}
-        aria-pressed={isActive}
-      >
-        <span className="category-tile-main">
-          <span className="category-tile-icon" aria-hidden="true">
-            {icon}
-          </span>
-          <span className="category-tile-separator" aria-hidden="true">
-            |
-          </span>
-          <strong className="category-tile-label">{category.label}</strong>
-          <span className="category-tile-separator" aria-hidden="true">
-            |
-          </span>
-          <span className="category-tile-count">{count}</span>
-        </span>
-      </button>
-    )
-  }
-
   useEffect(() => {
     let cancelled = false
 
     async function loadCategoryCounts() {
       try {
         const response = await fetch('/api/place-counts', { cache: 'no-store' })
-        const payload = (await response.json()) as
-          | { counts?: Record<string, number>; error?: string }
-          | undefined
+        const payload = (await response.json()) as { counts?: Record<string, number>; error?: string } | undefined
 
         if (!response.ok || !payload?.counts || cancelled) {
           return
@@ -126,6 +93,7 @@ export function CategorySection() {
     async function loadCategoryPlaces() {
       if (activeCategoryIds.length === 0) {
         setCategoryPlaces([])
+        setHasMoreResults(false)
         setIsCategoryLoading(false)
         setCategoryStatus('')
         return
@@ -136,50 +104,33 @@ export function CategorySection() {
         .filter(Boolean)
 
       setIsCategoryLoading(true)
-      setCategoryStatus(`${selectedCategoryNames.join(', ')} için mekanlar yükleniyor...`)
+      setCategoryStatus(`${selectedCategoryNames.join(', ')} icin mekanlar yukleniyor...`)
 
       try {
-        const responses = await Promise.all(
-          activeCategoryIds.map((categoryId) =>
-            fetch(`/api/places?category=${encodeURIComponent(categoryId)}`, {
-              cache: 'no-store',
-            }),
-          ),
+        const response = await fetch(
+          `/api/places?categories=${encodeURIComponent(activeCategoryIds.join(','))}&limit=${MAX_HOME_RESULTS}`,
+          { cache: 'no-store' },
         )
 
-        const payloads = await Promise.all(
-          responses.map(async (response) => ({
-            ok: response.ok,
-            payload: (await response.json()) as { places?: CategoryPlace[]; error?: string },
-          })),
-        )
+        const payload = (await response.json()) as PlacesEnvelope
 
-        const failedResponse = payloads.find((entry) => !entry.ok)
-
-        if (failedResponse) {
-          throw new Error(failedResponse.payload.error || 'Mekanlar yüklenemedi.')
-        }
-
-        const mergedPlaces = new Map<string, CategoryPlace>()
-
-        for (const entry of payloads) {
-          for (const place of entry.payload.places ?? []) {
-            if (!mergedPlaces.has(place.id)) {
-              mergedPlaces.set(place.id, place)
-            }
-          }
+        if (!response.ok) {
+          throw new Error(payload.error || 'Mekanlar yuklenemedi.')
         }
 
         if (cancelled) {
           return
         }
 
-        const places = Array.from(mergedPlaces.values())
+        const places = payload.places ?? []
+        const totalCount = activeCategoryIds.reduce((sum, categoryId) => sum + (categoryCounts[categoryId] ?? 0), 0)
+
         setCategoryPlaces(places)
+        setHasMoreResults(Boolean(payload.hasMore))
         setCategoryStatus(
-          places.length > 0
-            ? `${selectedCategoryNames.join(', ')} için ${places.length} yayın kaydı bulundu.`
-            : 'Seçili kategoriler için henüz yayında mekan yok.',
+          totalCount > 0
+            ? `${selectedCategoryNames.join(', ')} icin ${totalCount} yayin kaydi bulundu.`
+            : 'Secili kategoriler icin henuz yayinda mekan yok.',
         )
       } catch (error) {
         if (cancelled) {
@@ -187,7 +138,8 @@ export function CategorySection() {
         }
 
         setCategoryPlaces([])
-        setCategoryStatus(error instanceof Error ? error.message : 'Mekanlar yüklenemedi.')
+        setHasMoreResults(false)
+        setCategoryStatus(error instanceof Error ? error.message : 'Mekanlar yuklenemedi.')
       } finally {
         if (!cancelled) {
           setIsCategoryLoading(false)
@@ -200,7 +152,7 @@ export function CategorySection() {
     return () => {
       cancelled = true
     }
-  }, [activeCategoryIds])
+  }, [activeCategoryIds, categoryCounts])
 
   useEffect(() => {
     if (!isMobileCategoryMenuOpen) {
@@ -216,13 +168,11 @@ export function CategorySection() {
   }, [isMobileCategoryMenuOpen])
 
   return (
-    <section
-      className="home-categories-section"
-    >
+    <section className="home-categories-section">
       <div className="category-section-shell" id="categories">
         <div className="category-topline">
           <div>
-            <h3 className="section-title">Kendi Kaş senaryonu kur! Kategorini seç!</h3>
+            <h3 className="section-title">Kendi Kas senaryonu kur! Kategorini sec!</h3>
           </div>
           <div className="category-topline-actions">
             <button
@@ -246,9 +196,11 @@ export function CategorySection() {
           </div>
         </div>
 
-        <div className="category-pill-list category-pill-list-all">
-          {CATEGORY_IDS.map((categoryId) => renderCategoryTile(categoryId))}
-        </div>
+        <CategoryTileStrip
+          activeCategoryIds={activeCategoryIds}
+          counts={categoryCounts}
+          onToggleCategory={toggleCategoryFilter}
+        />
 
         <div
           className={`category-mobile-backdrop${isMobileCategoryMenuOpen ? ' is-open' : ''}`}
@@ -296,13 +248,13 @@ export function CategorySection() {
           <input
             id="category-search"
             type="text"
-            placeholder="Kaş'da ara..."
+            placeholder="Kas'ta ara..."
             className="search-input"
             aria-label="Mekan ara"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
           />
-          <button type="button" className="search-button" aria-label="Aramayı çalıştır">
+          <button type="button" className="search-button" aria-label="Aramayi calistir">
             Ara
           </button>
         </div>
@@ -312,13 +264,15 @@ export function CategorySection() {
             <div className="category-results-header">
               <div>
                 <h4 className="category-results-title">
-                  {`${activeCategoryIds.length} kategori için seçilen mekanlar`}
+                  {`${activeCategoryIds.length} kategori icin secilen mekanlar`}
                 </h4>
                 {isCategoryLoading || filteredCategoryPlaces.length > 0 ? (
                   <p className="category-results-copy">
                     {normalizedSearchQuery && categoryPlaces.length > 0
-                      ? `"${searchQuery}" için ${filteredCategoryPlaces.length} sonuç gösteriliyor.`
-                      : categoryStatus}
+                      ? `"${searchQuery}" icin ${filteredCategoryPlaces.length} sonuc gosteriliyor.`
+                      : hasMoreResults
+                        ? `${categoryStatus} Ana sayfada ilk ${MAX_HOME_RESULTS} kayit gosteriliyor.`
+                        : categoryStatus}
                   </p>
                 ) : null}
               </div>
@@ -327,77 +281,33 @@ export function CategorySection() {
 
           {activeCategoryIds.length > 0 ? (
             isCategoryLoading ? (
-              <div className="category-results-empty">Mekanlar yükleniyor...</div>
+              <div className="category-results-empty">Mekanlar yukleniyor...</div>
             ) : filteredCategoryPlaces.length === 0 ? (
               <div className="category-results-empty category-results-empty-centered">
                 {normalizedSearchQuery
-                  ? 'Aramana uyan sonuç bulunamadı. Filtreleri ya da arama kelimeni değiştir.'
-                  : 'Seçili kategoriler için henüz yayına alınmış mekan yok.'}
+                  ? 'Aramana uyan sonuc bulunamadi. Filtreleri ya da arama kelimeni degistir.'
+                  : 'Secili kategoriler icin henuz yayina alinmis mekan yok.'}
               </div>
             ) : (
-              <div className="category-results-grid">
-                {filteredCategoryPlaces.map((place) => (
-                  <Link key={place.id} href={`/mekan/${place.slug}`} className="category-place-card">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={place.imageUrl || CATEGORY_MAP.get(place.categoryPrimary)?.imageUrl || ''}
-                      alt={place.headline || place.name}
-                      className="category-place-media"
-                      loading="lazy"
-                    />
-                    <div className="category-place-body">
-                      <span className="category-place-eyebrow">
-                        {CATEGORY_MAP.get(place.categoryPrimary)?.label || place.categoryPrimary}
-                      </span>
-                      <span className="category-place-divider" aria-hidden="true" />
-                      <h5 className="category-place-title">{place.name}</h5>
-                      <span className="category-place-divider" aria-hidden="true" />
-                      <p className="category-place-copy">{place.shortDescription}</p>
-                      <div className="category-place-signals">
-                        <span
-                          className={`category-place-signal${place.address ? ' is-active' : ' is-muted'}`}
-                          aria-label={`Adres ${place.address ? 'mevcut' : 'yok'}`}
-                          title={`Adres ${place.address ? 'mevcut' : 'yok'}`}
-                        >
-                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
-                            <path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" stroke="currentColor" strokeWidth="2" />
-                            <circle cx="12" cy="9" r="2.4" fill="currentColor" />
-                          </svg>
-                        </span>
-                        <span
-                          className={`category-place-signal${place.phone ? ' is-active' : ' is-muted'}`}
-                          aria-label={`Telefon ${place.phone ? 'mevcut' : 'yok'}`}
-                          title={`Telefon ${place.phone ? 'mevcut' : 'yok'}`}
-                        >
-                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
-                            <path
-                              d="M6.8 3.5h2.6c.5 0 .9.3 1 .7l.8 3.2c.1.4 0 .8-.3 1l-1.7 1.4a14.4 14.4 0 0 0 5 5l1.4-1.7c.3-.3.7-.4 1-.3l3.2.8c.5.1.8.5.8 1v2.6c0 .6-.5 1.1-1.1 1.1C10.7 19.8 4.2 13.3 4.2 4.6c0-.6.5-1.1 1.1-1.1z"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </span>
-                        <span
-                          className={`category-place-signal${place.website ? ' is-active' : ' is-muted'}`}
-                          aria-label={`Website ${place.website ? 'mevcut' : 'yok'}`}
-                          title={`Website ${place.website ? 'mevcut' : 'yok'}`}
-                        >
-                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
-                            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
-                            <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              <>
+                <div className="category-results-grid">
+                  {limitedCategoryPlaces.map((place) => (
+                    <CategoryPlaceCard key={place.id} place={place} />
+                  ))}
+                </div>
+
+                {hasMoreResults ? (
+                  <div className="category-results-actions">
+                    <Link href={resultHref} className="category-results-more-link">
+                      Daha fazla gor
+                    </Link>
+                  </div>
+                ) : null}
+              </>
             )
           ) : (
             <div className="category-results-empty category-results-empty-centered">
-              Kategorini seç! Sonuçlar burada gözükecek.
+              Kategorini sec! Sonuclar burada gozukecek.
             </div>
           )}
         </section>

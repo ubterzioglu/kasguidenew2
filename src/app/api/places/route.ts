@@ -1,25 +1,43 @@
 ﻿import { NextResponse } from 'next/server'
 
-import { listPublishedPlacesByCategory } from '@/lib/public-place-store'
+import { listPublishedPlaces } from '@/lib/public-place-store'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const category = searchParams.get('category')?.trim() ?? ''
-  const limit = Math.max(1, Math.min(Number.parseInt(searchParams.get('limit') ?? '12', 10) || 12, 24))
+  const categoriesParam = searchParams.get('categories')?.trim() ?? ''
+  const categoryIds = [
+    ...new Set(
+      (categoriesParam || category)
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean),
+    ),
+  ]
+  const limit = Math.max(1, Math.min(Number.parseInt(searchParams.get('limit') ?? '12', 10) || 12, 48))
+  const offset = Math.max(0, Number.parseInt(searchParams.get('offset') ?? '0', 10) || 0)
 
-  if (!category) {
-    return NextResponse.json({ error: 'category zorunlu.' }, { status: 400 })
+  if (categoryIds.length === 0) {
+    return NextResponse.json({ error: 'category veya categories zorunlu.' }, { status: 400 })
   }
 
   try {
-    const places = await listPublishedPlacesByCategory(category, limit)
+    const result = await listPublishedPlaces({
+      categoryIds,
+      limit,
+      offset,
+    })
 
     return NextResponse.json(
       {
-        category,
-        places,
+        category: categoryIds[0] ?? null,
+        categories: categoryIds,
+        places: result.places,
+        hasMore: result.hasMore,
+        offset,
+        limit,
       },
       {
         headers: {

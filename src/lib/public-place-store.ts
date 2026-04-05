@@ -35,6 +35,17 @@ export type PublicPlaceListItem = {
   imageUrl: string | null
 }
 
+export type ListPublishedPlacesInput = {
+  categoryIds: string[]
+  limit?: number
+  offset?: number
+}
+
+export type ListPublishedPlacesResult = {
+  places: PublicPlaceListItem[]
+  hasMore: boolean
+}
+
 export type PublicPlaceDetail = {
   id: string
   slug: string
@@ -81,6 +92,21 @@ function getImageUrls(images: PlaceImageRecord[] | null | undefined) {
     })
     .map((image) => image.url?.trim() ?? '')
     .filter(Boolean)
+}
+
+function mapPlaceListItem(place: PlaceRow): PublicPlaceListItem {
+  return {
+    id: place.id,
+    slug: place.slug ?? place.id,
+    name: place.name,
+    headline: place.headline || place.name,
+    shortDescription: place.short_description || `${place.name} KaÅŸ Guide yayÄ±n listesinde yer alÄ±yor.`,
+    categoryPrimary: place.category_primary,
+    address: place.address,
+    phone: place.phone,
+    website: place.website,
+    imageUrl: getImageUrls(place.images)[0] ?? null,
+  }
 }
 
 function normalizeBadgeToken(value: string) {
@@ -145,39 +171,55 @@ function resolveGuideBadges(rows: BadgeRow[], rawValue: string | null | undefine
   ]
 }
 
-export async function listPublishedPlacesByCategory(categoryId: string, limit = 12) {
+export async function listPublishedPlaces(input: ListPublishedPlacesInput): Promise<ListPublishedPlacesResult> {
   const client = getSupabaseAdminClient()
+  const categoryIds = [...new Set(input.categoryIds.map((item) => item.trim()).filter(Boolean))]
+  const limit = Math.max(1, Math.min(input.limit ?? 12, 48))
+  const offset = Math.max(0, input.offset ?? 0)
 
   if (!client) {
-    throw new Error('Supabase admin bağlantısı hazır değil.')
+    throw new Error('Supabase admin baglantisi hazir degil.')
   }
 
-  const { data, error } = await client
+  if (categoryIds.length === 0) {
+    return {
+      places: [],
+      hasMore: false,
+    }
+  }
+
+  let query = client
     .from('places')
     .select(
       'id, slug, name, headline, short_description, category_primary, address, phone, website, images',
     )
     .eq('status', 'published')
-    .eq('category_primary', categoryId)
     .order('updated_at', { ascending: false })
-    .limit(limit)
+
+  query = categoryIds.length === 1
+    ? query.eq('category_primary', categoryIds[0]!)
+    : query.in('category_primary', categoryIds)
+
+  const { data, error } = await query.range(offset, offset + limit)
 
   if (error) {
-    throw new Error('Yayındaki mekanlar okunamadı.')
+    throw new Error('Yayindaki mekanlar okunamadi.')
   }
 
-  return ((data ?? []) as PlaceRow[]).map((place) => ({
-    id: place.id,
-    slug: place.slug ?? place.id,
-    name: place.name,
-    headline: place.headline || place.name,
-    shortDescription: place.short_description || `${place.name} Kaş Guide yayın listesinde yer alıyor.`,
-    categoryPrimary: place.category_primary,
-    address: place.address,
-    phone: place.phone,
-    website: place.website,
-    imageUrl: getImageUrls(place.images)[0] ?? null,
-  }))
+  const rows = (data ?? []) as PlaceRow[]
+
+  return {
+    places: rows.slice(0, limit).map(mapPlaceListItem),
+    hasMore: rows.length > limit,
+  }
+}
+
+export async function listPublishedPlacesByCategory(categoryId: string, limit = 12, offset = 0) {
+  return listPublishedPlaces({
+    categoryIds: [categoryId],
+    limit,
+    offset,
+  })
 }
 
 export async function getPublishedPlaceBySlug(slug: string) {
@@ -257,3 +299,4 @@ export async function getPublishedPlaceCountsByCategory() {
 
   return counts
 }
+

@@ -3523,6 +3523,46 @@ body {
   margin-top: 0.4rem;
 }
 
+.category-results-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
+
+.category-results-more-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0.72rem 1.2rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--med-primary) 0%, #35c8b4 100%);
+  color: #ffffff;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 16px 36px rgba(0, 168, 150, 0.16);
+}
+
+.result-page {
+  padding: calc(var(--header-height) + 1rem) 0 3rem;
+}
+
+.result-page-section {
+  margin-top: 0;
+}
+
+.result-page-shell {
+  gap: 1.2rem;
+}
+
+.result-page-copy {
+  max-width: 56rem;
+}
+
+.result-page-results {
+  margin-top: 0;
+}
+
 @media (max-width: 1120px) {
   .hero-story-grid,
   .proof-grid {
