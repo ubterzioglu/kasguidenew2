@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
@@ -104,7 +104,7 @@ export function CategorySection() {
         .filter(Boolean)
 
       setIsCategoryLoading(true)
-      setCategoryStatus(`${selectedCategoryNames.join(', ')} icin mekanlar yukleniyor...`)
+      setCategoryStatus(`${selectedCategoryNames.join(', ')} için mekanlar yükleniyor...`)
 
       try {
         const response = await fetch(
@@ -115,7 +115,7 @@ export function CategorySection() {
         const payload = (await response.json()) as PlacesEnvelope
 
         if (!response.ok) {
-          throw new Error(payload.error || 'Mekanlar yuklenemedi.')
+          throw new Error(payload.error || 'Mekanlar yüklenemedi.')
         }
 
         if (cancelled) {
@@ -129,8 +129,8 @@ export function CategorySection() {
         setHasMoreResults(Boolean(payload.hasMore))
         setCategoryStatus(
           totalCount > 0
-            ? `${selectedCategoryNames.join(', ')} icin ${totalCount} yayin kaydi bulundu.`
-            : 'Secili kategoriler icin henuz yayinda mekan yok.',
+            ? `${selectedCategoryNames.join(', ')} için ${totalCount} yayın kaydı bulundu.`
+            : 'Seçili kategoriler için henüz yayında mekan yok.',
         )
       } catch (error) {
         if (cancelled) {
@@ -139,7 +139,7 @@ export function CategorySection() {
 
         setCategoryPlaces([])
         setHasMoreResults(false)
-        setCategoryStatus(error instanceof Error ? error.message : 'Mekanlar yuklenemedi.')
+        setCategoryStatus(error instanceof Error ? error.message : 'Mekanlar yüklenemedi.')
       } finally {
         if (!cancelled) {
           setIsCategoryLoading(false)
@@ -172,7 +172,7 @@ export function CategorySection() {
       <div className="category-section-shell" id="categories">
         <div className="category-topline">
           <div>
-            <h3 className="section-title">Kendi Kas senaryonu kur! Kategorini sec!</h3>
+            <h3 className="section-title">Kendi Kaş senaryonu kur! Kategorini seç!</h3>
           </div>
           <div className="category-topline-actions">
             <button
@@ -189,7 +189,7 @@ export function CategorySection() {
               type="button"
               className="category-mobile-trigger"
               onClick={() => setIsMobileCategoryMenuOpen(true)}
-              aria-label="Kategori menusunu ac"
+              aria-label="Kategori menüsünü aç"
             >
               Kategoriler
             </button>
@@ -211,7 +211,7 @@ export function CategorySection() {
           aria-label="Mobil kategori filtreleri"
         >
           <div className="category-mobile-drawer-head">
-            <strong>Kategori Sec</strong>
+            <strong>Kategori Seç</strong>
             <button
               type="button"
               className="category-mobile-close"
@@ -248,13 +248,13 @@ export function CategorySection() {
           <input
             id="category-search"
             type="text"
-            placeholder="Kas'ta ara..."
+            placeholder="Kaş'ta ara..."
             className="search-input"
             aria-label="Mekan ara"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
           />
-          <button type="button" className="search-button" aria-label="Aramayi calistir">
+          <button type="button" className="search-button" aria-label="Aramayı çalıştır">
             Ara
           </button>
         </div>
@@ -264,14 +264,14 @@ export function CategorySection() {
             <div className="category-results-header">
               <div>
                 <h4 className="category-results-title">
-                  {`${activeCategoryIds.length} kategori icin secilen mekanlar`}
+                  {`${activeCategoryIds.length} kategori için seçilen mekanlar`}
                 </h4>
                 {isCategoryLoading || filteredCategoryPlaces.length > 0 ? (
                   <p className="category-results-copy">
                     {normalizedSearchQuery && categoryPlaces.length > 0
-                      ? `"${searchQuery}" icin ${filteredCategoryPlaces.length} sonuc gosteriliyor.`
+                      ? `"${searchQuery}" için ${filteredCategoryPlaces.length} sonuç gösteriliyor.`
                       : hasMoreResults
-                        ? `${categoryStatus} Ana sayfada ilk ${MAX_HOME_RESULTS} kayit gosteriliyor.`
+                        ? `${categoryStatus} Ana sayfada ilk ${MAX_HOME_RESULTS} kayıt gösteriliyor.`
                         : categoryStatus}
                   </p>
                 ) : null}
@@ -281,12 +281,12 @@ export function CategorySection() {
 
           {activeCategoryIds.length > 0 ? (
             isCategoryLoading ? (
-              <div className="category-results-empty">Mekanlar yukleniyor...</div>
+              <div className="category-results-empty">Mekanlar yükleniyor...</div>
             ) : filteredCategoryPlaces.length === 0 ? (
               <div className="category-results-empty category-results-empty-centered">
                 {normalizedSearchQuery
-                  ? 'Aramana uyan sonuc bulunamadi. Filtreleri ya da arama kelimeni degistir.'
-                  : 'Secili kategoriler icin henuz yayina alinmis mekan yok.'}
+                  ? 'Aramana uyan sonuç bulunamadı. Filtreleri ya da arama kelimeni değiştir.'
+                  : 'Seçili kategoriler için henüz yayına alınmış mekan yok.'}
               </div>
             ) : (
               <>
@@ -299,7 +299,7 @@ export function CategorySection() {
                 {hasMoreResults ? (
                   <div className="category-results-actions">
                     <Link href={resultHref} className="category-results-more-link">
-                      Daha fazla gor
+                      Daha fazla gör
                     </Link>
                   </div>
                 ) : null}
@@ -307,7 +307,7 @@ export function CategorySection() {
             )
           ) : (
             <div className="category-results-empty category-results-empty-centered">
-              Kategorini sec! Sonuclar burada gozukecek.
+              Kategorini seç! Sonuçlar burada gözükecek.
             </div>
           )}
         </section>

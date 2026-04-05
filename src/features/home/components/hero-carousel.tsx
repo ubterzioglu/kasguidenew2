@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 
@@ -18,13 +18,13 @@ type WeatherSnapshot = {
 }
 
 const DEFAULT_WEATHER: WeatherSnapshot = {
-  dateLabel: 'Kas icin bugun',
+  dateLabel: '5 Nisan Pazar',
   temperature: 24,
   apparentTemperature: 25,
   windSpeed: 12,
   minTemperature: 19,
   maxTemperature: 27,
-  condition: 'Acik',
+  condition: 'Açık',
   sunrise: '06:32',
   sunset: '19:21',
   uvIndex: 5,
@@ -146,21 +146,29 @@ export function HeroCarousel() {
           <div className="hero-featured-card hero-carousel-card hero-story-card hero-story-featured-pane">
             <div className="hero-featured-copy hero-carousel-copy hero-story-copy-tuned">
               <h1 className="hero-story-title">
-                <span className="hero-story-title-line">Kas'i Bir Turist Gibi Degil,</span>
+                <span className="hero-story-title-line">Kaş'ı Bir Turist Gibi Değil,</span>
                 <br />
-                <span className="hero-story-title-line">Bir Yerlisi Gibi Yasa.</span>
+                <span className="hero-story-title-line">Bir Yerlisi Gibi Yaşa.</span>
               </h1>
               <p className="hero-featured-description hero-story-description">
-                En gizli koylar, en lezzetli mezeler ve sadece mudavimlerin bildigi rotalar.
-                Kas'in dijital anahtari elinde.
+                En gizli koylar, en lezzetli mezeler ve sadece müdavimlerin bildiği rotalar.
+                Kaş'ın dijital anahtarı elinde.
               </p>
 
               <div className="hero-featured-actions">
                 <a href="#categories" className="hero-primary-action">
                   Tatilimi planla!
                 </a>
-                <a href="#routes" className="hero-secondary-action">
+                <a href="#routes" className="hero-primary-action">
                   Ben Yerlisiyim!
+                </a>
+                <a
+                  href="https://chat.whatsapp.com/GODQNmpRlAaDDtyaDnIyn4"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-primary-action"
+                >
+                  WhatsApp Topluluğu
                 </a>
               </div>
             </div>
@@ -171,7 +179,7 @@ export function HeroCarousel() {
                   type="button"
                   className="hero-carousel-arrow"
                   onClick={() => setActiveScene((current) => (current - 1 + heroSlides.length) % heroSlides.length)}
-                  aria-label="Onceki sahne"
+                  aria-label="Önceki sahne"
                 >
                   ‹
                 </button>
@@ -203,18 +211,19 @@ export function HeroCarousel() {
           <aside className="hero-story-aside">
             <div className="hero-insight-card hero-insight-card-proof">
               <div className="hero-insight-header hero-insight-header-accent">
-                <h2 className="hero-insight-title">{weather.dateLabel}</h2>
+                <h2 className="hero-insight-title">Kaş için bugün</h2>
               </div>
-              <div className="hero-weather-panel" aria-label="Bugunku hava durumu">
+              <div className="hero-weather-panel" aria-label="Bugünkü hava durumu">
+                <span className="hero-weather-date">{weather.dateLabel}</span>
                 <div className="hero-weather-main">
                   <strong className="hero-weather-temp">{weather.temperature}°</strong>
                   <span className="hero-weather-condition">{weather.condition}</span>
                 </div>
                 <div className="hero-weather-meta">
                   <span>Hissedilen {weather.apparentTemperature}°</span>
-                  <span>Ruzgar {weather.windSpeed} km/s</span>
+                  <span>Rüzgar {weather.windSpeed} km/s</span>
                   <span>Min {weather.minTemperature}° / Max {weather.maxTemperature}°</span>
-                  <span>Gunes {weather.sunrise} / {weather.sunset}</span>
+                  <span>Güneş {weather.sunrise} / {weather.sunset}</span>
                   <span>UV {weather.uvIndex}</span>
                 </div>
               </div>
@@ -222,33 +231,16 @@ export function HeroCarousel() {
 
             <div className="hero-insight-card hero-insight-card-weather">
               <div className="hero-insight-header hero-insight-header-accent">
-                <h2 className="hero-insight-title">One Cikan Mekanlar</h2>
+                <h2 className="hero-insight-title">Öne Çıkan Mekanlar</h2>
               </div>
               <div className="hero-signal-row">
                 <strong>Bi'Lokma</strong>
-                <span>Anne yemekleri ve vegan secenekler</span>
+                <span>Anne yemekleri ve vegan seçenekler</span>
               </div>
               <div className="hero-signal-row">
                 <strong>Zaika</strong>
-                <span>Ocakbasi ve geleneksel lezzetler</span>
+                <span>Ocakbaşı ve geleneksel lezzetler</span>
               </div>
-            </div>
-
-            <div className="hero-insight-card hero-insight-card-cta">
-              <div className="hero-insight-header hero-insight-header-accent">
-                <h2 className="hero-insight-title">Topluluga gir</h2>
-              </div>
-              <p>
-                Guncel etkinlikler, son dakika tavsiyeleri icin topluluga katil!
-              </p>
-              <a
-                href="https://chat.whatsapp.com/GODQNmpRlAaDDtyaDnIyn4"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hero-aside-link hero-aside-link-cta"
-              >
-                WhatsApp Toplulugu
-              </a>
             </div>
           </aside>
         </div>

@@ -1,8 +1,7 @@
-import { CategorySection } from '@/features/home/components/category-section'
+﻿import { CategorySection } from '@/features/home/components/category-section'
 import { HeroCarousel } from '@/features/home/components/hero-carousel'
 
 export const revalidate = 3600 // 1 hour caching
-
 
 export default function HomePage() {
   return (
@@ -10,7 +9,6 @@ export default function HomePage() {
       <HeroCarousel />
 
       <CategorySection />
-
 
       <footer className="footer" id="contact">
         <div className="footer-content footer-shell">
