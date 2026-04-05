@@ -218,9 +218,8 @@ export function CategorySection() {
   return (
     <section
       className="home-categories-section"
-      id="categories"
     >
-      <div className="category-section-shell">
+      <div className="category-section-shell" id="categories">
         <div className="category-topline">
           <div>
             <h3 className="section-title">Kendi Kaş senaryonu kur! Kategorini seç!</h3>
@@ -404,4 +403,3 @@ export function CategorySection() {
     </section>
   )
 }
-

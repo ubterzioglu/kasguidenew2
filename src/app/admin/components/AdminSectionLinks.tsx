@@ -21,9 +21,9 @@ export function AdminSectionLinks({
 }: AdminSectionLinksProps) {
   return (
     <div className="admin-panel admin-panel-links admin-panel-review">
-      <div className="admin-toolbar-actions">
+      <div className="admin-toolbar-actions admin-toolbar-actions-equal">
         <Button type="button" variant="primary" onClick={onRefresh} disabled={refreshing}>
-          {refreshing ? 'Yukleniyor...' : refreshLabel}
+          {refreshing ? 'Yükleniyor...' : refreshLabel}
         </Button>
         <Link
           href="/admin/sweeps"
@@ -47,7 +47,7 @@ export function AdminSectionLinks({
           Admin ana sayfa
         </Link>
         <Button type="button" variant="secondary" onClick={onLogout}>
-          Cikis yap
+          Çıkış yap
         </Button>
       </div>
     </div>

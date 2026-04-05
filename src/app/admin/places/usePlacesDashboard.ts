@@ -8,7 +8,7 @@ import { useDraftEditor } from '../review/useDraftEditor'
 
 const INITIAL_STATUS: PanelStatus = {
   tone: 'neutral',
-  message: 'Mekanlar paneli yukleniyor...',
+  message: 'Mekanlar paneli yükleniyor...',
 }
 
 const EMPTY_SNAPSHOT: AdminPlacesSnapshot = {
@@ -56,7 +56,7 @@ export function usePlacesDashboard() {
     }
 
     setIsLoading(true)
-    setStatus({ tone: 'neutral', message: 'Mekan listesi yukleniyor...' })
+    setStatus({ tone: 'neutral', message: 'Mekan listesi yükleniyor...' })
 
     try {
       const response = await fetch('/api/admin/places?limit=2000', {
@@ -67,7 +67,7 @@ export function usePlacesDashboard() {
       const envelope = (await response.json()) as ApiEnvelope<AdminPlacesSnapshot>
 
       if (!response.ok || !envelope.success) {
-        throw new Error(!envelope.success ? envelope.error : 'Mekan paneli yuklenemedi.')
+        throw new Error(!envelope.success ? envelope.error : 'Mekan paneli yüklenemedi.')
       }
 
       persistPassword(password)
@@ -75,10 +75,10 @@ export function usePlacesDashboard() {
       hydrateDrafts(envelope.data.places)
       setStatus({
         tone: 'success',
-        message: `${envelope.data.places.length} mekan yuklendi. Sweep kaynakli mekan sayisi ${envelope.data.stats.sweepedPlaces}.`,
+        message: `${envelope.data.places.length} mekan yüklendi. Sweep kaynaklı mekan sayısı ${envelope.data.stats.sweepedPlaces}.`,
       })
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Mekan paneli yuklenemedi.'
+      const message = error instanceof Error ? error.message : 'Mekan paneli yüklenemedi.'
 
       if (redirectOnAuthError && message.toLowerCase().includes('yetkisiz')) {
         logout()
@@ -114,7 +114,7 @@ export function usePlacesDashboard() {
     const draft = editor.drafts[placeId]
 
     if (!draft) {
-      setStatus({ tone: 'error', message: 'Mekan editoru hazir degil.' })
+      setStatus({ tone: 'error', message: 'Mekan editörü hazır değil.' })
       return
     }
 
@@ -126,7 +126,7 @@ export function usePlacesDashboard() {
     setActiveActionId(placeId)
     setStatus({
       tone: 'neutral',
-      message: action === 'publish' ? 'Mekan yayina aliniyor...' : 'Mekan kaydediliyor...',
+      message: action === 'publish' ? 'Mekan yayına alınıyor...' : 'Mekan kaydediliyor...',
     })
 
     try {
@@ -139,7 +139,7 @@ export function usePlacesDashboard() {
       const envelope = (await response.json()) as ApiEnvelope<AdminPlacesSnapshot>
 
       if (!response.ok || !envelope.success) {
-        throw new Error(!envelope.success ? envelope.error : 'Mekan kaydi guncellenemedi.')
+        throw new Error(!envelope.success ? envelope.error : 'Mekan kaydı güncellenemedi.')
       }
 
       persistPassword(password)
@@ -147,12 +147,12 @@ export function usePlacesDashboard() {
       hydrateDrafts(envelope.data.places)
       setStatus({
         tone: 'success',
-        message: action === 'publish' ? 'Mekan yayina alindi.' : 'Mekan kaydedildi.',
+        message: action === 'publish' ? 'Mekan yayına alındı.' : 'Mekan kaydedildi.',
       })
     } catch (error) {
       setStatus({
         tone: 'error',
-        message: error instanceof Error ? error.message : 'Mekan kaydi guncellenemedi.',
+        message: error instanceof Error ? error.message : 'Mekan kaydı güncellenemedi.',
       })
     } finally {
       setActiveActionId(null)

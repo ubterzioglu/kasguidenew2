@@ -9,21 +9,6 @@ import { PlaceDetailGallery } from './place-detail-gallery'
 export const revalidate = 3600 // 1 hour caching
 
 type DetailSignalKey = 'address' | 'phone' | 'website'
-type CategoryBadgeMap = Record<string, string[]>
-
-const CATEGORY_BADGES: CategoryBadgeMap = {
-  bar: ['Kas Guide Onerir', 'Aksam Baslangici'],
-  meyhane: ['Kas Guide Onerir', 'Yerel Favori'],
-  restoran: ['Kas Guide Onerir', 'Tekrar Gidilir'],
-  cafe: ['Kas Guide Onerir', 'Gun Icine Uygun'],
-  kahvalti: ['Kas Guide Onerir', 'Sabah Ruhu'],
-  plaj: ['Kas Guide Onerir', 'Kas Ruhu Var'],
-  oteller: ['Kas Guide Onerir', 'Konfor Noktasi'],
-  dalis: ['Kas Guide Onerir', 'Deniz Rotasi'],
-  aktivite: ['Kas Guide Onerir', 'Deneyim Odakli'],
-  gezi: ['Kas Guide Onerir', 'Kesif Noktasi'],
-  carsi: ['Kas Guide Onerir', 'Yerel Rota'],
-}
 
 function renderDetailSignalIcon(key: DetailSignalKey) {
   if (key === 'address') {
@@ -60,10 +45,6 @@ function renderDetailSignalIcon(key: DetailSignalKey) {
       />
     </svg>
   )
-}
-
-function getGuideBadges(categoryPrimary: string) {
-  return CATEGORY_BADGES[categoryPrimary] ?? ['Kas Guide Onerir']
 }
 
 type PlaceDetailPageProps = {
@@ -120,7 +101,7 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
     'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1600&q=80'
   const gallery = place.imageUrls.slice(1, 5)
   const categoryClassLabel = getPlaceCategoryLabel(place.categoryPrimary)
-  const guideBadges = getGuideBadges(place.categoryPrimary)
+  const guideBadges = place.guideBadges
   const detailSignals = [
     {
       key: 'address',
@@ -146,8 +127,7 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
             <div className="place-detail-hero-shade" />
             <div className="place-detail-hero-copy">
               <h1 className="place-detail-title place-detail-title-name">{place.name}</h1>
-              <p className="place-detail-intro">{place.headline}</p>
-              <span className="place-detail-hero-category">{getPlaceCategoryLabel(place.categoryPrimary)}</span>
+              <p className="place-detail-intro">{place.shortDescription}</p>
             </div>
           </section>
         </div>
@@ -187,29 +167,34 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
 
             <span className="place-detail-inline-divider" aria-hidden="true" />
             <strong className="place-detail-class-label">{categoryClassLabel}</strong>
-            <span className="place-detail-inline-divider" aria-hidden="true" />
 
-            <div className="place-detail-guide-badges" aria-label="Kas Guide badgeleri">
-              {guideBadges.map((badge) => (
-                <span key={badge} className="place-detail-guide-badge">
-                  {badge}
-                </span>
-              ))}
-            </div>
+            {guideBadges.length > 0 ? (
+              <>
+                <span className="place-detail-inline-divider" aria-hidden="true" />
+                <div className="place-detail-guide-badges" aria-label="Kaş Guide badgeleri">
+                  {guideBadges.map((badge) => (
+                    <span
+                      key={badge.slug}
+                      className="place-detail-status-item is-active"
+                      aria-label={`${badge.label}: ${badge.description}`}
+                      title={`${badge.label}: ${badge.description}`}
+                      style={{ cursor: 'help' }}
+                    >
+                      <span className="place-detail-status-icon" aria-hidden="true">
+                        {badge.icon}
+                      </span>
+                    </span>
+                  ))}
+                </div>
+              </>
+            ) : null}
           </div>
         </section>
 
         <section className="place-detail-content-grid">
           <article className="place-detail-story-card">
             <div className="place-detail-section-head place-detail-section-head-lined">
-              <h2>Kısaca</h2>
-            </div>
-            <p>{place.shortDescription}</p>
-          </article>
-
-          <article className="place-detail-story-card">
-            <div className="place-detail-section-head place-detail-section-head-lined">
-              <h2>Uzunca</h2>
+              <h2>Özet Bilgiler</h2>
             </div>
             <p>{place.longDescription}</p>
           </article>

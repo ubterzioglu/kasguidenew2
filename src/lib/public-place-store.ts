@@ -8,6 +8,20 @@ type PlaceImageRecord = {
   sort_order?: number | null
 }
 
+type BadgeRow = {
+  slug: string
+  emoji: string | null
+  title: string
+  description: string | null
+}
+
+export type PublicPlaceBadge = {
+  slug: string
+  icon: string
+  label: string
+  description: string
+}
+
 export type PublicPlaceListItem = {
   id: string
   slug: string
@@ -33,6 +47,7 @@ export type PublicPlaceDetail = {
   phone: string | null
   website: string | null
   imageUrls: string[]
+  guideBadges: PublicPlaceBadge[]
 }
 
 type PlaceRow = {
@@ -46,8 +61,11 @@ type PlaceRow = {
   address: string | null
   phone: string | null
   website: string | null
+  kasguide_badge: string | null
   images: PlaceImageRecord[] | null
 }
+
+const DEFAULT_GUIDE_BADGE = 'recommend'
 
 function getImageUrls(images: PlaceImageRecord[] | null | undefined) {
   return [...(images ?? [])]
@@ -63,6 +81,68 @@ function getImageUrls(images: PlaceImageRecord[] | null | undefined) {
     })
     .map((image) => image.url?.trim() ?? '')
     .filter(Boolean)
+}
+
+function normalizeBadgeToken(value: string) {
+  return value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '')
+}
+
+function parseBadgeTokens(rawValue: string | null | undefined) {
+  const tokens = (rawValue ?? '')
+    .split(/[,|;/]+/)
+    .map((value) => value.trim())
+    .filter(Boolean)
+
+  return tokens.length > 0 ? tokens : [DEFAULT_GUIDE_BADGE]
+}
+
+function resolveGuideBadges(rows: BadgeRow[], rawValue: string | null | undefined): PublicPlaceBadge[] {
+  const seen = new Set<string>()
+  const matches: PublicPlaceBadge[] = []
+
+  for (const token of parseBadgeTokens(rawValue)) {
+    const normalizedToken = normalizeBadgeToken(token)
+    const match = rows.find(
+      (row) =>
+        normalizeBadgeToken(row.slug) === normalizedToken ||
+        normalizeBadgeToken(row.title) === normalizedToken,
+    )
+
+    if (!match || seen.has(match.slug)) {
+      continue
+    }
+
+    seen.add(match.slug)
+    matches.push({
+      slug: match.slug,
+      icon: match.emoji?.trim() || '★',
+      label: match.title,
+      description: match.description?.trim() || match.title,
+    })
+  }
+
+  if (matches.length > 0) {
+    return matches
+  }
+
+  const fallback = rows.find((row) => row.slug === DEFAULT_GUIDE_BADGE)
+
+  if (!fallback) {
+    return []
+  }
+
+  return [
+    {
+      slug: fallback.slug,
+      icon: fallback.emoji?.trim() || '★',
+      label: fallback.title,
+      description: fallback.description?.trim() || fallback.title,
+    },
+  ]
 }
 
 export async function listPublishedPlacesByCategory(categoryId: string, limit = 12) {
@@ -110,7 +190,7 @@ export async function getPublishedPlaceBySlug(slug: string) {
   const { data, error } = await client
     .from('places')
     .select(
-      'id, slug, name, headline, short_description, long_description, category_primary, address, phone, website, images',
+      'id, slug, name, headline, short_description, long_description, category_primary, address, phone, website, kasguide_badge, images',
     )
     .eq('status', 'published')
     .eq('slug', slug)
@@ -125,6 +205,10 @@ export async function getPublishedPlaceBySlug(slug: string) {
   if (!place) {
     return null
   }
+
+  const { data: badgeData, error: badgeError } = await client
+    .from('badges')
+    .select('slug, emoji, title, description')
 
   return {
     id: place.id,
@@ -141,6 +225,7 @@ export async function getPublishedPlaceBySlug(slug: string) {
     phone: place.phone,
     website: place.website,
     imageUrls: getImageUrls(place.images),
+    guideBadges: resolveGuideBadges(badgeError ? [] : ((badgeData ?? []) as BadgeRow[]), place.kasguide_badge),
   } satisfies PublicPlaceDetail
 }
 

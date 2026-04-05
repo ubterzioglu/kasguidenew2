@@ -6,9 +6,9 @@ import { usePathname } from 'next/navigation'
 export function ClientHeader({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const isHomePage = pathname === '/'
-  const isAdminEntryPage = pathname === '/admin'
+  const isAdminRoute = pathname.startsWith('/admin')
 
-  if (isAdminEntryPage) {
+  if (isAdminRoute) {
     return null
   }
 

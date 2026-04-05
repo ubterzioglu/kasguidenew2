@@ -19,6 +19,13 @@ import { useSweepsDashboard } from './useSweepsDashboard'
 
 export default function AdminSweepsPage() {
   const [currentPage, setCurrentPage] = useState(1)
+  const [overpassForm, setOverpassForm] = useState({
+    gridX: '1',
+    gridY: '1',
+    cellSizeMeters: '500',
+    regionName: 'Kas Overpass Sweep',
+    dryRun: false,
+  })
   const itemsPerPage = 50
   const {
     snapshot,
@@ -29,6 +36,7 @@ export default function AdminSweepsPage() {
     activeSweepPlaceId,
     setActiveSweepPlaceId,
     loadDashboard,
+    runOverpassSweep,
     runSweepPlaceAction,
     updateDraftField,
     updateImageField,
@@ -79,6 +87,86 @@ export default function AdminSweepsPage() {
 
         <div className={`admin-status admin-status-${status.tone}`}>
           <span>{status.message}</span>
+        </div>
+      </section>
+
+      <section className="admin-panel admin-panel-overpass">
+        <div className="admin-overpass-head">
+          <div>
+            <h2 className="admin-section-title">Overpass sweep baslat</h2>
+            <p className="admin-section-copy">
+              `overpass-api.de` uzerinden tek hucre sweep calistirir ve sonucu ayni `places` tablosuna yazar.
+            </p>
+          </div>
+        </div>
+
+        <div className="admin-overpass-grid">
+          <label className="admin-field">
+            <span className="admin-label">Grid X</span>
+            <input
+              className="admin-input"
+              inputMode="numeric"
+              value={overpassForm.gridX}
+              onChange={(event) => setOverpassForm((current) => ({ ...current, gridX: event.target.value }))}
+            />
+          </label>
+
+          <label className="admin-field">
+            <span className="admin-label">Grid Y</span>
+            <input
+              className="admin-input"
+              inputMode="numeric"
+              value={overpassForm.gridY}
+              onChange={(event) => setOverpassForm((current) => ({ ...current, gridY: event.target.value }))}
+            />
+          </label>
+
+          <label className="admin-field">
+            <span className="admin-label">Hucre boyutu (m)</span>
+            <input
+              className="admin-input"
+              inputMode="numeric"
+              value={overpassForm.cellSizeMeters}
+              onChange={(event) => setOverpassForm((current) => ({ ...current, cellSizeMeters: event.target.value }))}
+            />
+          </label>
+
+          <label className="admin-field admin-field-span-2">
+            <span className="admin-label">Bolge adi</span>
+            <input
+              className="admin-input"
+              value={overpassForm.regionName}
+              onChange={(event) => setOverpassForm((current) => ({ ...current, regionName: event.target.value }))}
+            />
+          </label>
+        </div>
+
+        <label className="admin-checkbox-row">
+          <input
+            type="checkbox"
+            checked={overpassForm.dryRun}
+            onChange={(event) => setOverpassForm((current) => ({ ...current, dryRun: event.target.checked }))}
+          />
+          <span>Dry-run calistir, veri yazma</span>
+        </label>
+
+        <div className="admin-toolbar-actions">
+          <Button
+            type="button"
+            variant="primary"
+            disabled={isLoading}
+            onClick={() =>
+              runOverpassSweep({
+                gridX: Number.parseInt(overpassForm.gridX, 10) || 1,
+                gridY: Number.parseInt(overpassForm.gridY, 10) || 1,
+                cellSizeMeters: Number.parseInt(overpassForm.cellSizeMeters, 10) || 500,
+                regionName: overpassForm.regionName.trim() || undefined,
+                dryRun: overpassForm.dryRun,
+              })
+            }
+          >
+            {isLoading ? 'Calisiyor...' : overpassForm.dryRun ? 'Dry-run baslat' : 'Overpass sweep baslat'}
+          </Button>
         </div>
       </section>
 

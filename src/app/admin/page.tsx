@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
-import { clearStoredAdminPassword, storeAdminPassword } from '@/lib/admin-password-client'
+import { clearStoredAdminPassword, getStoredAdminPassword, storeAdminPassword } from '@/lib/admin-password-client'
 
 type StatusTone = 'neutral' | 'success' | 'error'
 
@@ -18,10 +19,19 @@ const INITIAL_STATUS: PanelStatus = {
 }
 
 export default function AdminHomePage() {
+  const router = useRouter()
   const [adminPassword, setAdminPassword] = useState('')
   const [isAuthorized, setIsAuthorized] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [status, setStatus] = useState<PanelStatus>(INITIAL_STATUS)
+
+  useEffect(() => {
+    const storedPassword = getStoredAdminPassword()
+
+    if (storedPassword) {
+      router.replace('/admin/places')
+    }
+  }, [router])
 
   async function validatePassword() {
     const password = adminPassword.trim()
@@ -51,6 +61,7 @@ export default function AdminHomePage() {
       storeAdminPassword(password)
       setIsAuthorized(true)
       setStatus({ tone: 'success', message: 'Giris basarili. Devam etmek istedigin alani sec.' })
+      router.replace('/admin/places')
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Parola dogrulanamadi.'
 

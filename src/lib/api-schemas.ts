@@ -44,3 +44,11 @@ export const ExistingPlaceSaveBodySchema = z.object({
   placeId: z.string().min(1),
   draft: PlaceEditorDraftSchema,
 })
+
+export const OverpassSweepRunBodySchema = z.object({
+  gridX: z.coerce.number().int(),
+  gridY: z.coerce.number().int(),
+  cellSizeMeters: z.coerce.number().int().min(100).max(5000).default(500),
+  regionName: z.string().trim().min(1).max(120).optional(),
+  dryRun: z.boolean().optional().default(false),
+})
