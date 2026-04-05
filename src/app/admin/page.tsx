@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -37,7 +37,7 @@ export default function AdminHomePage() {
     const password = adminPassword.trim()
 
     if (!password) {
-      setStatus({ tone: 'error', message: 'Devam etmek icin admin sifresini girin.' })
+      setStatus({ tone: 'error', message: 'Devam etmek için admin şifresini girin.' })
       return
     }
 
@@ -55,15 +55,15 @@ export default function AdminHomePage() {
       const payload = (await response.json().catch(() => null)) as { error?: string } | null
 
       if (!response.ok) {
-        throw new Error(payload?.error || 'Parola dogrulanamadi.')
+        throw new Error(payload?.error || 'Parola doğrulanamadı.')
       }
 
       storeAdminPassword(password)
       setIsAuthorized(true)
-      setStatus({ tone: 'success', message: 'Giris basarili. Devam etmek istedigin alani sec.' })
+      setStatus({ tone: 'success', message: 'Giriş başarılı. Devam etmek istediğin alanı seç.' })
       router.replace('/admin/places')
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Parola dogrulanamadi.'
+      const message = error instanceof Error ? error.message : 'Parola doğrulanamadı.'
 
       clearStoredAdminPassword()
       setIsAuthorized(false)
@@ -71,7 +71,7 @@ export default function AdminHomePage() {
         tone: 'error',
         message:
           message === 'Yetkisiz istek.'
-            ? 'Admin sifresi hatali. ADMIN_PASSWORD degistiyse sunucuyu yeniden baslatin.'
+            ? 'Admin şifresi hatalı. ADMIN_PASSWORD değiştiyse sunucuyu yeniden başlatın.'
             : message,
       })
     } finally {
@@ -110,7 +110,7 @@ export default function AdminHomePage() {
             onClick={() => void validatePassword()}
             disabled={isLoading}
           >
-            {isLoading ? 'Kontrol ediliyor...' : 'Giris yap'}
+            {isLoading ? 'Kontrol ediliyor...' : 'Giriş yap'}
           </button>
 
           {status.message ? (
@@ -127,17 +127,13 @@ export default function AdminHomePage() {
           </div>
 
           <section className="admin-nav-grid admin-nav-grid-simple">
-            <Link href="/admin/sweeps" className="admin-nav-card admin-nav-card-simple">
-              <strong>Sweeps</strong>
-              <p>Sweep oturumlari ve sweep kaynakli mekanlar</p>
-            </Link>
             <Link href="/admin/places" className="admin-nav-card admin-nav-card-simple">
               <strong>Mekanlar</strong>
-              <p>Butun mekanlari tek tabloda yonet</p>
+              <p>Bütün mekanları tek tabloda yönet</p>
             </Link>
             <Link href="/admin/hero-slides" className="admin-nav-card admin-nav-card-simple">
-              <strong>Hero alani</strong>
-              <p>Slide fotograflari, basliklar, alt basliklar ve tagler</p>
+              <strong>Hero alanı</strong>
+              <p>Slide fotoğrafları, başlıklar, alt başlıklar ve tagler</p>
             </Link>
           </section>
 
@@ -147,7 +143,7 @@ export default function AdminHomePage() {
               className="admin-button admin-button-secondary"
               onClick={resetGate}
             >
-              Cikis yap
+              Çıkış yap
             </button>
           </div>
         </section>

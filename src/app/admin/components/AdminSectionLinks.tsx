@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
 type AdminSectionLinksProps = {
-  current: 'sweeps' | 'places' | 'hero'
+  current: 'places' | 'hero'
   onRefresh: () => void
   refreshLabel: string
   refreshing: boolean
@@ -25,12 +25,6 @@ export function AdminSectionLinks({
         <Button type="button" variant="primary" onClick={onRefresh} disabled={refreshing}>
           {refreshing ? 'Yükleniyor...' : refreshLabel}
         </Button>
-        <Link
-          href="/admin/sweeps"
-          className={`admin-button admin-button-link ${current === 'sweeps' ? 'admin-button-primary' : 'admin-button-secondary'}`}
-        >
-          Sweeps
-        </Link>
         <Link
           href="/admin/places"
           className={`admin-button admin-button-link ${current === 'places' ? 'admin-button-primary' : 'admin-button-secondary'}`}

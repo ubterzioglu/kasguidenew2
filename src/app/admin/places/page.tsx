@@ -9,7 +9,7 @@ import { PlaceEditorForm } from '../review/components/PlaceEditorForm'
 import { formatDate, formatPlaceStatus, formatVerificationStatus } from '../review/formatters'
 import { usePlacesDashboard } from './usePlacesDashboard'
 
-type FilterMode = 'all' | 'published' | 'draft' | 'sweeped'
+type FilterMode = 'all' | 'published' | 'draft'
 
 export default function AdminPlacesPage() {
   const [filter, setFilter] = useState<FilterMode>('all')
@@ -38,8 +38,6 @@ export default function AdminPlacesPage() {
         return snapshot.places.filter((item) => (drafts[item.id] ?? item.draft).status === 'published')
       case 'draft':
         return snapshot.places.filter((item) => (drafts[item.id] ?? item.draft).status !== 'published')
-      case 'sweeped':
-        return snapshot.places.filter((item) => item.isSweeped)
       default:
         return snapshot.places
     }
@@ -78,9 +76,6 @@ export default function AdminPlacesPage() {
             <Button type="button" variant={filter === 'draft' ? 'primary' : 'secondary'} onClick={() => { setFilter('draft'); setCurrentPage(1) }}>
               Taslak
             </Button>
-            <Button type="button" variant={filter === 'sweeped' ? 'primary' : 'secondary'} onClick={() => { setFilter('sweeped'); setCurrentPage(1) }}>
-              Sweeped
-            </Button>
           </div>
 
           <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
@@ -102,10 +97,6 @@ export default function AdminPlacesPage() {
           <div className="admin-summary-item">
             <span className="admin-summary-label">Taslak / admin</span>
             <strong>{snapshot.stats.draftPlaces}</strong>
-          </div>
-          <div className="admin-summary-item">
-            <span className="admin-summary-label">Sweeped</span>
-            <strong>{snapshot.stats.sweepedPlaces}</strong>
           </div>
         </div>
       </section>
@@ -144,7 +135,6 @@ export default function AdminPlacesPage() {
                       <span className={`review-pill review-pill-${draft.status === 'published' ? 'approved' : 'in_review'}`}>
                         {formatPlaceStatus(draft.status)}
                       </span>
-                      {item.isSweeped ? <span className="review-pill review-pill-pending">Sweeped</span> : null}
                       <span className="place-review-photo-count">{nonEmptyImageCount}/5 foto</span>
                       <strong className="place-review-edit-label">{isOpen ? 'Editörü kapat' : 'Düzenle'}</strong>
                     </div>
@@ -170,7 +160,6 @@ export default function AdminPlacesPage() {
                         <p>Doğrulama: {formatVerificationStatus(draft.verificationStatus)}</p>
                         <p>Website: {draft.website || '-'}</p>
                         <p>Telefon: {draft.phone || '-'}</p>
-                        <p>{item.isSweeped ? 'Bu mekan sweep kaynaklıdır.' : 'Bu mekan manuel veya legacy kayıttır.'}</p>
                       </div>
                     </div>
 

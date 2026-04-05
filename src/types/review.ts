@@ -1,7 +1,5 @@
-/**
- * Shared type definitions for the review pipeline.
- * Import from here in both server (lib/) and client (app/admin/) code.
- * No runtime code — type exports only.
+﻿/**
+ * Shared type definitions for the admin/editor pipeline.
  */
 
 export type ReviewQueueStatus = 'pending' | 'in_review' | 'approved' | 'merged' | 'rejected'
@@ -177,7 +175,6 @@ export type AdminPlacesSnapshot = {
     totalPlaces: number
     publishedPlaces: number
     draftPlaces: number
-    sweepedPlaces: number
   }
   categoryOptions: Array<{ id: string; label: string }>
 }

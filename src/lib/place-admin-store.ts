@@ -1,4 +1,4 @@
-import 'server-only'
+﻿import 'server-only'
 
 import { PLACE_CATEGORY_OPTIONS } from '@/lib/place-taxonomy'
 import type { AdminPlacesSnapshot, ExistingPlaceItem, PlaceEditorDraft } from '@/types/review'
@@ -14,15 +14,14 @@ export async function getAdminPlacesSnapshot(limit = 1000): Promise<AdminPlacesS
   const client = getSupabaseAdminClient()
 
   if (!client) {
-    throw new Error('Supabase admin baglantisi hazir degil.')
+    throw new Error('Supabase admin bağlantısı hazır değil.')
   }
 
-  const [places, totalPlaces, publishedPlaces, draftPlaces, sweepedPlaces] = await Promise.all([
+  const [places, totalPlaces, publishedPlaces, draftPlaces] = await Promise.all([
     fetchExistingPlaces(client, limit),
     countRows(client, (query) => query),
     countRows(client, (query) => query.eq('status', 'published')),
     countRows(client, (query) => query.neq('status', 'published')),
-    countRows(client, (query) => query.eq('is_sweeped', true)),
   ])
 
   return {
@@ -31,7 +30,6 @@ export async function getAdminPlacesSnapshot(limit = 1000): Promise<AdminPlacesS
       totalPlaces,
       publishedPlaces,
       draftPlaces,
-      sweepedPlaces,
     },
     categoryOptions: PLACE_CATEGORY_OPTIONS.map((option) => ({ id: option.id, label: option.label })),
   }
@@ -44,7 +42,7 @@ export async function applyAdminPlaceAction(input: {
   const client = getSupabaseAdminClient()
 
   if (!client) {
-    throw new Error('Supabase admin baglantisi hazir degil.')
+    throw new Error('Supabase admin bağlantısı hazır değil.')
   }
 
   await persistExistingPlace(client, {
@@ -63,7 +61,7 @@ async function countRows(
   const response = await mutate(client.from('places').select('*', { count: 'exact', head: true }))
 
   if (response.error) {
-    throw new Error('Sayac okunamadi: places')
+    throw new Error('Sayaç okunamadı: places')
   }
 
   return response.count ?? 0

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+﻿import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import type { AdminPlacesSnapshot, ExistingPlaceAction, PanelStatus, PlaceEditorDraft } from '@/types/review'
@@ -17,7 +17,6 @@ const EMPTY_SNAPSHOT: AdminPlacesSnapshot = {
     totalPlaces: 0,
     publishedPlaces: 0,
     draftPlaces: 0,
-    sweepedPlaces: 0,
   },
   categoryOptions: [],
 }
@@ -75,7 +74,7 @@ export function usePlacesDashboard() {
       hydrateDrafts(envelope.data.places)
       setStatus({
         tone: 'success',
-        message: `${envelope.data.places.length} mekan yüklendi. Sweep kaynaklı mekan sayısı ${envelope.data.stats.sweepedPlaces}.`,
+        message: `${envelope.data.places.length} mekan yüklendi.`,
       })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Mekan paneli yüklenemedi.'
