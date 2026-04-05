@@ -2649,7 +2649,9 @@ body {
 }
 
 .category-place-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   overflow: hidden;
   border-radius: 24px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.1) 100%);
@@ -2670,8 +2672,11 @@ body {
 }
 
 .category-place-body {
-  display: grid;
-  gap: 0.7rem;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.68rem;
   padding: 1rem;
 }
 
@@ -2681,6 +2686,13 @@ body {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.category-place-divider {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0, 168, 150, 0.8), rgba(0, 168, 150, 0.18));
 }
 
 .category-place-title {
@@ -2702,6 +2714,7 @@ body {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: calc(1.5em * 3);
 }
 
 .category-place-meta {
@@ -4393,6 +4406,8 @@ body {
   display: flex;
   align-items: center;
   gap: 0.55rem;
+  margin-top: auto;
+  padding-top: 0.3rem;
 }
 
 .category-place-signal {

@@ -349,7 +349,9 @@ export function CategorySection() {
                       <span className="category-place-eyebrow">
                         {CATEGORY_MAP.get(place.categoryPrimary)?.label || place.categoryPrimary}
                       </span>
+                      <span className="category-place-divider" aria-hidden="true" />
                       <h5 className="category-place-title">{place.name}</h5>
+                      <span className="category-place-divider" aria-hidden="true" />
                       <p className="category-place-copy">{place.shortDescription}</p>
                       <div className="category-place-signals">
                         <span
