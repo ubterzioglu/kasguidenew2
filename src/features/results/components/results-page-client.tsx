@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 
 import { CategoryPlaceCard } from '@/features/home/components/category-place-card'
@@ -22,17 +23,23 @@ type ResultsPageClientProps = {
 }
 
 export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps) {
+  const router = useRouter()
   const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({})
   const [places, setPlaces] = useState<CategoryPlace[]>([])
   const [hasMore, setHasMore] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [status, setStatus] = useState('')
+  const [activeCategoryIds, setActiveCategoryIds] = useState<string[]>([])
 
-  const activeCategoryIds = useMemo(
+  const normalizedCategoryIds = useMemo(
     () => [...new Set(initialCategoryIds.map((item) => item.trim()).filter(Boolean))],
     [initialCategoryIds],
   )
+
+  useEffect(() => {
+    setActiveCategoryIds(normalizedCategoryIds)
+  }, [normalizedCategoryIds])
 
   useEffect(() => {
     let cancelled = false
@@ -120,6 +127,17 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
     }
   }, [activeCategoryIds, categoryCounts])
 
+  function handleToggleCategory(categoryId: string) {
+    const nextSelectedIds = activeCategoryIds.includes(categoryId)
+      ? activeCategoryIds.filter((item) => item !== categoryId)
+      : [...activeCategoryIds, categoryId]
+
+    setActiveCategoryIds(nextSelectedIds)
+
+    const query = nextSelectedIds.length > 0 ? `?categories=${encodeURIComponent(nextSelectedIds.join(','))}` : ''
+    router.push(`/result${query}`, { scroll: false })
+  }
+
   async function loadMore() {
     if (activeCategoryIds.length === 0 || isLoadingMore) {
       return
@@ -172,10 +190,7 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
           <CategoryTileStrip
             activeCategoryIds={activeCategoryIds}
             counts={categoryCounts}
-            hrefBuilder={(categoryId, nextSelectedIds) => {
-              const categories = nextSelectedIds.length > 0 ? nextSelectedIds.join(',') : categoryId
-              return `/result?categories=${encodeURIComponent(categories)}`
-            }}
+            onToggleCategory={handleToggleCategory}
           />
 
           <section className="category-results-shell result-page-results">

@@ -1,9 +1,9 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
+import { AdminSectionLinks } from '../components/AdminSectionLinks'
 import {
   clearStoredAdminPassword,
   getStoredAdminPassword,
@@ -16,6 +16,7 @@ import {
   reindexHeroSlides,
   type HeroSlide,
 } from '@/lib/hero-slide-data'
+import { Button } from '@/components/ui/button'
 
 type StatusTone = 'neutral' | 'success' | 'error'
 
@@ -96,10 +97,7 @@ export default function HeroSlidesAdminPage() {
         return
       }
 
-      setStatus({
-        tone: 'error',
-        message,
-      })
+      setStatus({ tone: 'error', message })
     } finally {
       setIsLoading(false)
     }
@@ -211,18 +209,18 @@ export default function HeroSlidesAdminPage() {
   }
 
   return (
-    <main className="container admin-shell">
-      <section className="admin-hero">
-        <div className="admin-hero-copy">
-          <span className="admin-eyebrow">Hero Yönetimi</span>
-          <h1 className="admin-title">Slide show kontrol paneli</h1>
-          <p className="admin-description">
-            Hero alanındaki slide'ları buradan yönetebilirsiniz. Her slide için foto, üst etiket,
-            başlık, alt başlık ve tag listesi düzenlenebilir.
+    <main className="container admin-shell admin-shell-places admin-shell-hero">
+      <section className="admin-places-intro">
+        <div className="admin-places-intro-copy">
+          <h1 className="admin-places-title">Hero Slides</h1>
+          <p className="admin-places-subtitle">
+            Ana sayfadaki hero sahnelerini düzenle, sıralamayı değiştir ve yayın öncesi hızlıca gözden geçir.
           </p>
         </div>
+      </section>
 
-        <div className="admin-summary-card">
+      <section className="admin-hero admin-hero-review admin-places-hero-stack">
+        <div className="admin-summary-card admin-summary-card-review admin-summary-card-places admin-summary-card-hero">
           <div className="admin-summary-item">
             <span className="admin-summary-label">Toplam slide</span>
             <strong>{slides.length}</strong>
@@ -238,64 +236,41 @@ export default function HeroSlidesAdminPage() {
         </div>
       </section>
 
-      <section className="admin-toolbar">
-        <div className="admin-panel admin-panel-links">
-          <div className="admin-toolbar-actions">
-            <button
-              type="button"
-              className="admin-button admin-button-secondary"
-              onClick={() => loadSlides()}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Yükleniyor...' : 'Slaytları yenile'}
-            </button>
-            <button
-              type="button"
-              className="admin-button admin-button-primary"
-              onClick={saveSlides}
-              disabled={isSaving}
-            >
-              {isSaving ? 'Kaydediliyor...' : 'Değişiklikleri kaydet'}
-            </button>
-            <Link href="/admin" className="admin-button admin-button-secondary admin-button-link">
-              Admin ana sayfa
-            </Link>
-            <button
-              type="button"
-              className="admin-button admin-button-secondary"
-              onClick={logout}
-            >
-              Çıkış yap
-            </button>
-          </div>
-        </div>
+      <section className="admin-toolbar admin-toolbar-places">
+        <AdminSectionLinks
+          current="hero"
+          onRefresh={() => loadSlides()}
+          refreshLabel="Hero listesini yenile"
+          refreshing={isLoading}
+          onLogout={logout}
+        />
 
-        <div className={`admin-status admin-status-${status.tone}`}>
+        <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
           <span>{status.message}</span>
         </div>
       </section>
 
-      <section className="admin-list-header">
+      <section className="admin-list-header admin-list-header-places">
         <div>
           <h2 className="admin-section-title">Slide listesi</h2>
           <p className="admin-section-copy">
-            Buradan hero slide'larını ekleyebilir, çıkarabilir, sırasını değiştirebilir ve içeriğini anında güncelleyebilirsiniz.
+            Buradan hero slide'larını ekleyebilir, çıkarabilir, sırasını değiştirebilir ve içeriğini anında güncelleyebilirsin.
           </p>
         </div>
 
-        <button
-          type="button"
-          className="admin-button admin-button-ghost"
-          onClick={addSlide}
-          disabled={slides.length >= MAX_HERO_SLIDES}
-        >
-          Yeni slide ekle
-        </button>
+        <div className="admin-toolbar-actions">
+          <Button type="button" variant="primary" onClick={saveSlides} disabled={isSaving}>
+            {isSaving ? 'Kaydediliyor...' : 'Değişiklikleri kaydet'}
+          </Button>
+          <Button type="button" variant="ghost" onClick={addSlide} disabled={slides.length >= MAX_HERO_SLIDES}>
+            Yeni slide ekle
+          </Button>
+        </div>
       </section>
 
-      <section className="admin-slide-grid">
+      <section className="admin-slide-grid admin-slide-grid-places">
         {slides.map((slide, index) => (
-          <article key={slide.id} className="admin-slide-card">
+          <article key={slide.id} className="admin-slide-card admin-slide-card-places">
             <div
               className="admin-slide-preview"
               style={{
@@ -303,7 +278,7 @@ export default function HeroSlidesAdminPage() {
                 backgroundSize: slide.imageUrl ? 'cover' : 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                backgroundColor: slide.imageUrl ? undefined : 'rgba(6, 10, 19, 0.78)',
+                backgroundColor: slide.imageUrl ? undefined : 'rgba(6, 10, 19, 0.08)',
               }}
             >
               <div className="admin-slide-preview-shade"></div>
@@ -328,15 +303,6 @@ export default function HeroSlidesAdminPage() {
                   className="admin-input"
                   value={slide.imageUrl}
                   onChange={(event) => updateSlide(index, 'imageUrl', event.target.value)}
-                />
-              </label>
-
-              <label className="admin-field">
-                <span className="admin-label">Üst etiket</span>
-                <input
-                  className="admin-input"
-                  value={slide.eyebrow}
-                  onChange={(event) => updateSlide(index, 'eyebrow', event.target.value)}
                 />
               </label>
 
@@ -379,30 +345,15 @@ export default function HeroSlidesAdminPage() {
               </label>
 
               <div className="admin-card-actions">
-                <button
-                  type="button"
-                  className="admin-button admin-button-secondary"
-                  onClick={() => moveSlide(index, -1)}
-                  disabled={index === 0}
-                >
+                <Button type="button" variant="secondary" onClick={() => moveSlide(index, -1)} disabled={index === 0}>
                   Yukarı al
-                </button>
-                <button
-                  type="button"
-                  className="admin-button admin-button-secondary"
-                  onClick={() => moveSlide(index, 1)}
-                  disabled={index === slides.length - 1}
-                >
-                  Asagi al
-                </button>
-                <button
-                  type="button"
-                  className="admin-button admin-button-danger"
-                  onClick={() => removeSlide(index)}
-                  disabled={slides.length === 1}
-                >
+                </Button>
+                <Button type="button" variant="secondary" onClick={() => moveSlide(index, 1)} disabled={index === slides.length - 1}>
+                  Aşağı al
+                </Button>
+                <Button type="button" variant="danger" onClick={() => removeSlide(index)} disabled={slides.length === 1}>
                   Sil
-                </button>
+                </Button>
               </div>
             </div>
           </article>

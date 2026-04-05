@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { GridSweepItem } from '../types'
@@ -30,11 +30,11 @@ export function SweepBoard({ sweeps }: { sweeps: GridSweepItem[] }) {
         const isOpen = openSweepId === sweep.id
 
         return (
-          <article key={sweep.id} className="sweep-card">
-            <button 
-              className="sweep-card-header" 
+          <article key={sweep.id} className="sweep-card sweep-card-places">
+            <button
+              type="button"
+              className="sweep-card-header sweep-card-header-places"
               onClick={() => setOpenSweepId(isOpen ? null : sweep.id)}
-              style={{ width: '100%', textAlign: 'left', border: 'none', background: 'none', cursor: 'pointer', paddingBottom: isOpen ? '1rem' : '0' }}
             >
               <div className="sweep-card-copy-block">
                 <span className={`review-pill review-pill-${sweep.status}`}>{formatSweepStatus(sweep.status)}</span>
@@ -43,16 +43,16 @@ export function SweepBoard({ sweeps }: { sweeps: GridSweepItem[] }) {
               </div>
               <div className="sweep-card-meta">
                 <span>Başlangıç: {formatDate(sweep.startedAt)}</span>
-                <strong>İlerleme %{progress} <span style={{display: 'inline-block', width: '12px'}}>{isOpen ? '▲' : '▼'}</span></strong>
+                <strong>İlerleme %{progress} <span className="sweep-card-caret">{isOpen ? '▲' : '▼'}</span></strong>
               </div>
             </button>
 
-            <div className="sweep-progress-track" aria-hidden="true" style={{ marginTop: '0', borderRadius: isOpen ? '0' : '0 0 16px 16px' }}>
+            <div className="sweep-progress-track" aria-hidden="true">
               <span className="sweep-progress-fill" style={{ width: `${progress}%` }} />
             </div>
 
-            {isOpen && (
-              <div className="sweep-card-content" style={{ padding: '0 1.25rem 1.25rem' }}>
+            {isOpen ? (
+              <div className="sweep-card-content sweep-card-content-places">
                 <div className="sweep-stats-grid">
                   <div>
                     <span>Merkez nokta</span>
@@ -86,7 +86,7 @@ export function SweepBoard({ sweeps }: { sweeps: GridSweepItem[] }) {
                   ))}
                 </div>
               </div>
-            )}
+            ) : null}
           </article>
         )
       })}

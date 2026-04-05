@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useMemo, useState } from 'react'
 
@@ -51,14 +51,46 @@ export default function AdminPlacesPage() {
 
   return (
     <main className="container admin-shell admin-shell-places">
-      <section className="admin-places-intro">
+      <section className="admin-places-intro admin-places-header-panel">
         <div className="admin-places-intro-copy">
           <h1 className="admin-places-title">Admin Paneli</h1>
+          <p className="admin-places-subtitle">
+            Mekanları tek listede yönet, filtrele ve yayına hazır hale getir.
+          </p>
+        </div>
+
+        <div className="admin-places-header-actions">
+          <AdminSectionLinks
+            current="places"
+            onRefresh={() => loadDashboard()}
+            refreshLabel="Listeyi yenile"
+            refreshing={isLoading}
+            onLogout={logout}
+          />
+
+          <div className="admin-toolbar-actions admin-places-filterbar admin-places-filterbar-header">
+            <Button type="button" variant={filter === 'all' ? 'primary' : 'secondary'} onClick={() => { setFilter('all'); setCurrentPage(1) }}>
+              Tümü
+            </Button>
+            <Button type="button" variant={filter === 'published' ? 'primary' : 'secondary'} onClick={() => { setFilter('published'); setCurrentPage(1) }}>
+              Yayında
+            </Button>
+            <Button type="button" variant={filter === 'draft' ? 'primary' : 'secondary'} onClick={() => { setFilter('draft'); setCurrentPage(1) }}>
+              Taslak
+            </Button>
+            <Button type="button" variant={filter === 'sweeped' ? 'primary' : 'secondary'} onClick={() => { setFilter('sweeped'); setCurrentPage(1) }}>
+              Sweeped
+            </Button>
+          </div>
+
+          <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
+            <span>{status.message}</span>
+          </div>
         </div>
       </section>
 
-      <section className="admin-hero admin-hero-review">
-        <div className="admin-summary-card admin-summary-card-review">
+      <section className="admin-hero admin-hero-review admin-places-hero-stack">
+        <div className="admin-summary-card admin-summary-card-review admin-summary-card-places">
           <div className="admin-summary-item">
             <span className="admin-summary-label">Toplam mekan</span>
             <strong>{snapshot.stats.totalPlaces}</strong>
@@ -78,37 +110,9 @@ export default function AdminPlacesPage() {
         </div>
       </section>
 
-      <section className="admin-toolbar">
-        <AdminSectionLinks
-          current="places"
-          onRefresh={() => loadDashboard()}
-          refreshLabel="Mekan panelini yenile"
-          refreshing={isLoading}
-          onLogout={logout}
-        />
-
-        <div className={`admin-status admin-status-${status.tone}`}>
-          <span>{status.message}</span>
-        </div>
-      </section>
-
       <section className="admin-list-header admin-list-header-places">
         <div>
           <h2 className="admin-section-title">Mekan Listesi</h2>
-        </div>
-        <div className="admin-toolbar-actions admin-places-filterbar">
-          <Button type="button" variant={filter === 'all' ? 'primary' : 'secondary'} onClick={() => { setFilter('all'); setCurrentPage(1) }}>
-            Tümü
-          </Button>
-          <Button type="button" variant={filter === 'published' ? 'primary' : 'secondary'} onClick={() => { setFilter('published'); setCurrentPage(1) }}>
-            Yayında
-          </Button>
-          <Button type="button" variant={filter === 'draft' ? 'primary' : 'secondary'} onClick={() => { setFilter('draft'); setCurrentPage(1) }}>
-            Taslak
-          </Button>
-          <Button type="button" variant={filter === 'sweeped' ? 'primary' : 'secondary'} onClick={() => { setFilter('sweeped'); setCurrentPage(1) }}>
-            Sweeped
-          </Button>
         </div>
       </section>
 

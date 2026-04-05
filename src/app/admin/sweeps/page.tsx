@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 import { useState } from 'react'
@@ -23,7 +23,7 @@ export default function AdminSweepsPage() {
     gridX: '1',
     gridY: '1',
     cellSizeMeters: '500',
-    regionName: 'Kas Overpass Sweep',
+    regionName: 'Kaş Overpass Sweep',
     dryRun: false,
   })
   const itemsPerPage = 50
@@ -50,15 +50,24 @@ export default function AdminSweepsPage() {
   const categoryOptions = snapshot.categoryOptions.map((opt) => ({ value: opt.id, label: opt.label }))
 
   return (
-    <main className="container admin-shell">
-      <section className="admin-hero admin-hero-review">
-        <div className="admin-summary-card admin-summary-card-review">
+    <main className="container admin-shell admin-shell-places admin-shell-sweeps">
+      <section className="admin-places-intro">
+        <div className="admin-places-intro-copy">
+          <h1 className="admin-places-title">Sweep Paneli</h1>
+          <p className="admin-places-subtitle">
+            Sweep oturumlarını takip et, Overpass taraması başlat ve sweep kaynaklı mekanları tek yerden yönet.
+          </p>
+        </div>
+      </section>
+
+      <section className="admin-hero admin-hero-review admin-places-hero-stack">
+        <div className="admin-summary-card admin-summary-card-review admin-summary-card-places admin-summary-card-sweeps">
           <div className="admin-summary-item">
             <span className="admin-summary-label">Toplam sweep</span>
             <strong>{snapshot.stats.trackedSweeps}</strong>
           </div>
           <div className="admin-summary-item">
-            <span className="admin-summary-label">Calisan sweep</span>
+            <span className="admin-summary-label">Çalışan</span>
             <strong>{snapshot.stats.runningSweeps}</strong>
           </div>
           <div className="admin-summary-item">
@@ -70,32 +79,32 @@ export default function AdminSweepsPage() {
             <strong>{snapshot.stats.pendingSweepPlaces}</strong>
           </div>
           <div className="admin-summary-item">
-            <span className="admin-summary-label">Yayinda</span>
+            <span className="admin-summary-label">Yayında</span>
             <strong>{snapshot.stats.publishedSweepPlaces}</strong>
           </div>
         </div>
       </section>
 
-      <section className="admin-toolbar">
+      <section className="admin-toolbar admin-toolbar-places">
         <AdminSectionLinks
           current="sweeps"
           onRefresh={() => loadDashboard()}
-          refreshLabel="Sweep panelini yenile"
+          refreshLabel="Sweep listesini yenile"
           refreshing={isLoading}
           onLogout={logout}
         />
 
-        <div className={`admin-status admin-status-${status.tone}`}>
+        <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
           <span>{status.message}</span>
         </div>
       </section>
 
-      <section className="admin-panel admin-panel-overpass">
-        <div className="admin-overpass-head">
+      <section className="admin-panel admin-panel-overpass admin-panel-overpass-places">
+        <div className="admin-overpass-head admin-overpass-head-places">
           <div>
-            <h2 className="admin-section-title">Overpass sweep baslat</h2>
+            <h2 className="admin-section-title">Overpass sweep başlat</h2>
             <p className="admin-section-copy">
-              `overpass-api.de` uzerinden tek hucre sweep calistirir ve sonucu ayni `places` tablosuna yazar.
+              `overpass-api.de` üzerinden tek hücre sweep çalıştırır ve sonuçları aynı `places` tablosuna yazar.
             </p>
           </div>
         </div>
@@ -122,7 +131,7 @@ export default function AdminSweepsPage() {
           </label>
 
           <label className="admin-field">
-            <span className="admin-label">Hucre boyutu (m)</span>
+            <span className="admin-label">Hücre boyutu (m)</span>
             <input
               className="admin-input"
               inputMode="numeric"
@@ -132,7 +141,7 @@ export default function AdminSweepsPage() {
           </label>
 
           <label className="admin-field admin-field-span-2">
-            <span className="admin-label">Bolge adi</span>
+            <span className="admin-label">Bölge adı</span>
             <input
               className="admin-input"
               value={overpassForm.regionName}
@@ -141,13 +150,13 @@ export default function AdminSweepsPage() {
           </label>
         </div>
 
-        <label className="admin-checkbox-row">
+        <label className="admin-checkbox-row admin-checkbox-row-places">
           <input
             type="checkbox"
             checked={overpassForm.dryRun}
             onChange={(event) => setOverpassForm((current) => ({ ...current, dryRun: event.target.checked }))}
           />
-          <span>Dry-run calistir, veri yazma</span>
+          <span>Dry-run çalıştır, veri yazma</span>
         </label>
 
         <div className="admin-toolbar-actions">
@@ -165,27 +174,27 @@ export default function AdminSweepsPage() {
               })
             }
           >
-            {isLoading ? 'Calisiyor...' : overpassForm.dryRun ? 'Dry-run baslat' : 'Overpass sweep baslat'}
+            {isLoading ? 'Çalışıyor...' : overpassForm.dryRun ? 'Dry-run başlat' : 'Overpass sweep başlat'}
           </Button>
         </div>
       </section>
 
-      <section className="admin-list-header">
+      <section className="admin-list-header admin-list-header-places">
         <div>
-          <h2 className="admin-section-title">Sweep oturumlari</h2>
+          <h2 className="admin-section-title">Sweep oturumları</h2>
           <p className="admin-section-copy">
-            Sweep operasyonlari artik mekan review akısından ayrildi. Burada sadece tarama oturumlari ve sonuclari gorunur.
+            Burada sadece tarama oturumları ve hücre sonuçları görünür; mekan yönetimi yine tek tablo üzerinden ilerler.
           </p>
         </div>
       </section>
 
       <SweepBoard sweeps={snapshot.sweeps} />
 
-      <section className="admin-list-header">
+      <section className="admin-list-header admin-list-header-places">
         <div>
-          <h2 className="admin-section-title">Sweep kaynakli mekanlar</h2>
+          <h2 className="admin-section-title">Sweep kaynaklı mekanlar</h2>
           <p className="admin-section-copy">
-            Bu liste sadece `sweeped` etiketli mekanlari gosterir. Mekanlar yine ayni `places` tablosunda kalir.
+            Bu liste yalnızca `sweeped` etiketli mekanları gösterir. Kayıtlar yine aynı `places` tablosunda kalır.
           </p>
         </div>
       </section>
@@ -193,10 +202,10 @@ export default function AdminSweepsPage() {
       {snapshot.sweepPlaces.length === 0 ? (
         <section className="admin-empty-state">
           <strong>Henüz listelenecek sweep mekan yok.</strong>
-          <p>Yeni bir sweep tamamlandiginda mekanlar burada gorunecek.</p>
+          <p>Yeni bir sweep tamamlandığında mekanlar burada görünecek.</p>
         </section>
       ) : (
-        <section className="place-review-shell">
+        <section className="place-review-shell place-review-shell-places">
           {paginatedPlaces.map((item) => {
             const isOpen = activeSweepPlaceId === item.id
             const isBusy = activeActionId === item.id
@@ -205,21 +214,21 @@ export default function AdminSweepsPage() {
             const placeTone = mapProcessingStatusTone(draft.status)
 
             return (
-              <article key={item.id} className={`place-review-card${isOpen ? ' is-open' : ''}`}>
+              <article key={item.id} className={`place-review-card place-review-card-places${isOpen ? ' is-open' : ''}`}>
                 <button
                   type="button"
                   className="place-review-summary"
                   onClick={() => setActiveSweepPlaceId(isOpen ? null : item.id)}
                 >
-                  <div className="place-review-row-grid">
-                    <span className="place-review-grid-pill">{item.gridKey || item.sourceName || 'Sweep'}</span>
-                    <h3 className="place-review-single-title">{draft.name || item.nameRaw || 'Isimsiz mekan'}</h3>
+                  <div className="place-review-row-grid place-review-row-grid-places">
+                    <span className="place-review-grid-pill place-review-grid-pill-places">{item.gridKey || item.sourceName || 'Sweep'}</span>
+                    <h3 className="place-review-single-title">{draft.name || item.nameRaw || 'İsimsiz mekan'}</h3>
                     <span className="place-review-single-cat">{draft.categoryPrimary || item.categoryRaw || 'Kategori yok'}</span>
-                    <span className="place-review-single-address">{draft.address || item.addressRaw || 'Adres yok'}</span>
-                    <span className={`review-pill review-pill-${placeTone}`}>{formatPlaceStatus(draft.status)}</span>
-                    <div className="place-review-single-actions">
+                    <div className="place-review-single-actions place-review-single-actions-inline place-review-single-actions-inline-row">
+                      <span className={`review-pill review-pill-${placeTone}`}>{formatPlaceStatus(draft.status)}</span>
+                      <span className="review-pill review-pill-pending">Sweeped</span>
                       <span className="place-review-photo-count">{nonEmptyImageCount}/5 foto</span>
-                      <strong className="place-review-edit-label">{isOpen ? 'Editoru kapat' : 'Duzenle'}</strong>
+                      <strong className="place-review-edit-label">{isOpen ? 'Editörü kapat' : 'Düzenle'}</strong>
                     </div>
                   </div>
                 </button>
@@ -228,10 +237,10 @@ export default function AdminSweepsPage() {
                   <div className="place-review-editor">
                     <div className="place-review-raw-grid">
                       <div className="place-review-raw-card">
-                        <span className="place-review-card-label">Sweep kaynagi</span>
-                        <strong>{item.nameRaw || 'Isimsiz mekan'}</strong>
+                        <span className="place-review-card-label">Sweep kaynağı</span>
+                        <strong>{item.nameRaw || 'İsimsiz mekan'}</strong>
                         <p>{item.sourceName} / {item.sourceId}</p>
-                        <p>{item.gridKey || 'Grid yok'} {item.cellId ? `• ${item.cellId}` : ''}</p>
+                        <p>{item.gridKey || 'Grid yok'}{item.cellId ? ` • ${item.cellId}` : ''}</p>
                         <p>Import: {formatDate(item.importedAt)}</p>
                         <p>Durum: {formatProcessingStatus(item.processingStatus)}</p>
                         {item.googleMapsUri ? (
@@ -241,7 +250,7 @@ export default function AdminSweepsPage() {
                             rel="noopener noreferrer"
                             className="admin-inline-link"
                           >
-                            Kaynagi ac
+                            Kaynağı aç
                           </a>
                         ) : null}
                       </div>
@@ -249,7 +258,7 @@ export default function AdminSweepsPage() {
                       <div className="place-review-raw-card">
                         <span className="place-review-card-label">Mekan durumu</span>
                         <strong>{formatPlaceStatus(draft.status)}</strong>
-                        <p>Dogrulama: {formatVerificationStatus(draft.verificationStatus)}</p>
+                        <p>Doğrulama: {formatVerificationStatus(draft.verificationStatus)}</p>
                         <p>Adres: {draft.address || item.addressRaw || '-'}</p>
                         <p>Telefon: {draft.phone || item.phoneRaw || '-'}</p>
                         <p>Website: {draft.website || item.websiteRaw || '-'}</p>
@@ -260,7 +269,7 @@ export default function AdminSweepsPage() {
                       itemId={item.id}
                       draft={draft}
                       categoryOptions={categoryOptions}
-                      photoHint="Sweep mekanlari icin en az 1, en fazla 5 foto URL gir."
+                      photoHint="Sweep mekanları için en az 1, en fazla 5 foto URL gir."
                       onUpdateField={(field, value) => updateDraftField(item.id, field, value)}
                       onUpdateImage={(index, value) => updateImageField(item.id, index, value)}
                       onAddImage={() => addImageField(item.id)}
@@ -273,7 +282,7 @@ export default function AdminSweepsPage() {
                             onClick={() => runSweepPlaceAction(item.id, 'save_draft')}
                             disabled={isBusy}
                           >
-                            {isBusy ? 'Kaydediliyor...' : 'Taslagi kaydet'}
+                            {isBusy ? 'Kaydediliyor...' : 'Taslağı kaydet'}
                           </Button>
                           <Button
                             type="button"
@@ -281,7 +290,7 @@ export default function AdminSweepsPage() {
                             onClick={() => runSweepPlaceAction(item.id, 'publish')}
                             disabled={isBusy}
                           >
-                            {isBusy ? 'Yayina hazirlaniyor...' : 'Onayla ve yayinla'}
+                            {isBusy ? 'Yayına hazırlanıyor...' : 'Onayla ve yayınla'}
                           </Button>
                           <Button
                             type="button"
@@ -297,7 +306,7 @@ export default function AdminSweepsPage() {
                               target="_blank"
                               className="admin-inline-link"
                             >
-                              Public sayfayi ac
+                              Public sayfayı aç
                             </Link>
                           ) : null}
                         </>
@@ -317,7 +326,7 @@ export default function AdminSweepsPage() {
                 onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
                 disabled={currentPage === 1}
               >
-                Onceki Sayfa
+                Önceki Sayfa
               </Button>
               <span className="admin-pagination-label">
                 Sayfa {currentPage} / {totalPages}
