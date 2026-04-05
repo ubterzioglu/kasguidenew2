@@ -5,33 +5,29 @@ import { useEffect, useState } from 'react'
 import { DEFAULT_HERO_SLIDES, HERO_ROTATION_MS, type HeroSlide } from '@/lib/hero-slide-data'
 
 type WeatherSnapshot = {
+  dateLabel: string
   temperature: number
   apparentTemperature: number
   windSpeed: number
   minTemperature: number
   maxTemperature: number
   condition: string
+  sunrise: string
+  sunset: string
+  uvIndex: number
 }
 
 const DEFAULT_WEATHER: WeatherSnapshot = {
+  dateLabel: 'Kas icin bugun',
   temperature: 24,
   apparentTemperature: 25,
   windSpeed: 12,
   minTemperature: 19,
   maxTemperature: 27,
-  condition: 'Açık',
-}
-
-function weatherCodeToLabel(code: number): string {
-  if (code === 0) return 'Açık'
-  if (code <= 3) return 'Parçalı bulutlu'
-  if (code <= 48) return 'Sisli'
-  if (code <= 57) return 'Çisenti'
-  if (code <= 67) return 'Yağmurlu'
-  if (code <= 77) return 'Karlı'
-  if (code <= 82) return 'Sağanak'
-  if (code <= 99) return 'Fırtınalı'
-  return 'Güncel'
+  condition: 'Acik',
+  sunrise: '06:32',
+  sunset: '19:21',
+  uvIndex: 5,
 }
 
 export function HeroCarousel() {
@@ -89,43 +85,38 @@ export function HeroCarousel() {
 
     async function loadWeather() {
       try {
-        const response = await fetch(
-          'https://api.open-meteo.com/v1/forecast?latitude=36.2018&longitude=29.6377&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min&timezone=Europe%2FIstanbul&forecast_days=1',
-          { cache: 'no-store' },
-        )
+        const response = await fetch('/api/hero-insights', { cache: 'no-store' })
         const payload = (await response.json()) as
           | {
-              current?: {
-                temperature_2m?: number
-                apparent_temperature?: number
-                weather_code?: number
-                wind_speed_10m?: number
-              }
-              daily?: {
-                temperature_2m_min?: number[]
-                temperature_2m_max?: number[]
-              }
+              dateLabel?: string
+              temperature?: number
+              apparentTemperature?: number
+              windSpeed?: number
+              minTemperature?: number
+              maxTemperature?: number
+              condition?: string
+              sunrise?: string
+              sunset?: string
+              uvIndex?: number
             }
           | undefined
 
-        if (!response.ok || !payload?.current) {
+        if (!response.ok || !payload) {
           return
         }
 
         if (isMounted) {
           setWeather({
-            temperature: Math.round(payload.current.temperature_2m ?? DEFAULT_WEATHER.temperature),
-            apparentTemperature: Math.round(
-              payload.current.apparent_temperature ?? DEFAULT_WEATHER.apparentTemperature,
-            ),
-            windSpeed: Math.round(payload.current.wind_speed_10m ?? DEFAULT_WEATHER.windSpeed),
-            minTemperature: Math.round(
-              payload.daily?.temperature_2m_min?.[0] ?? DEFAULT_WEATHER.minTemperature,
-            ),
-            maxTemperature: Math.round(
-              payload.daily?.temperature_2m_max?.[0] ?? DEFAULT_WEATHER.maxTemperature,
-            ),
-            condition: weatherCodeToLabel(payload.current.weather_code ?? 0),
+            dateLabel: payload.dateLabel ?? DEFAULT_WEATHER.dateLabel,
+            temperature: Math.round(payload.temperature ?? DEFAULT_WEATHER.temperature),
+            apparentTemperature: Math.round(payload.apparentTemperature ?? DEFAULT_WEATHER.apparentTemperature),
+            windSpeed: Math.round(payload.windSpeed ?? DEFAULT_WEATHER.windSpeed),
+            minTemperature: Math.round(payload.minTemperature ?? DEFAULT_WEATHER.minTemperature),
+            maxTemperature: Math.round(payload.maxTemperature ?? DEFAULT_WEATHER.maxTemperature),
+            condition: payload.condition ?? DEFAULT_WEATHER.condition,
+            sunrise: payload.sunrise ?? DEFAULT_WEATHER.sunrise,
+            sunset: payload.sunset ?? DEFAULT_WEATHER.sunset,
+            uvIndex: Math.round(payload.uvIndex ?? DEFAULT_WEATHER.uvIndex),
           })
         }
       } catch {
@@ -153,16 +144,15 @@ export function HeroCarousel() {
           style={{ backgroundImage: `url(${scene.imageUrl})` }}
         >
           <div className="hero-featured-card hero-carousel-card hero-story-card hero-story-featured-pane">
-
             <div className="hero-featured-copy hero-carousel-copy hero-story-copy-tuned">
               <h1 className="hero-story-title">
-                <span className="hero-story-title-line">Kaş&apos;ı Bir Turist Gibi Değil,</span>
+                <span className="hero-story-title-line">Kas'i Bir Turist Gibi Degil,</span>
                 <br />
-                <span className="hero-story-title-line">Bir Yerlisi Gibi Yaşa.</span>
+                <span className="hero-story-title-line">Bir Yerlisi Gibi Yasa.</span>
               </h1>
               <p className="hero-featured-description hero-story-description">
-                En gizli koylar, en lezzetli mezeler ve sadece müdavimlerin bildiği rotalar.
-                Kaş&apos;ın dijital anahtarı elinde.
+                En gizli koylar, en lezzetli mezeler ve sadece mudavimlerin bildigi rotalar.
+                Kas'in dijital anahtari elinde.
               </p>
 
               <div className="hero-featured-actions">
@@ -180,21 +170,15 @@ export function HeroCarousel() {
                 <button
                   type="button"
                   className="hero-carousel-arrow"
-                  onClick={() =>
-                    setActiveScene(
-                      (current) => (current - 1 + heroSlides.length) % heroSlides.length,
-                    )
-                  }
-                  aria-label="Önceki sahne"
+                  onClick={() => setActiveScene((current) => (current - 1 + heroSlides.length) % heroSlides.length)}
+                  aria-label="Onceki sahne"
                 >
                   ‹
                 </button>
                 <button
                   type="button"
                   className="hero-carousel-arrow"
-                  onClick={() =>
-                    setActiveScene((current) => (current + 1) % heroSlides.length)
-                  }
+                  onClick={() => setActiveScene((current) => (current + 1) % heroSlides.length)}
                   aria-label="Sonraki sahne"
                 >
                   ›
@@ -219,44 +203,43 @@ export function HeroCarousel() {
           <aside className="hero-story-aside">
             <div className="hero-insight-card hero-insight-card-proof">
               <div className="hero-insight-header hero-insight-header-accent">
-                <h2 className="hero-insight-title">2 Nisan Çarşamba</h2>
+                <h2 className="hero-insight-title">{weather.dateLabel}</h2>
               </div>
-              <div className="hero-weather-panel" aria-label="Bugünkü hava durumu">
+              <div className="hero-weather-panel" aria-label="Bugunku hava durumu">
                 <div className="hero-weather-main">
                   <strong className="hero-weather-temp">{weather.temperature}°</strong>
                   <span className="hero-weather-condition">{weather.condition}</span>
                 </div>
                 <div className="hero-weather-meta">
                   <span>Hissedilen {weather.apparentTemperature}°</span>
-                  <span>Rüzgar {weather.windSpeed} km/s</span>
-                  <span>
-                    Min {weather.minTemperature}° / Max {weather.maxTemperature}°
-                  </span>
+                  <span>Ruzgar {weather.windSpeed} km/s</span>
+                  <span>Min {weather.minTemperature}° / Max {weather.maxTemperature}°</span>
+                  <span>Gunes {weather.sunrise} / {weather.sunset}</span>
+                  <span>UV {weather.uvIndex}</span>
                 </div>
               </div>
             </div>
 
             <div className="hero-insight-card hero-insight-card-weather">
               <div className="hero-insight-header hero-insight-header-accent">
-                <h2 className="hero-insight-title">Öne Çıkan Mekanlar</h2>
+                <h2 className="hero-insight-title">One Cikan Mekanlar</h2>
               </div>
-              {/* TODO: Fetch featured venues from the database */}
               <div className="hero-signal-row">
                 <strong>Bi'Lokma</strong>
-                <span>Anne yemekleri ve vegan seçenekler</span>
+                <span>Anne yemekleri ve vegan secenekler</span>
               </div>
               <div className="hero-signal-row">
                 <strong>Zaika</strong>
-                <span>Ocakbaşı ve geleneksel lezzetler</span>
+                <span>Ocakbasi ve geleneksel lezzetler</span>
               </div>
             </div>
 
             <div className="hero-insight-card hero-insight-card-cta">
               <div className="hero-insight-header hero-insight-header-accent">
-                <h2 className="hero-insight-title">Topluluğa gir</h2>
+                <h2 className="hero-insight-title">Topluluga gir</h2>
               </div>
               <p>
-                Güncel etkinlikler, son dakika tavsiyeleri için topluluğa katıl!
+                Guncel etkinlikler, son dakika tavsiyeleri icin topluluga katil!
               </p>
               <a
                 href="https://chat.whatsapp.com/GODQNmpRlAaDDtyaDnIyn4"
@@ -264,7 +247,7 @@ export function HeroCarousel() {
                 rel="noopener noreferrer"
                 className="hero-aside-link hero-aside-link-cta"
               >
-                WhatsApp Topluluğu
+                WhatsApp Toplulugu
               </a>
             </div>
           </aside>
