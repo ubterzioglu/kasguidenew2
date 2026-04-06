@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 
+import { PlaceGuideBadges } from '@/components/place-guide-badges'
 import type { PlannerPlace, PlannerQuestion } from '@/lib/planner-data'
 
 type PlannerPageClientProps = {
@@ -293,6 +294,48 @@ function isAnswered(question: PlannerQuestion, answer: Answers[number] | undefin
   return typeof answer === 'number'
 }
 
+function PlannerPlaceSignals({ place }: { place: PlannerPlace }) {
+  return (
+    <div className="planner-place-signals">
+      <span
+        className={`planner-place-signal${place.address ? ' is-active' : ' is-muted'}`}
+        aria-label={`Adres ${place.address ? 'var' : 'yok'}`}
+        title={`Adres ${place.address ? 'var' : 'yok'}`}
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+          <path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" stroke="currentColor" strokeWidth="2" />
+          <circle cx="12" cy="9" r="2.4" fill="currentColor" />
+        </svg>
+      </span>
+      <span
+        className={`planner-place-signal${place.phone ? ' is-active' : ' is-muted'}`}
+        aria-label={`Telefon ${place.phone ? 'var' : 'yok'}`}
+        title={`Telefon ${place.phone ? 'var' : 'yok'}`}
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+          <path
+            d="M6.8 3.5h2.6c.5 0 .9.3 1 .7l.8 3.2c.1.4 0 .8-.3 1l-1.7 1.4a14.4 14.4 0 0 0 5 5l1.4-1.7c.3-.3.7-.4 1-.3l3.2.8c.5.1.8.5.8 1v2.6c0 .6-.5 1.1-1.1 1.1C10.7 19.8 4.2 13.3 4.2 4.6c0-.6.5-1.1 1.1-1.1z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+      <span
+        className={`planner-place-signal${place.website ? ' is-active' : ' is-muted'}`}
+        aria-label={`Website ${place.website ? 'var' : 'yok'}`}
+        title={`Website ${place.website ? 'var' : 'yok'}`}
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+          <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+      </span>
+    </div>
+  )
+}
+
 export function PlannerPageClient({ questions, places }: PlannerPageClientProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Answers>({})
@@ -313,6 +356,10 @@ export function PlannerPageClient({ questions, places }: PlannerPageClientProps)
       ...previous,
       [currentQuestion.id]: optionIndex,
     }))
+
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex((value) => Math.min(value + 1, questions.length - 1))
+    }
   }
 
   function handleCheckboxToggle(optionIndex: number) {
@@ -370,11 +417,8 @@ export function PlannerPageClient({ questions, places }: PlannerPageClientProps)
       {!submitted ? (
         <section className="planner-shell">
           <div className="planner-header">
-            <p className="planner-eyebrow">Planner</p>
             <h1 className="planner-title">25 Soruda Kaş&apos;ta Bir Gününü Planla</h1>
-            <p className="planner-subtitle">
-              Eski planner akışını koruyan bu sürüm, cevaplarınıza göre günlük rota ve yayınlanmış mekan önerileri oluşturur.
-            </p>
+            <p className="planner-subtitle">25 soruya cevap ver tüm gününü birlikte planlayalım!</p>
             <div className="planner-progress-track" aria-label="İlerleme">
               <div className="planner-progress-fill" style={{ width: `${progress}%` }} />
             </div>
@@ -385,7 +429,6 @@ export function PlannerPageClient({ questions, places }: PlannerPageClientProps)
 
           <div className="planner-question-card">
             <div className="planner-question-topline">
-              <span className="planner-question-number">{currentQuestion.id}</span>
               <h2 className="planner-question-text">{currentQuestion.text}</h2>
             </div>
 
@@ -443,17 +486,16 @@ export function PlannerPageClient({ questions, places }: PlannerPageClientProps)
         <section className="planner-results-shell">
           <div className="planner-results-hero">
             <div>
-              <p className="planner-eyebrow">Sonuç</p>
-              <h1 className="planner-title">Özelleştirilmiş Kaş günün hazır</h1>
+              <h1 className="planner-title planner-title-results">Özelleştirilmiş Kaş Günün Hazır</h1>
               <p className="planner-subtitle">
                 Cevaplarınıza göre oluşturulan rota ve mekan önerileri aşağıda. İsterseniz planı sıfırlayıp farklı bir profil de deneyebilirsiniz.
               </p>
             </div>
             <div className="planner-results-actions">
-              <button type="button" className="planner-action planner-action-secondary" onClick={resetPlanner}>
+              <button type="button" className="planner-action planner-action-secondary planner-action-unified" onClick={resetPlanner}>
                 Baştan başla
               </button>
-              <Link href="/" className="planner-action planner-action-primary planner-action-link">
+              <Link href="/" className="planner-action planner-action-secondary planner-action-link planner-action-unified">
                 Ana sayfaya dön
               </Link>
             </div>
@@ -467,6 +509,7 @@ export function PlannerPageClient({ questions, places }: PlannerPageClientProps)
                   <article key={`${slot.time}-${slot.title}`} className="planner-itinerary-card">
                     <span className="planner-itinerary-time">{slot.time}</span>
                     <h3>{slot.title}</h3>
+                    <span className="planner-card-separator" aria-hidden="true" />
                     <p>{slot.description}</p>
                   </article>
                 ))}
@@ -480,16 +523,23 @@ export function PlannerPageClient({ questions, places }: PlannerPageClientProps)
                   {recommendationGroups.map((group) => (
                     <section key={group.label} className="planner-recommendation-group">
                       <h3>{group.label}</h3>
+                      <span className="planner-card-separator" aria-hidden="true" />
                       <div className="planner-recommendation-list">
                         {group.places.map((place) => (
                           <article key={`${group.label}-${place.id}`} className="planner-recommendation-card">
-                            <div>
+                            <div className="planner-recommendation-copy">
                               <p className="planner-recommendation-category">{place.categoryLabel}</p>
                               <h4>{place.name}</h4>
                               <p>{place.shortDescription}</p>
                             </div>
                             <div className="planner-recommendation-meta">
-                              {place.address ? <span>{place.address}</span> : null}
+                              <PlannerPlaceSignals place={place} />
+                              {place.badges.length > 0 ? (
+                                <div className="planner-recommendation-badges">
+                                  <span className="planner-recommendation-badges-label">Kaş Guide</span>
+                                  <PlaceGuideBadges badges={place.badges} variant="card" ariaLabel="Kaş Guide badgeleri" />
+                                </div>
+                              ) : null}
                               <Link href={`/mekan/${place.slug}`}>Mekan sayfasını aç</Link>
                             </div>
                           </article>

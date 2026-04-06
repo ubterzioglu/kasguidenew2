@@ -22,6 +22,7 @@ export type PlannerPlace = {
   budget: number | null
   rating: number | null
   address: string | null
+  phone: string | null
   website: string | null
   imageUrl: string | null
   badges: PublicPlaceBadge[]
@@ -155,6 +156,7 @@ function mapPlannerPlace(place: PlannerPlaceListItem): PlannerPlace {
     budget: inferBudget(place),
     rating: null,
     address: place.address,
+    phone: place.phone,
     website: place.website,
     imageUrl: place.imageUrl,
     badges: place.guideBadges,

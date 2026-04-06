@@ -6240,11 +6240,11 @@ body {
 
 .home-promo-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 400px;
+  grid-template-columns: minmax(0, 1fr) 300px;
   align-items: stretch;
   gap: 0;
-  min-height: 400px;
-  height: 400px;
+  min-height: 300px;
+  height: 300px;
   padding: 0 0 0 1.25rem;
   border-radius: 28px;
   text-decoration: none;
@@ -6328,10 +6328,10 @@ body {
 
 .home-promo-media-wrap {
   position: relative;
-  width: 400px;
-  min-width: 400px;
-  min-height: 400px;
-  height: 400px;
+  width: 300px;
+  min-width: 300px;
+  min-height: 300px;
+  height: 300px;
   border-radius: 0 28px 28px 0;
   overflow: hidden;
   box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.36);
@@ -6392,5 +6392,284 @@ body {
     min-height: 200px;
     height: 200px;
     border-radius: 18px;
+  }
+}
+
+
+/* Planner revision overrides */
+.planner-shell,
+.planner-results-shell {
+  gap: 1rem;
+  padding: 1.1rem;
+}
+
+.planner-header {
+  gap: 0.55rem;
+}
+
+.planner-progress-label,
+.planner-recommendation-category,
+.planner-itinerary-time {
+  font-size: 0.75rem;
+}
+
+.planner-title {
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  line-height: 1;
+}
+
+.planner-title-results {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+}
+
+.planner-subtitle {
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.planner-question-card {
+  gap: 0.85rem;
+  padding: 1rem;
+}
+
+.planner-question-topline {
+  display: block;
+}
+
+.planner-question-number {
+  display: none;
+}
+
+.planner-question-text {
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.planner-option-grid {
+  gap: 0.7rem;
+}
+
+.planner-option-button,
+.planner-check-option {
+  min-height: 56px;
+  border-radius: 16px;
+  font-size: 0.94rem;
+  line-height: 1.4;
+}
+
+.planner-option-button {
+  padding: 0.8rem 0.95rem;
+}
+
+.planner-check-option {
+  gap: 0.7rem;
+  padding: 0.8rem 0.95rem;
+}
+
+.planner-validation {
+  padding: 0.55rem 0.8rem;
+  border-radius: 14px;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.planner-actions,
+.planner-results-actions {
+  flex-wrap: nowrap;
+  gap: 0.8rem;
+}
+
+.planner-action {
+  min-height: 46px;
+  padding: 0.72rem 1rem;
+  border: 1px solid rgba(0, 168, 150, 0.2);
+  font-size: 0.92rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.planner-action-primary {
+  background: linear-gradient(135deg, #00a896 0%, #0b8f81 100%);
+}
+
+.planner-action-secondary {
+  background: rgba(0, 168, 150, 0.1);
+  color: #065f58;
+}
+
+.planner-action-unified {
+  flex: 1 1 0;
+  min-width: 0;
+  background: rgba(0, 168, 150, 0.12);
+  color: #065f58;
+}
+
+.planner-action-link {
+  border-color: rgba(0, 168, 150, 0.2);
+}
+
+.planner-results-grid {
+  align-items: start;
+}
+
+.planner-itinerary-panel h2,
+.planner-recommendations-panel h2 {
+  font-size: 1.12rem;
+}
+
+.planner-itinerary-card,
+.planner-recommendation-group {
+  padding: 0.92rem 1rem;
+}
+
+.planner-card-separator {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: rgba(7, 59, 54, 0.1);
+}
+
+.planner-recommendation-card {
+  gap: 0.6rem;
+  padding: 0.82rem 0;
+}
+
+.planner-recommendation-card h4 {
+  margin: 0.15rem 0 0.35rem;
+  font-size: 1rem;
+}
+
+.planner-recommendation-copy {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.planner-place-signals {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.planner-place-signal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 168, 150, 0.12);
+  background: rgba(0, 168, 150, 0.08);
+  color: #0b8f81;
+}
+
+.planner-place-signal.is-muted {
+  background: rgba(7, 59, 54, 0.05);
+  border-color: rgba(7, 59, 54, 0.08);
+  color: rgba(7, 59, 54, 0.34);
+}
+
+.planner-recommendation-meta {
+  display: grid;
+  gap: 0.55rem;
+  align-items: start;
+}
+
+.planner-recommendation-meta span,
+.planner-recommendation-meta a {
+  font-size: 0.86rem;
+}
+
+.planner-recommendation-meta a {
+  width: fit-content;
+}
+
+.planner-recommendation-badges {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.planner-recommendation-badges-label {
+  color: rgba(0, 77, 64, 0.72);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.home-promo-card {
+  grid-template-columns: minmax(0, 1fr) 300px;
+  min-height: 300px;
+  height: 300px;
+}
+
+.home-promo-media-wrap {
+  width: 300px;
+  min-width: 300px;
+  min-height: 300px;
+  height: 300px;
+}
+
+@media (max-width: 700px) {
+  .planner-shell,
+  .planner-results-shell {
+    padding: 0.9rem;
+  }
+
+  .planner-title {
+    font-size: 1.5rem;
+  }
+
+  .planner-title-results {
+    font-size: 1.35rem;
+  }
+
+  .planner-subtitle {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .planner-question-card {
+    padding: 0.88rem;
+  }
+
+  .planner-question-text {
+    font-size: 1rem;
+  }
+
+  .planner-option-button,
+  .planner-check-option {
+    min-height: 50px;
+    font-size: 0.88rem;
+  }
+
+  .planner-actions,
+  .planner-results-actions {
+    flex-direction: row;
+    gap: 0.65rem;
+  }
+
+  .planner-action {
+    min-height: 42px;
+    padding: 0.66rem 0.8rem;
+    font-size: 0.86rem;
+  }
+
+  .planner-validation {
+    font-size: 0.76rem;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .planner-recommendation-badges {
+    flex-wrap: wrap;
+  }
+
+  .planner-action-unified {
+    flex-basis: 0;
   }
 }
