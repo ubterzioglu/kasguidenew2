@@ -3748,9 +3748,9 @@ body {
 }
 
 .hero-meta-chip-accent {
-  background: rgba(231, 84, 128, 0.12);
-  border-color: rgba(231, 84, 128, 0.16);
-  color: #b33d64;
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.26);
+  color: #ffffff;
 }
 
 .hero-insight-card,

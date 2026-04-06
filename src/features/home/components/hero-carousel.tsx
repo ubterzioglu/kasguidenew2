@@ -125,7 +125,6 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
         >
           <div className="hero-featured-card hero-carousel-card hero-story-card hero-story-featured-pane">
             <div className="hero-featured-copy hero-carousel-copy hero-story-copy-tuned">
-              <span className="hero-featured-kicker">{scene.eyebrow}</span>
               <h1 className="hero-story-title">
                 {scene.title}
               </h1>
