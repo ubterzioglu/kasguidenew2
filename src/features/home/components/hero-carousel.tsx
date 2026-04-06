@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { DEFAULT_HERO_SLIDES, HERO_ROTATION_MS, type HeroSlide } from '@/lib/hero-slide-data'
 
@@ -30,39 +30,19 @@ const DEFAULT_WEATHER: WeatherSnapshot = {
   uvIndex: 5,
 }
 
-export function HeroCarousel() {
+type HeroCarouselProps = {
+  initialSlides?: HeroSlide[]
+}
+
+export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
   const [activeScene, setActiveScene] = useState(0)
-  const [heroSlides, setHeroSlides] = useState<HeroSlide[]>(DEFAULT_HERO_SLIDES)
   const [weather, setWeather] = useState<WeatherSnapshot>(DEFAULT_WEATHER)
+  const heroSlides = useMemo(
+    () => (initialSlides && initialSlides.length > 0 ? initialSlides : DEFAULT_HERO_SLIDES),
+    [initialSlides],
+  )
 
   const scene = heroSlides[activeScene] ?? heroSlides[0]
-
-  useEffect(() => {
-    let isMounted = true
-
-    async function loadHeroSlides() {
-      try {
-        const response = await fetch('/api/hero-slides', { cache: 'no-store' })
-        const payload = (await response.json()) as { slides?: HeroSlide[] } | undefined
-
-        if (!response.ok || !payload?.slides?.length) {
-          return
-        }
-
-        if (isMounted) {
-          setHeroSlides(payload.slides)
-        }
-      } catch {
-        // Seed slides remain in place when the API is unavailable.
-      }
-    }
-
-    void loadHeroSlides()
-
-    return () => {
-      isMounted = false
-    }
-  }, [])
 
   useEffect(() => {
     if (heroSlides.length <= 1) {
@@ -145,15 +125,22 @@ export function HeroCarousel() {
         >
           <div className="hero-featured-card hero-carousel-card hero-story-card hero-story-featured-pane">
             <div className="hero-featured-copy hero-carousel-copy hero-story-copy-tuned">
+              <span className="hero-featured-kicker">{scene.eyebrow}</span>
               <h1 className="hero-story-title">
-                <span className="hero-story-title-line">Kaş'ı Bir Turist Gibi Değil,</span>
-                <br />
-                <span className="hero-story-title-line">Bir Yerlisi Gibi Yaşa.</span>
+                {scene.title}
               </h1>
               <p className="hero-featured-description hero-story-description">
-                En gizli koylar, en lezzetli mezeler ve sadece müdavimlerin bildiği rotalar.
-                Kaş'ın dijital anahtarı elinde.
+                {scene.description}
               </p>
+              {scene.tags.length > 0 ? (
+                <div className="hero-featured-meta hero-story-meta" aria-label="Hero etiketleri">
+                  {scene.tags.map((tag) => (
+                    <span key={`${scene.id}-${tag}`} className="hero-meta-chip hero-meta-chip-accent">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
 
               <div className="hero-featured-actions">
                 <a href="#categories" className="hero-primary-action">

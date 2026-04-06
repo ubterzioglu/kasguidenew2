@@ -1,12 +1,14 @@
 ﻿import { CategorySection } from '@/features/home/components/category-section'
 import { HeroCarousel } from '@/features/home/components/hero-carousel'
+import { listPublicHeroSlides } from '@/lib/hero-slide-store'
 
-export const revalidate = 3600 // 1 hour caching
+export const dynamic = 'force-dynamic'
 
-export default function HomePage() {
+export default async function HomePage() {
+  const heroSnapshot = await listPublicHeroSlides()
   return (
     <>
-      <HeroCarousel />
+      <HeroCarousel initialSlides={heroSnapshot.slides} />
 
       <CategorySection />
 
