@@ -5,8 +5,8 @@ import { CATEGORY_MAP } from '@/lib/categories'
 const PROMO_CARDS = [
   {
     title: 'Kaş Tatili Günlük Planlayıcı',
-    description: 'Kararsız mı kaldın? Planlayıcımızı kullan, gününü planla.',
-    href: '/#categories',
+    description: 'Kararsız kaldığında 25 soruluk planner ile gününü ritmine, bütçene ve ilgi alanına göre şekillendir.',
+    href: '/planner',
     cta: 'Planlamaya başla',
     imageUrl: CATEGORY_MAP.get('gezi')?.imageUrl ?? '',
     imageAlt: 'Kaş tatili için günlük plan ilhamı',
@@ -14,8 +14,8 @@ const PROMO_CARDS = [
   },
   {
     title: 'Sık Sorulan Sorular',
-    description: 'Kaş hakkında her şeyi bize sorabilirsin. Geniş veritabanımızda binlerce soruya binlerce cevap var.',
-    href: '/result?categories=oss',
+    description: 'Eski FAQ arşivindeki yüzlerce soruyu tek yerde toplayan, arama destekli Kaş bilgi bankasına göz at.',
+    href: '/faq',
     cta: 'SSS sayfasını keşfet',
     imageUrl: CATEGORY_MAP.get('oss')?.imageUrl ?? '',
     imageAlt: 'Kaş hakkında sık sorulan sorular',
@@ -31,13 +31,13 @@ const PROMO_CARDS = [
     toneClassName: 'home-promo-card-series',
   },
   {
-    title: 'Röportajlar',
-    description: "Mekanları sahiplerinden dinleyin. Kaş'ın ritmini, hikayelerini ve önerilerini birinci ağızdan okuyun.",
-    href: '/result?categories=roportaj',
-    cta: 'Röportajlara git',
-    imageUrl: CATEGORY_MAP.get('roportaj')?.imageUrl ?? '',
-    imageAlt: 'Kaş röportajları',
-    toneClassName: 'home-promo-card-interview',
+    title: 'Kaş Local: Ben Yerlisiyim',
+    description: 'Daha içeriden, daha yerel bir Kaş rehberi için hazırladığımız yeni alanın ilk iskeletini keşfedin.',
+    href: '/local',
+    cta: 'Local sayfasına git',
+    imageUrl: CATEGORY_MAP.get('kas-local')?.imageUrl ?? CATEGORY_MAP.get('roportaj')?.imageUrl ?? '',
+    imageAlt: 'Kaş local rehberi',
+    toneClassName: 'home-promo-card-local',
   },
 ] as const
 

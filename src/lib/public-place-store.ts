@@ -30,6 +30,8 @@ export type PublicPlaceListItem = {
   guideBadges: PublicPlaceBadge[]
 }
 
+export type PlannerPlaceListItem = PublicPlaceListItem
+
 export type ListPublishedPlacesInput = {
   categoryIds: string[]
   limit?: number
@@ -295,6 +297,36 @@ export async function listPublishedPlacesByCategory(categoryId: string, limit = 
     limit,
     offset,
   })
+}
+
+export async function listPublishedPlannerPlaces(): Promise<PlannerPlaceListItem[]> {
+  const client = getSupabaseAdminClient()
+
+  if (!client) {
+    throw new Error('Supabase admin bağlantısı hazır değil.')
+  }
+
+  const categoryIds = ['kahvalti', 'cafe', 'restoran', 'meyhane', 'plaj', 'gezi', 'tarih', 'doga', 'dalis', 'aktivite', 'carsi', 'bar']
+
+  const { data, error } = await runPlacesQueryWithBadgeFallback<PlaceRow>(
+    (selectClause) =>
+      client
+        .from('places')
+        .select(selectClause)
+        .eq('status', 'published')
+        .in('category_primary', categoryIds)
+        .order('updated_at', { ascending: false })
+        .range(0, 199),
+    PUBLISHED_PLACE_LIST_SELECT_EXTENDED,
+    PUBLISHED_PLACE_LIST_SELECT_LEGACY,
+  )
+
+  if (error) {
+    throw new Error('Planner için yayınlanmış mekanlar okunamadı.')
+  }
+
+  const badgeRows = await fetchBadgeRows()
+  return ((data ?? []) as PlaceRow[]).map((place) => mapPlaceListItem(place, badgeRows))
 }
 
 export async function getPublishedPlaceBySlug(slug: string) {
