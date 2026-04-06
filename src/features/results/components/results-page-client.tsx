@@ -1,12 +1,12 @@
-'use client'
+﻿'use client'
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 
+import { Button } from '@/components/ui/button'
 import { CategoryPlaceCard } from '@/features/home/components/category-place-card'
 import { CategoryTileStrip } from '@/features/home/components/category-tile-strip'
 import type { CategoryPlace } from '@/features/home/components/types'
-import { Button } from '@/components/ui/button'
 import { CATEGORY_MAP } from '@/lib/categories'
 
 const PAGE_SIZE = 12
@@ -29,7 +29,7 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
   const [hasMore, setHasMore] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
-  const [status, setStatus] = useState('')
+  const [statusMessage, setStatusMessage] = useState('')
   const [activeCategoryIds, setActiveCategoryIds] = useState<string[]>([])
 
   const normalizedCategoryIds = useMemo(
@@ -40,6 +40,16 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
   useEffect(() => {
     setActiveCategoryIds(normalizedCategoryIds)
   }, [normalizedCategoryIds])
+
+  const activeCategoryLabels = useMemo(
+    () => activeCategoryIds.map((item) => CATEGORY_MAP.get(item)?.label || item),
+    [activeCategoryIds],
+  )
+
+  const totalCount = useMemo(
+    () => activeCategoryIds.reduce((sum, categoryId) => sum + (categoryCounts[categoryId] ?? 0), 0),
+    [activeCategoryIds, categoryCounts],
+  )
 
   useEffect(() => {
     let cancelled = false
@@ -75,12 +85,12 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
       if (activeCategoryIds.length === 0) {
         setPlaces([])
         setHasMore(false)
-        setStatus('Bir veya daha fazla kategori sec.')
+        setStatusMessage('Sonuç görmek için en az bir kategori seçin.')
         return
       }
 
       setIsLoading(true)
-      setStatus('Sonuclar yukleniyor...')
+      setStatusMessage('Sonuçlar yükleniyor...')
 
       try {
         const response = await fetch(
@@ -90,7 +100,7 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
         const payload = (await response.json()) as PlacesEnvelope
 
         if (!response.ok) {
-          throw new Error(payload.error || 'Sonuclar yuklenemedi.')
+          throw new Error(payload.error || 'Sonuçlar yüklenemedi.')
         }
 
         if (cancelled) {
@@ -98,20 +108,19 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
         }
 
         const nextPlaces = payload.places ?? []
-        const totalCount = activeCategoryIds.reduce((sum, categoryId) => sum + (categoryCounts[categoryId] ?? 0), 0)
 
         setPlaces(nextPlaces)
         setHasMore(Boolean(payload.hasMore))
-        setStatus(
+        setStatusMessage(
           totalCount > 0
-            ? `${activeCategoryIds.map((item) => CATEGORY_MAP.get(item)?.label || item).join(', ')} icin ${totalCount} yayin kaydi bulundu.`
-            : 'Secili kategoriler icin yayinlanmis mekan bulunamadi.',
+            ? `${activeCategoryLabels.join(', ')} için sonuçlar hazır.`
+            : 'Seçili kategoriler için yayınlanmış mekan bulunamadı.',
         )
       } catch (error) {
         if (!cancelled) {
           setPlaces([])
           setHasMore(false)
-          setStatus(error instanceof Error ? error.message : 'Sonuclar yuklenemedi.')
+          setStatusMessage(error instanceof Error ? error.message : 'Sonuçlar yüklenemedi.')
         }
       } finally {
         if (!cancelled) {
@@ -125,7 +134,7 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
     return () => {
       cancelled = true
     }
-  }, [activeCategoryIds, categoryCounts])
+  }, [activeCategoryIds, activeCategoryLabels, totalCount])
 
   function handleToggleCategory(categoryId: string) {
     const nextSelectedIds = activeCategoryIds.includes(categoryId)
@@ -136,6 +145,11 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
 
     const query = nextSelectedIds.length > 0 ? `?categories=${encodeURIComponent(nextSelectedIds.join(','))}` : ''
     router.push(`/result${query}`, { scroll: false })
+  }
+
+  function clearFilters() {
+    setActiveCategoryIds([])
+    router.push('/result', { scroll: false })
   }
 
   async function loadMore() {
@@ -153,7 +167,7 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
       const payload = (await response.json()) as PlacesEnvelope
 
       if (!response.ok) {
-        throw new Error(payload.error || 'Ek sonuclar yuklenemedi.')
+        throw new Error(payload.error || 'Ek sonuçlar yüklenemedi.')
       }
 
       const incomingPlaces = payload.places ?? []
@@ -170,7 +184,7 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
       setPlaces(merged)
       setHasMore(Boolean(payload.hasMore))
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : 'Ek sonuclar yuklenemedi.')
+      setStatusMessage(error instanceof Error ? error.message : 'Ek sonuçlar yüklenemedi.')
     } finally {
       setIsLoadingMore(false)
     }
@@ -182,8 +196,27 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
         <div className="category-section-shell result-page-shell">
           <div className="category-topline">
             <div>
-              <h1 className="section-title">Kategori Sonuclari</h1>
-              <p className="category-results-copy result-page-copy">{status}</p>
+              <h1 className="section-title">Seçilen Kategorilere Göre Mekanlar</h1>
+              <div className="result-page-copy-block">
+                <p className="category-results-copy result-page-copy">
+                  {`Seçili Filtreler: ${activeCategoryLabels.length > 0 ? activeCategoryLabels.join(', ') : 'Henüz seçim yapılmadı'}`}
+                </p>
+                <p className="category-results-copy result-page-copy">{`Bulunan Kayıt: ${totalCount}`}</p>
+                {statusMessage ? <p className="result-page-status-note">{statusMessage}</p> : null}
+              </div>
+            </div>
+
+            <div className="category-topline-actions result-page-topline-actions">
+              <span className="category-filter-count">{`Aktif filtre: ${activeCategoryIds.length}`}</span>
+              <span className="category-topline-separator" aria-hidden="true"></span>
+              <button
+                type="button"
+                className="category-clear-filters"
+                onClick={clearFilters}
+                disabled={activeCategoryIds.length === 0}
+              >
+                Filtreyi temizle
+              </button>
             </div>
           </div>
 
@@ -195,10 +228,12 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
 
           <section className="category-results-shell result-page-results">
             {isLoading ? (
-              <div className="category-results-empty">Sonuclar yukleniyor...</div>
+              <div className="category-results-empty">Sonuçlar yükleniyor...</div>
             ) : places.length === 0 ? (
               <div className="category-results-empty category-results-empty-centered">
-                Secili kategoriler icin gosterilecek mekan bulunamadi.
+                {activeCategoryIds.length === 0
+                  ? 'Lütfen en az bir kategori seçin.'
+                  : 'Seçili kategoriler için gösterilecek mekan bulunamadı.'}
               </div>
             ) : (
               <>
@@ -211,7 +246,7 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
                 {hasMore ? (
                   <div className="category-results-actions">
                     <Button type="button" variant="secondary" onClick={loadMore} disabled={isLoadingMore}>
-                      {isLoadingMore ? 'Yukleniyor...' : 'Daha fazla yukle'}
+                      {isLoadingMore ? 'Yükleniyor...' : 'Daha fazla yükle'}
                     </Button>
                   </div>
                 ) : null}

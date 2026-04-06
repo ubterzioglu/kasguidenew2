@@ -44,6 +44,8 @@ type PlaceRow = {
   intake_channel: string | null
   is_sweeped: boolean | null
   source_sweep_id: string | null
+  category_ids: string[] | null
+  kasguide_badges: string[] | null
 }
 
 function normalizeStatus(status: PlaceStatus, publish = false): PlaceStatus {
@@ -51,12 +53,12 @@ function normalizeStatus(status: PlaceStatus, publish = false): PlaceStatus {
     return 'published'
   }
 
-  if (status === 'published') {
-    return 'admin'
-  }
-
   if (status === 'pending' || status === 'error' || status === 'rejected' || status === 'merged') {
     return 'review'
+  }
+
+  if (status === 'published') {
+    return 'published'
   }
 
   return status
@@ -120,20 +122,25 @@ function mergeSourceRecords(existing: SourceRecord[] | null | undefined, incomin
   })
 }
 
+function uniqueTokens(values: Array<string | null | undefined>) {
+  return [...new Set(values.map((value) => normalizeText(value) ?? '').filter(Boolean))]
+}
+
 function validateDraft(draft: PlaceEditorDraft) {
   const normalizedName = normalizeText(draft.name)
-  const normalizedCategory = normalizeText(draft.categoryPrimary)
+  const normalizedCategoryIds = uniqueTokens(draft.categoryIds)
   const normalizedImages = uniqueImageUrls(draft.imageUrls)
+  const normalizedKasguideBadges = uniqueTokens(draft.kasguideBadges)
 
   if (!normalizedName) {
     throw new Error('Mekan adi zorunlu.')
   }
 
-  if (!normalizedCategory) {
+  if (normalizedCategoryIds.length === 0) {
     throw new Error('Kategori secilmesi zorunlu.')
   }
 
-  if (!PLACE_CATEGORY_OPTIONS.some((option) => option.id === normalizedCategory)) {
+  if (!normalizedCategoryIds.every((categoryId) => PLACE_CATEGORY_OPTIONS.some((option) => option.id === categoryId))) {
     throw new Error('Gecersiz kategori secimi.')
   }
 
@@ -143,11 +150,13 @@ function validateDraft(draft: PlaceEditorDraft) {
 
   return {
     normalizedName,
-    normalizedCategory,
-    normalizedHeadline: normalizeText(draft.headline) || normalizedName,
+    normalizedCategoryIds,
+    normalizedCategoryPrimary: normalizedCategoryIds[0] ?? 'gezi',
+    normalizedHeadline: normalizedName,
     normalizedShortDescription: normalizeText(draft.shortDescription) || normalizedName,
     normalizedLongDescription: normalizeText(draft.longDescription) || '',
-    normalizedKasguideBadge: normalizeText(draft.kasguideBadge),
+    normalizedKasguideBadges,
+    normalizedKasguideBadgePrimary: normalizedKasguideBadges[0] ?? '',
     normalizedAddress: normalizeText(draft.address),
     normalizedPhone: normalizePhone(draft.phone),
     normalizedWebsite: normalizeWebsite(draft.website),
@@ -199,7 +208,7 @@ export async function persistPlaceFromRaw(
   const { data, error } = await client
     .from('places')
     .select(
-      'id, slug, name, lat, lng, imported_at, primary_source_name, primary_source_id, source_url, source_records, raw_snapshot, grid_key, cell_id, google_maps_uri, intake_channel, is_sweeped, source_sweep_id',
+      'id, slug, name, lat, lng, imported_at, primary_source_name, primary_source_id, source_url, source_records, raw_snapshot, grid_key, cell_id, google_maps_uri, intake_channel, is_sweeped, source_sweep_id, category_ids, kasguide_badges',
     )
     .eq('id', input.rawPlaceId)
     .maybeSingle()
@@ -234,8 +243,10 @@ export async function persistPlaceFromRaw(
     headline: normalized.normalizedHeadline,
     short_description: normalized.normalizedShortDescription,
     long_description: normalized.normalizedLongDescription,
-    kasguide_badge: normalized.normalizedKasguideBadge,
-    category_primary: normalized.normalizedCategory,
+    kasguide_badge: normalized.normalizedKasguideBadgePrimary,
+    kasguide_badges: normalized.normalizedKasguideBadges,
+    category_primary: normalized.normalizedCategoryPrimary,
+    category_ids: normalized.normalizedCategoryIds,
     category_secondary: null,
     address: normalized.normalizedAddress,
     lat: rawPlace.lat,
@@ -269,7 +280,7 @@ export async function persistPlaceFromRaw(
       address_raw: rawPlace.raw_snapshot?.address_raw ?? rawPlace.name,
       phone_raw: rawPlace.raw_snapshot?.phone_raw ?? normalized.normalizedPhone,
       website_raw: rawPlace.raw_snapshot?.website_raw ?? normalized.normalizedWebsite,
-      category_raw: rawPlace.raw_snapshot?.category_raw ?? normalized.normalizedCategory,
+      category_raw: rawPlace.raw_snapshot?.category_raw ?? normalized.normalizedCategoryPrimary,
       last_admin_save_at: new Date().toISOString(),
     },
   }
@@ -291,7 +302,7 @@ export async function persistExistingPlace(
   const { data: existing, error: existingError } = await client
     .from('places')
     .select(
-      'id, source_records, raw_snapshot, lat, lng, imported_at, primary_source_name, primary_source_id, source_url, grid_key, cell_id, google_maps_uri, intake_channel, is_sweeped, source_sweep_id',
+      'id, source_records, raw_snapshot, lat, lng, imported_at, primary_source_name, primary_source_id, source_url, grid_key, cell_id, google_maps_uri, intake_channel, is_sweeped, source_sweep_id, category_ids, kasguide_badges',
     )
     .eq('id', input.placeId)
     .single()
@@ -313,8 +324,10 @@ export async function persistExistingPlace(
       headline: normalized.normalizedHeadline,
       short_description: normalized.normalizedShortDescription,
       long_description: normalized.normalizedLongDescription,
-      kasguide_badge: normalized.normalizedKasguideBadge,
-      category_primary: normalized.normalizedCategory,
+      kasguide_badge: normalized.normalizedKasguideBadgePrimary,
+      kasguide_badges: normalized.normalizedKasguideBadges,
+      category_primary: normalized.normalizedCategoryPrimary,
+      category_ids: normalized.normalizedCategoryIds,
       address: normalized.normalizedAddress,
       phone: normalized.normalizedPhone,
       website: normalized.normalizedWebsite,

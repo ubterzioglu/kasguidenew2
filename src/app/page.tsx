@@ -1,5 +1,6 @@
-﻿import { CategorySection } from '@/features/home/components/category-section'
+import { CategorySection } from '@/features/home/components/category-section'
 import { HeroCarousel } from '@/features/home/components/hero-carousel'
+import { HomePromoSection } from '@/features/home/components/home-promo-section'
 import { listPublicHeroSlides } from '@/lib/hero-slide-store'
 
 export const dynamic = 'force-dynamic'
@@ -11,6 +12,7 @@ export default async function HomePage() {
       <HeroCarousel initialSlides={heroSnapshot.slides} />
 
       <CategorySection />
+      <HomePromoSection />
 
       <footer className="footer" id="contact">
         <div className="footer-content footer-shell">

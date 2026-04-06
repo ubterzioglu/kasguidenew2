@@ -1,7 +1,8 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+import { PlaceGuideBadges } from '@/components/place-guide-badges'
 import { getPlaceCategoryLabel } from '@/lib/place-taxonomy'
 import { getPublishedPlaceBySlug } from '@/lib/public-place-store'
 import { PlaceDetailGallery } from './place-detail-gallery'
@@ -171,21 +172,7 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
             {guideBadges.length > 0 ? (
               <>
                 <span className="place-detail-inline-divider" aria-hidden="true" />
-                <div className="place-detail-guide-badges" aria-label="Kaş Guide badgeleri">
-                  {guideBadges.map((badge) => (
-                    <span
-                      key={badge.slug}
-                      className="place-detail-status-item is-active"
-                      aria-label={`${badge.label}: ${badge.description}`}
-                      title={`${badge.label}: ${badge.description}`}
-                      style={{ cursor: 'help' }}
-                    >
-                      <span className="place-detail-status-icon" aria-hidden="true">
-                        {badge.icon}
-                      </span>
-                    </span>
-                  ))}
-                </div>
+                <PlaceGuideBadges badges={guideBadges} ariaLabel="Kaş Guide badgeleri" />
               </>
             ) : null}
           </div>

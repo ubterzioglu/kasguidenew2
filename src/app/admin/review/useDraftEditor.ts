@@ -22,12 +22,12 @@ export function useDraftEditor() {
     })
   }, [])
 
-  const updateField = (id: string, field: keyof PlaceEditorDraft, value: string) => {
+  const updateField = <K extends keyof PlaceEditorDraft>(id: string, field: K, value: PlaceEditorDraft[K]) => {
     setDrafts((current) => ({
       ...current,
       [id]: {
         ...current[id],
-        [field]: field === 'imageUrls' ? current[id]?.imageUrls : value,
+        [field]: value,
       },
     }))
   }

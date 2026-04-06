@@ -36,7 +36,9 @@ export type UnifiedPlaceRow = {
   slug: string | null
   name: string
   kasguide_badge?: string | null
+  kasguide_badges?: string[] | null
   category_primary: string | null
+  category_ids?: string[] | null
   address: string | null
   phone: string | null
   website: string | null
@@ -72,6 +74,19 @@ function getFallbackName(place: UnifiedPlaceRow) {
   return normalizeText(place.name) || 'Yeni mekan'
 }
 
+function uniqueValues(values: Array<string | null | undefined>) {
+  return [...new Set(values.map((value) => normalizeText(value) ?? '').filter(Boolean))]
+}
+
+function getCategoryIds(place: UnifiedPlaceRow) {
+  const categoryIds = uniqueValues([...(place.category_ids ?? []), place.category_primary])
+  return categoryIds.length > 0 ? categoryIds : ['gezi']
+}
+
+function getKasguideBadges(place: UnifiedPlaceRow) {
+  return uniqueValues([...(place.kasguide_badges ?? []), place.kasguide_badge])
+}
+
 export function mapImageUrls(images: PlaceImageRecord[] | null | undefined): string[] {
   const sorted = [...(images ?? [])].sort((left, right) => {
     const leftCover = left.is_cover ? 0 : 1
@@ -92,7 +107,8 @@ export function mapImageUrls(images: PlaceImageRecord[] | null | undefined): str
 
 export function buildDraftFromPlace(place: UnifiedPlaceRow): PlaceEditorDraft {
   const fallbackName = getFallbackName(place)
-  const categoryPrimary = place.category_primary ?? 'gezi'
+  const categoryIds = getCategoryIds(place)
+  const categoryPrimary = categoryIds[0] ?? 'gezi'
   const categoryLabel = getPlaceCategoryLabel(categoryPrimary)
   const imageUrls = mapImageUrls(place.images)
 
@@ -100,13 +116,12 @@ export function buildDraftFromPlace(place: UnifiedPlaceRow): PlaceEditorDraft {
     placeId: place.id,
     slug: place.slug ?? slugifyText(fallbackName),
     name: fallbackName,
-    headline: normalizeText(place.headline) ?? fallbackName,
     shortDescription:
       normalizeText(place.short_description) ??
       `${fallbackName}, Kas'ta ${categoryLabel.toLowerCase()} olarak listelenen bir mekan.`,
     longDescription: normalizeText(place.long_description) ?? '',
-    kasguideBadge: normalizeText(place.kasguide_badge) ?? '',
-    categoryPrimary,
+    kasguideBadges: getKasguideBadges(place),
+    categoryIds,
     address: normalizeText(place.address) ?? '',
     phone: normalizeText(place.phone) ?? '',
     website: normalizeText(place.website) ?? '',

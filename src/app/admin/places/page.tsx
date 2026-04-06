@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 
 import { AdminSectionLinks } from '../components/AdminSectionLinks'
 import { PlaceEditorForm } from '../review/components/PlaceEditorForm'
-import { formatDate, formatPlaceStatus, formatVerificationStatus } from '../review/formatters'
+import { formatCompactDate, formatDate, formatPlaceStatus } from '../review/formatters'
 import { usePlacesDashboard } from './usePlacesDashboard'
 
 type FilterMode = 'all' | 'published' | 'draft'
@@ -46,6 +46,21 @@ export default function AdminPlacesPage() {
   const totalPages = Math.max(1, Math.ceil(filteredPlaces.length / itemsPerPage))
   const paginatedPlaces = filteredPlaces.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
   const categoryOptions = snapshot.categoryOptions.map((opt) => ({ value: opt.id, label: opt.label }))
+  const badgeOptions = snapshot.badgeOptions.map((opt) => ({ value: opt.id, label: opt.label }))
+  const categoryLabelMap = useMemo(
+    () => new Map(snapshot.categoryOptions.map((option) => [option.id, option.label])),
+    [snapshot.categoryOptions],
+  )
+
+  const formatCategorySummary = (categoryIds: string[]) => {
+    if (categoryIds.length === 0) {
+      return 'Kategori yok'
+    }
+
+    return categoryIds
+      .map((categoryId) => categoryLabelMap.get(categoryId) ?? categoryId)
+      .join(', ')
+  }
 
   return (
     <main className="container admin-shell admin-shell-places">
@@ -66,22 +81,22 @@ export default function AdminPlacesPage() {
             onLogout={logout}
           />
 
-          <div className="admin-toolbar-actions admin-places-filterbar admin-places-filterbar-header">
-            <Button type="button" variant={filter === 'all' ? 'primary' : 'secondary'} onClick={() => { setFilter('all'); setCurrentPage(1) }}>
-              Tümü
-            </Button>
-            <Button type="button" variant={filter === 'published' ? 'primary' : 'secondary'} onClick={() => { setFilter('published'); setCurrentPage(1) }}>
-              Yayında
-            </Button>
-            <Button type="button" variant={filter === 'draft' ? 'primary' : 'secondary'} onClick={() => { setFilter('draft'); setCurrentPage(1) }}>
-              Taslak
-            </Button>
-          </div>
-
           <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
             <span>{status.message}</span>
           </div>
         </div>
+      </section>
+
+      <section className="admin-toolbar-actions admin-places-filterbar admin-places-filterbar-panel">
+        <Button type="button" variant={filter === 'all' ? 'primary' : 'secondary'} onClick={() => { setFilter('all'); setCurrentPage(1) }}>
+          Tümü
+        </Button>
+        <Button type="button" variant={filter === 'published' ? 'primary' : 'secondary'} onClick={() => { setFilter('published'); setCurrentPage(1) }}>
+          Yayında
+        </Button>
+        <Button type="button" variant={filter === 'draft' ? 'primary' : 'secondary'} onClick={() => { setFilter('draft'); setCurrentPage(1) }}>
+          Taslak
+        </Button>
       </section>
 
       <section className="admin-hero admin-hero-review admin-places-hero-stack">
@@ -118,7 +133,6 @@ export default function AdminPlacesPage() {
             const isOpen = activePlaceId === item.id
             const isBusy = activeActionId === item.id
             const draft = drafts[item.id] ?? item.draft
-            const nonEmptyImageCount = draft.imageUrls.map((entry) => entry.trim()).filter(Boolean).length
 
             return (
               <article key={item.id} className={`place-review-card place-review-card-places${isOpen ? ' is-open' : ''}`}>
@@ -128,14 +142,13 @@ export default function AdminPlacesPage() {
                   onClick={() => setActivePlaceId(isOpen ? null : item.id)}
                 >
                   <div className="place-review-row-grid place-review-row-grid-places">
-                    <span className="place-review-grid-pill place-review-grid-pill-places">{formatDate(item.updatedAt)}</span>
+                    <span className="place-review-grid-pill place-review-grid-pill-places">{formatCompactDate(item.updatedAt)}</span>
                     <h3 className="place-review-single-title">{draft.name || 'İsimsiz mekan'}</h3>
-                    <span className="place-review-single-cat">{draft.categoryPrimary || 'Kategori yok'}</span>
-                    <div className="place-review-single-actions place-review-single-actions-inline">
+                    <span className="place-review-single-cat">{formatCategorySummary(draft.categoryIds)}</span>
+                    <div className="place-review-single-actions place-review-single-actions-inline place-review-single-actions-inline-row">
                       <span className={`review-pill review-pill-${draft.status === 'published' ? 'approved' : 'in_review'}`}>
                         {formatPlaceStatus(draft.status)}
                       </span>
-                      <span className="place-review-photo-count">{nonEmptyImageCount}/5 foto</span>
                       <strong className="place-review-edit-label">{isOpen ? 'Editörü kapat' : 'Düzenle'}</strong>
                     </div>
                   </div>
@@ -145,21 +158,12 @@ export default function AdminPlacesPage() {
                   <div className="place-review-editor">
                     <div className="place-review-raw-grid">
                       <div className="place-review-raw-card">
-                        <span className="place-review-card-label">Mekan kimliği</span>
+                        <span className="place-review-card-label">Mekan özeti</span>
                         <strong>{draft.name || 'İsimsiz mekan'}</strong>
-                        <p>Slug: {draft.slug || '-'}</p>
-                        <p>Kategori: {draft.categoryPrimary || '-'}</p>
+                        <p>Kategoriler: {formatCategorySummary(draft.categoryIds)}</p>
                         <p>Güncelleme: {formatDate(item.updatedAt)}</p>
                         <p>Köken: {item.intakeChannel}</p>
                         {item.sourceName ? <p>Kaynak: {item.sourceName} / {item.sourceId || '-'}</p> : null}
-                      </div>
-
-                      <div className="place-review-raw-card">
-                        <span className="place-review-card-label">Yayın durumu</span>
-                        <strong>{formatPlaceStatus(draft.status)}</strong>
-                        <p>Doğrulama: {formatVerificationStatus(draft.verificationStatus)}</p>
-                        <p>Website: {draft.website || '-'}</p>
-                        <p>Telefon: {draft.phone || '-'}</p>
                       </div>
                     </div>
 
@@ -167,6 +171,7 @@ export default function AdminPlacesPage() {
                       itemId={item.id}
                       draft={draft}
                       categoryOptions={categoryOptions}
+                      badgeOptions={badgeOptions}
                       photoHint="Detay sayfası için en az 1, en fazla 5 foto URL gir."
                       onUpdateField={(field, value) => updateDraftField(item.id, field, value)}
                       onUpdateImage={(index, value) => updateImageField(item.id, index, value)}
@@ -181,14 +186,6 @@ export default function AdminPlacesPage() {
                             disabled={isBusy}
                           >
                             {isBusy ? 'Kaydediliyor...' : 'Değişiklikleri kaydet'}
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="primary"
-                            onClick={() => runPlaceAction(item.id, 'publish')}
-                            disabled={isBusy}
-                          >
-                            {isBusy ? 'Yayına hazırlanıyor...' : 'Yayına al'}
                           </Button>
                         </>
                       }

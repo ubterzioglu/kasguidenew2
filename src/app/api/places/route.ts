@@ -46,7 +46,7 @@ export async function GET(request: Request) {
       },
     )
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Mekanlar okunamadi.'
+    const message = error instanceof Error ? error.message : 'Mekanlar okunamadı.'
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }

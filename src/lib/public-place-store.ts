@@ -1,5 +1,6 @@
-import 'server-only'
+﻿import 'server-only'
 
+import type { PublicPlaceBadge } from '@/lib/public-place-types'
 import { getSupabaseAdminClient } from '@/lib/supabase-admin'
 
 type PlaceImageRecord = {
@@ -15,13 +16,6 @@ type BadgeRow = {
   description: string | null
 }
 
-export type PublicPlaceBadge = {
-  slug: string
-  icon: string
-  label: string
-  description: string
-}
-
 export type PublicPlaceListItem = {
   id: string
   slug: string
@@ -33,6 +27,7 @@ export type PublicPlaceListItem = {
   phone: string | null
   website: string | null
   imageUrl: string | null
+  guideBadges: PublicPlaceBadge[]
 }
 
 export type ListPublishedPlacesInput = {
@@ -73,6 +68,7 @@ type PlaceRow = {
   phone: string | null
   website: string | null
   kasguide_badge: string | null
+  kasguide_badges: string[] | null
   images: PlaceImageRecord[] | null
 }
 
@@ -94,19 +90,16 @@ function getImageUrls(images: PlaceImageRecord[] | null | undefined) {
     .filter(Boolean)
 }
 
-function mapPlaceListItem(place: PlaceRow): PublicPlaceListItem {
-  return {
-    id: place.id,
-    slug: place.slug ?? place.id,
-    name: place.name,
-    headline: place.headline || place.name,
-    shortDescription: place.short_description || `${place.name} KaÅŸ Guide yayÄ±n listesinde yer alÄ±yor.`,
-    categoryPrimary: place.category_primary,
-    address: place.address,
-    phone: place.phone,
-    website: place.website,
-    imageUrl: getImageUrls(place.images)[0] ?? null,
-  }
+function getBadgeFallbackIcon(icon: string | null | undefined) {
+  return icon?.trim() || '\u2605'
+}
+
+function getFallbackShortDescription(placeName: string) {
+  return `${placeName} Ka\u015f Guide yay\u0131n listesinde yer al\u0131yor.`
+}
+
+function getFallbackLongDescription(placeName: string) {
+  return `${placeName} i\u00e7in detayl\u0131 i\u00e7erik yak\u0131nda eklenecek.`
 }
 
 function normalizeBadgeToken(value: string) {
@@ -117,16 +110,18 @@ function normalizeBadgeToken(value: string) {
     .replace(/[^a-z0-9]+/g, '')
 }
 
-function parseBadgeTokens(rawValue: string | null | undefined) {
-  const tokens = (rawValue ?? '')
-    .split(/[,|;/]+/)
-    .map((value) => value.trim())
-    .filter(Boolean)
+function parseBadgeTokens(rawValue: string | string[] | null | undefined) {
+  const tokens = Array.isArray(rawValue)
+    ? rawValue.map((value) => value.trim()).filter(Boolean)
+    : (rawValue ?? '')
+        .split(/[,|;/]+/)
+        .map((value) => value.trim())
+        .filter(Boolean)
 
   return tokens.length > 0 ? tokens : [DEFAULT_GUIDE_BADGE]
 }
 
-function resolveGuideBadges(rows: BadgeRow[], rawValue: string | null | undefined): PublicPlaceBadge[] {
+function resolveGuideBadges(rows: BadgeRow[], rawValue: string | string[] | null | undefined): PublicPlaceBadge[] {
   const seen = new Set<string>()
   const matches: PublicPlaceBadge[] = []
 
@@ -145,7 +140,7 @@ function resolveGuideBadges(rows: BadgeRow[], rawValue: string | null | undefine
     seen.add(match.slug)
     matches.push({
       slug: match.slug,
-      icon: match.emoji?.trim() || '★',
+      icon: getBadgeFallbackIcon(match.emoji),
       label: match.title,
       description: match.description?.trim() || match.title,
     })
@@ -164,11 +159,46 @@ function resolveGuideBadges(rows: BadgeRow[], rawValue: string | null | undefine
   return [
     {
       slug: fallback.slug,
-      icon: fallback.emoji?.trim() || '★',
+      icon: getBadgeFallbackIcon(fallback.emoji),
       label: fallback.title,
       description: fallback.description?.trim() || fallback.title,
     },
   ]
+}
+
+async function fetchBadgeRows() {
+  const client = getSupabaseAdminClient()
+
+  if (!client) {
+    throw new Error('Supabase admin ba\u011flant\u0131s\u0131 haz\u0131r de\u011fil.')
+  }
+
+  const { data, error } = await client.from('badges').select('slug, emoji, title, description')
+
+  if (error) {
+    return []
+  }
+
+  return (data ?? []) as BadgeRow[]
+}
+
+function mapPlaceListItem(place: PlaceRow, badgeRows: BadgeRow[]): PublicPlaceListItem {
+  return {
+    id: place.id,
+    slug: place.slug ?? place.id,
+    name: place.name,
+    headline: place.headline || place.name,
+    shortDescription: place.short_description || getFallbackShortDescription(place.name),
+    categoryPrimary: place.category_primary,
+    address: place.address,
+    phone: place.phone,
+    website: place.website,
+    imageUrl: getImageUrls(place.images)[0] ?? null,
+    guideBadges: resolveGuideBadges(
+      badgeRows,
+      place.kasguide_badges?.length ? place.kasguide_badges : place.kasguide_badge,
+    ),
+  }
 }
 
 export async function listPublishedPlaces(input: ListPublishedPlacesInput): Promise<ListPublishedPlacesResult> {
@@ -178,7 +208,7 @@ export async function listPublishedPlaces(input: ListPublishedPlacesInput): Prom
   const offset = Math.max(0, input.offset ?? 0)
 
   if (!client) {
-    throw new Error('Supabase admin baglantisi hazir degil.')
+    throw new Error('Supabase admin ba\u011flant\u0131s\u0131 haz\u0131r de\u011fil.')
   }
 
   if (categoryIds.length === 0) {
@@ -191,7 +221,7 @@ export async function listPublishedPlaces(input: ListPublishedPlacesInput): Prom
   let query = client
     .from('places')
     .select(
-      'id, slug, name, headline, short_description, category_primary, address, phone, website, images',
+      'id, slug, name, headline, short_description, category_primary, address, phone, website, kasguide_badge, kasguide_badges, images',
     )
     .eq('status', 'published')
     .order('updated_at', { ascending: false })
@@ -203,13 +233,14 @@ export async function listPublishedPlaces(input: ListPublishedPlacesInput): Prom
   const { data, error } = await query.range(offset, offset + limit)
 
   if (error) {
-    throw new Error('Yayindaki mekanlar okunamadi.')
+    throw new Error('Yay\u0131ndaki mekanlar okunamad\u0131.')
   }
 
   const rows = (data ?? []) as PlaceRow[]
+  const badgeRows = await fetchBadgeRows()
 
   return {
-    places: rows.slice(0, limit).map(mapPlaceListItem),
+    places: rows.slice(0, limit).map((place) => mapPlaceListItem(place, badgeRows)),
     hasMore: rows.length > limit,
   }
 }
@@ -226,20 +257,20 @@ export async function getPublishedPlaceBySlug(slug: string) {
   const client = getSupabaseAdminClient()
 
   if (!client) {
-    throw new Error('Supabase admin bağlantısı hazır değil.')
+    throw new Error('Supabase admin ba\u011flant\u0131s\u0131 haz\u0131r de\u011fil.')
   }
 
   const { data, error } = await client
     .from('places')
     .select(
-      'id, slug, name, headline, short_description, long_description, category_primary, address, phone, website, kasguide_badge, images',
+      'id, slug, name, headline, short_description, long_description, category_primary, address, phone, website, kasguide_badge, kasguide_badges, images',
     )
     .eq('status', 'published')
     .eq('slug', slug)
     .maybeSingle()
 
   if (error) {
-    throw new Error('Mekan detayı okunamadı.')
+    throw new Error('Mekan detay\u0131 okunamad\u0131.')
   }
 
   const place = (data ?? null) as PlaceRow | null
@@ -248,26 +279,27 @@ export async function getPublishedPlaceBySlug(slug: string) {
     return null
   }
 
-  const { data: badgeData, error: badgeError } = await client
-    .from('badges')
-    .select('slug, emoji, title, description')
+  const badgeRows = await fetchBadgeRows()
 
   return {
     id: place.id,
     slug: place.slug ?? place.id,
     name: place.name,
     headline: place.headline || place.name,
-    shortDescription: place.short_description || `${place.name} Kaş Guide yayın listesinde yer alıyor.`,
+    shortDescription: place.short_description || getFallbackShortDescription(place.name),
     longDescription:
       place.long_description ||
       place.short_description ||
-      `${place.name} için detaylı içerik yakında eklenecek.`,
+      getFallbackLongDescription(place.name),
     categoryPrimary: place.category_primary,
     address: place.address,
     phone: place.phone,
     website: place.website,
     imageUrls: getImageUrls(place.images),
-    guideBadges: resolveGuideBadges(badgeError ? [] : ((badgeData ?? []) as BadgeRow[]), place.kasguide_badge),
+    guideBadges: resolveGuideBadges(
+      badgeRows,
+      place.kasguide_badges?.length ? place.kasguide_badges : place.kasguide_badge,
+    ),
   } satisfies PublicPlaceDetail
 }
 
@@ -275,7 +307,7 @@ export async function getPublishedPlaceCountsByCategory() {
   const client = getSupabaseAdminClient()
 
   if (!client) {
-    throw new Error('Supabase admin bağlantısı hazır değil.')
+    throw new Error('Supabase admin ba\u011flant\u0131s\u0131 haz\u0131r de\u011fil.')
   }
 
   const { data, error } = await client
@@ -284,7 +316,7 @@ export async function getPublishedPlaceCountsByCategory() {
     .eq('status', 'published')
 
   if (error) {
-    throw new Error('Kategori sayıları okunamadı.')
+    throw new Error('Kategori say\u0131lar\u0131 okunamad\u0131.')
   }
 
   const counts: Record<string, number> = {}
@@ -299,4 +331,5 @@ export async function getPublishedPlaceCountsByCategory() {
 
   return counts
 }
+
 

@@ -1,3 +1,5 @@
+﻿import type { PublicPlaceBadge } from '@/lib/public-place-types'
+
 export type CategoryPlace = {
   id: string
   slug: string
@@ -9,4 +11,5 @@ export type CategoryPlace = {
   phone: string | null
   website: string | null
   imageUrl: string | null
+  guideBadges: PublicPlaceBadge[]
 }

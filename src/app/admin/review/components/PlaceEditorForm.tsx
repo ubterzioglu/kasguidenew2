@@ -4,14 +4,14 @@ import type { PlaceEditorDraft } from '@/types/review'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Select } from '@/components/ui/select'
 
 type PlaceEditorFormProps = {
   itemId: string
   draft: PlaceEditorDraft
   categoryOptions: { value: string; label: string }[]
+  badgeOptions: { value: string; label: string }[]
   photoHint: string
-  onUpdateField: (field: keyof PlaceEditorDraft, value: string) => void
+  onUpdateField: <K extends keyof PlaceEditorDraft>(field: K, value: PlaceEditorDraft[K]) => void
   onUpdateImage: (index: number, value: string) => void
   onAddImage: () => void
   onRemoveImage: (index: number) => void
@@ -22,6 +22,7 @@ export function PlaceEditorForm({
   itemId,
   draft,
   categoryOptions,
+  badgeOptions,
   photoHint,
   onUpdateField,
   onUpdateImage,
@@ -29,6 +30,15 @@ export function PlaceEditorForm({
   onRemoveImage,
   actions,
 }: PlaceEditorFormProps) {
+  const toggleArrayValue = (field: 'categoryIds' | 'kasguideBadges', value: string) => {
+    const currentValues = draft[field]
+    const nextValues = currentValues.includes(value)
+      ? currentValues.filter((item) => item !== value)
+      : [...currentValues, value]
+
+    onUpdateField(field, nextValues)
+  }
+
   return (
     <>
       <div className="place-editor-grid">
@@ -38,61 +48,90 @@ export function PlaceEditorForm({
           onChange={(event) => onUpdateField('name', event.target.value)}
         />
 
-        <Input
-          label="Mekan basligi"
-          value={draft.headline}
-          onChange={(event) => onUpdateField('headline', event.target.value)}
-        />
+        <label className="admin-field place-editor-publish-toggle">
+          <span>Yayin durumu</span>
+          <span className="place-editor-checkbox-row">
+            <input
+              type="checkbox"
+              checked={draft.status === 'published'}
+              onChange={(event) => {
+                const isPublished = event.target.checked
+                onUpdateField('status', isPublished ? 'published' : 'admin')
+                onUpdateField('verificationStatus', isPublished ? 'verified' : 'reviewed')
+              }}
+            />
+            <span>Yayinda</span>
+          </span>
+        </label>
 
-        <Textarea
-          label="Kisa aciklama"
-          isWide
-          rows={3}
-          value={draft.shortDescription}
-          onChange={(event) => onUpdateField('shortDescription', event.target.value)}
-        />
+        <div className="place-editor-stack">
+          <Textarea
+            label="Kisa aciklama"
+            rows={3}
+            value={draft.shortDescription}
+            onChange={(event) => onUpdateField('shortDescription', event.target.value)}
+          />
 
-        <Textarea
-          label="Detayli aciklama"
-          isWide
-          rows={5}
-          value={draft.longDescription}
-          onChange={(event) => onUpdateField('longDescription', event.target.value)}
-        />
+          <Textarea
+            label="Detayli aciklama"
+            rows={5}
+            value={draft.longDescription}
+            onChange={(event) => onUpdateField('longDescription', event.target.value)}
+          />
+        </div>
 
-        <Select
-          label="Kategori"
-          value={draft.categoryPrimary}
-          onChange={(event) => onUpdateField('categoryPrimary', event.target.value)}
-          options={categoryOptions}
-        />
+        <div className="place-editor-stack">
+          <Input
+            label="Adres"
+            value={draft.address}
+            onChange={(event) => onUpdateField('address', event.target.value)}
+          />
 
-        <Input
-          label="Kasguide badge"
-          value={draft.kasguideBadge}
-          onChange={(event) => onUpdateField('kasguideBadge', event.target.value)}
-          placeholder="Ornek: Kas Guide Onerir"
-        />
+          <Input
+            label="Website"
+            value={draft.website}
+            onChange={(event) => onUpdateField('website', event.target.value)}
+            placeholder="https://..."
+          />
 
-        <Input
-          label="Website"
-          value={draft.website}
-          onChange={(event) => onUpdateField('website', event.target.value)}
-          placeholder="https://..."
-        />
+          <Input
+            label="Telefon"
+            value={draft.phone}
+            onChange={(event) => onUpdateField('phone', event.target.value)}
+          />
+        </div>
 
-        <Input
-          label="Adres"
-          isWide
-          value={draft.address}
-          onChange={(event) => onUpdateField('address', event.target.value)}
-        />
+        <fieldset className="place-editor-choice-group">
+          <legend>Kategoriler</legend>
+          <div className="place-editor-choice-list">
+            {categoryOptions.map((option) => (
+              <label key={option.value} className="place-editor-choice-item">
+                <input
+                  type="checkbox"
+                  checked={draft.categoryIds.includes(option.value)}
+                  onChange={() => toggleArrayValue('categoryIds', option.value)}
+                />
+                <span>{option.label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
 
-        <Input
-          label="Telefon"
-          value={draft.phone}
-          onChange={(event) => onUpdateField('phone', event.target.value)}
-        />
+        <fieldset className="place-editor-choice-group">
+          <legend>Kasguide badge</legend>
+          <div className="place-editor-choice-list">
+            {badgeOptions.map((option) => (
+              <label key={option.value} className="place-editor-choice-item">
+                <input
+                  type="checkbox"
+                  checked={draft.kasguideBadges.includes(option.value)}
+                  onChange={() => toggleArrayValue('kasguideBadges', option.value)}
+                />
+                <span>{option.label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
       </div>
 
       <div className="place-photo-panel">
@@ -114,16 +153,18 @@ export function PlaceEditorForm({
         <div className="place-photo-list">
           {draft.imageUrls.map((imageUrl, index) => (
             <div key={`${itemId}-image-${index}`} className="place-photo-row">
-              <Input
-                label={`Foto URL #${index + 1}`}
-                isWide
-                value={imageUrl}
-                onChange={(event) => onUpdateImage(index, event.target.value)}
-                placeholder="https://..."
-              />
-              <Button type="button" variant="ghost" onClick={() => onRemoveImage(index)}>
-                Kaldir
-              </Button>
+              <div className="place-photo-input-stack">
+                <Input
+                  label={`Foto URL #${index + 1}`}
+                  isWide
+                  value={imageUrl}
+                  onChange={(event) => onUpdateImage(index, event.target.value)}
+                  placeholder="https://..."
+                />
+                <button type="button" className="place-photo-remove-button" onClick={() => onRemoveImage(index)}>
+                  Kaldir
+                </button>
+              </div>
               {imageUrl.trim() ? (
                 <img src={imageUrl} alt="Onizleme" className="place-photo-preview" />
               ) : (

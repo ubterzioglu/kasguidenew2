@@ -17,11 +17,12 @@ export async function getAdminPlacesSnapshot(limit = 1000): Promise<AdminPlacesS
     throw new Error('Supabase admin bağlantısı hazır değil.')
   }
 
-  const [places, totalPlaces, publishedPlaces, draftPlaces] = await Promise.all([
+  const [places, totalPlaces, publishedPlaces, draftPlaces, badgeOptions] = await Promise.all([
     fetchExistingPlaces(client, limit),
     countRows(client, (query) => query),
     countRows(client, (query) => query.eq('status', 'published')),
     countRows(client, (query) => query.neq('status', 'published')),
+    fetchBadgeOptions(client),
   ])
 
   return {
@@ -32,6 +33,7 @@ export async function getAdminPlacesSnapshot(limit = 1000): Promise<AdminPlacesS
       draftPlaces,
     },
     categoryOptions: PLACE_CATEGORY_OPTIONS.map((option) => ({ id: option.id, label: option.label })),
+    badgeOptions,
   }
 }
 
@@ -65,6 +67,21 @@ async function countRows(
   }
 
   return response.count ?? 0
+}
+
+async function fetchBadgeOptions(
+  client: NonNullable<ReturnType<typeof getSupabaseAdminClient>>,
+): Promise<Array<{ id: string; label: string }>> {
+  const { data, error } = await client.from('badges').select('slug, emoji, title').order('title')
+
+  if (error) {
+    throw new Error('Badge secenekleri okunamadi.')
+  }
+
+  return ((data ?? []) as Array<{ slug: string; emoji: string | null; title: string }>).map((badge) => ({
+    id: badge.slug,
+    label: badge.emoji?.trim() ? `${badge.emoji.trim()} ${badge.title}` : badge.title,
+  }))
 }
 
 export type { ExistingPlaceItem }

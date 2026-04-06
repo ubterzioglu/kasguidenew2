@@ -19,6 +19,7 @@ const EMPTY_SNAPSHOT: AdminPlacesSnapshot = {
     draftPlaces: 0,
   },
   categoryOptions: [],
+  badgeOptions: [],
 }
 
 type ApiEnvelope<T> = { success: true; data: T } | { success: false; error: string }
@@ -117,15 +118,16 @@ export function usePlacesDashboard() {
       return
     }
 
-    const nextDraft: PlaceEditorDraft =
-      action === 'publish'
-        ? { ...draft, status: 'published', verificationStatus: 'verified' }
-        : { ...draft, status: draft.status === 'published' ? 'admin' : draft.status }
+    const nextDraft: PlaceEditorDraft = {
+      ...draft,
+      status: draft.status === 'published' ? 'published' : 'admin',
+      verificationStatus: draft.status === 'published' ? 'verified' : 'reviewed',
+    }
 
     setActiveActionId(placeId)
     setStatus({
       tone: 'neutral',
-      message: action === 'publish' ? 'Mekan yayına alınıyor...' : 'Mekan kaydediliyor...',
+      message: nextDraft.status === 'published' ? 'Yayin durumu kaydediliyor...' : 'Mekan kaydediliyor...',
     })
 
     try {
@@ -146,7 +148,7 @@ export function usePlacesDashboard() {
       hydrateDrafts(envelope.data.places)
       setStatus({
         tone: 'success',
-        message: action === 'publish' ? 'Mekan yayına alındı.' : 'Mekan kaydedildi.',
+        message: nextDraft.status === 'published' ? 'Mekan yayinda olarak kaydedildi.' : 'Mekan taslak olarak kaydedildi.',
       })
     } catch (error) {
       setStatus({

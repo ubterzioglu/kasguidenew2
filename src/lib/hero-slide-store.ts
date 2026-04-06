@@ -16,7 +16,7 @@ type HeroSlideRow = {
 
 export type HeroSlideSnapshot = {
   slides: HeroSlide[]
-  source: 'seed' | 'supabase'
+  source: 'empty' | 'seed' | 'supabase'
 }
 
 const HERO_SLIDES_TABLE = 'hero_slides'
@@ -26,7 +26,7 @@ export function isHeroSlideStoreConfigured() {
 }
 
 export async function listPublicHeroSlides(): Promise<HeroSlideSnapshot> {
-  const snapshot = await readHeroSlides(true)
+  const snapshot = await readHeroSlides({ onlyActive: true, allowSeedFallback: true })
 
   return {
     ...snapshot,
@@ -35,7 +35,7 @@ export async function listPublicHeroSlides(): Promise<HeroSlideSnapshot> {
 }
 
 export async function listAdminHeroSlides(): Promise<HeroSlideSnapshot> {
-  return readHeroSlides(false)
+  return readHeroSlides({ onlyActive: false, allowSeedFallback: false })
 }
 
 export async function saveHeroSlides(slides: HeroSlide[]): Promise<HeroSlideSnapshot> {
@@ -90,13 +90,19 @@ export async function saveHeroSlides(slides: HeroSlide[]): Promise<HeroSlideSnap
   }
 }
 
-async function readHeroSlides(onlyActive: boolean): Promise<HeroSlideSnapshot> {
+async function readHeroSlides({
+  onlyActive,
+  allowSeedFallback,
+}: {
+  onlyActive: boolean
+  allowSeedFallback: boolean
+}): Promise<HeroSlideSnapshot> {
   const client = getSupabaseAdminClient()
 
   if (!client) {
     return {
-      slides: fallbackSlides(onlyActive),
-      source: 'seed',
+      slides: allowSeedFallback ? fallbackSlides(onlyActive) : [],
+      source: allowSeedFallback ? 'seed' : 'empty',
     }
   }
 
@@ -111,10 +117,14 @@ async function readHeroSlides(onlyActive: boolean): Promise<HeroSlideSnapshot> {
 
   const { data, error } = await query
 
-  if (error || !data || data.length === 0) {
+  if (error) {
+    throw new Error('Hero sahneleri okunamadi.')
+  }
+
+  if (!data || data.length === 0) {
     return {
-      slides: fallbackSlides(onlyActive),
-      source: 'seed',
+      slides: allowSeedFallback ? fallbackSlides(onlyActive) : [],
+      source: allowSeedFallback ? 'seed' : 'empty',
     }
   }
 

@@ -63,11 +63,10 @@ export type PlaceEditorDraft = {
   placeId: string | null
   slug: string | null
   name: string
-  headline: string
   shortDescription: string
   longDescription: string
-  kasguideBadge: string
-  categoryPrimary: string
+  kasguideBadges: string[]
+  categoryIds: string[]
   address: string
   phone: string
   website: string
@@ -177,6 +176,7 @@ export type AdminPlacesSnapshot = {
     draftPlaces: number
   }
   categoryOptions: Array<{ id: string; label: string }>
+  badgeOptions: Array<{ id: string; label: string }>
 }
 
 export type PanelStatus = {

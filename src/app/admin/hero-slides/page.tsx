@@ -10,7 +10,6 @@ import {
   storeAdminPassword,
 } from '@/lib/admin-password-client'
 import {
-  DEFAULT_HERO_SLIDES,
   MAX_HERO_SLIDES,
   createEmptyHeroSlide,
   reindexHeroSlides,
@@ -33,9 +32,9 @@ const INITIAL_STATUS: PanelStatus = {
 export default function HeroSlidesAdminPage() {
   const router = useRouter()
   const [adminPassword, setAdminPassword] = useState('')
-  const [slides, setSlides] = useState<HeroSlide[]>(DEFAULT_HERO_SLIDES)
+  const [slides, setSlides] = useState<HeroSlide[]>([])
   const [status, setStatus] = useState<PanelStatus>(INITIAL_STATUS)
-  const [storage, setStorage] = useState<'seed' | 'supabase'>('seed')
+  const [storage, setStorage] = useState<'empty' | 'seed' | 'supabase'>('empty')
   const [isLoading, setIsLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
 
@@ -73,7 +72,7 @@ export default function HeroSlidesAdminPage() {
       })
 
       const payload = (await response.json()) as
-        | { slides?: HeroSlide[]; storage?: 'seed' | 'supabase'; error?: string }
+        | { slides?: HeroSlide[]; storage?: 'empty' | 'seed' | 'supabase'; error?: string }
         | undefined
 
       if (!response.ok || !payload?.slides) {
@@ -82,12 +81,24 @@ export default function HeroSlidesAdminPage() {
 
       storeAdminPassword(password)
       setAdminPassword(password)
-      setSlides(reindexHeroSlides(payload.slides))
-      setStorage(payload.storage || 'supabase')
-      setStatus({
-        tone: 'success',
-        message: 'Hero sahneleri yüklendi. Kaydetmeden canlıya yansımaz.',
-      })
+      const nextStorage = payload.storage || 'supabase'
+      const nextSlides = payload.slides.length > 0
+        ? reindexHeroSlides(payload.slides)
+        : [createEmptyHeroSlide(0)]
+
+      setSlides(nextSlides)
+      setStorage(nextStorage)
+      setStatus(
+        nextStorage === 'empty'
+          ? {
+              tone: 'neutral',
+              message: 'Hero listesi boş. İlk slide için alanları doldurup kaydedebilirsin.',
+            }
+          : {
+              tone: 'success',
+              message: 'Hero sahneleri yüklendi. Kaydetmeden canlıya yansımaz.',
+            },
+      )
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Hero sahneleri yüklenemedi.'
 
@@ -125,7 +136,7 @@ export default function HeroSlidesAdminPage() {
       })
 
       const payload = (await response.json()) as
-        | { slides?: HeroSlide[]; storage?: 'seed' | 'supabase'; error?: string }
+        | { slides?: HeroSlide[]; storage?: 'empty' | 'seed' | 'supabase'; error?: string }
         | undefined
 
       if (!response.ok || !payload?.slides) {
@@ -231,7 +242,7 @@ export default function HeroSlidesAdminPage() {
           </div>
           <div className="admin-summary-item">
             <span className="admin-summary-label">Depolama</span>
-            <strong>{storage === 'supabase' ? 'Supabase' : 'Seed yedeği'}</strong>
+            <strong>{storage === 'supabase' ? 'Supabase' : storage === 'empty' ? 'Boş veri' : 'Seed yedeği'}</strong>
           </div>
         </div>
       </section>

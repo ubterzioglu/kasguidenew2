@@ -144,6 +144,17 @@ export function formatDate(value: string | null) {
   }).format(new Date(value))
 }
 
+export function formatCompactDate(value: string | null) {
+  if (!value) {
+    return 'Tarih yok'
+  }
+
+  return new Intl.DateTimeFormat('tr-TR', {
+    day: '2-digit',
+    month: '2-digit',
+  }).format(new Date(value))
+}
+
 export function formatBbox(bbox: { south: number; west: number; north: number; east: number }) {
   return `${bbox.south.toFixed(3)}, ${bbox.west.toFixed(3)} • ${bbox.north.toFixed(3)}, ${bbox.east.toFixed(3)}`
 }

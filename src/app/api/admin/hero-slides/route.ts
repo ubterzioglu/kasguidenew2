@@ -13,19 +13,24 @@ export async function GET(request: Request) {
     return authError
   }
 
-  const snapshot = await listAdminHeroSlides()
+  try {
+    const snapshot = await listAdminHeroSlides()
 
-  return NextResponse.json(
-    {
-      slides: snapshot.slides,
-      storage: snapshot.source,
-    },
-    {
-      headers: {
-        'Cache-Control': 'no-store',
+    return NextResponse.json(
+      {
+        slides: snapshot.slides,
+        storage: snapshot.source,
       },
-    },
-  )
+      {
+        headers: {
+          'Cache-Control': 'no-store',
+        },
+      },
+    )
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Hero sahneleri yuklenemedi.'
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
 }
 
 export async function PUT(request: Request) {

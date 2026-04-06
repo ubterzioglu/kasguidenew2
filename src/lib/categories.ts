@@ -20,7 +20,7 @@ export type CategoryDefinition = {
 }
 
 export const CATEGORIES: CategoryDefinition[] = [
-  // ── YEME & İÇME & KONAKLAMA ──────────────────────────────────────────────
+  // YEME & İÇME & KONAKLAMA
   {
     id: 'bar',
     label: 'Bar',
@@ -76,7 +76,7 @@ export const CATEGORIES: CategoryDefinition[] = [
     tone: 'food',
   },
 
-  // ── GEZİ & KEŞİF ─────────────────────────────────────────────────────────
+  // GEZİ & KEŞİF
   {
     id: 'tarih',
     label: 'Tarih',
@@ -123,7 +123,7 @@ export const CATEGORIES: CategoryDefinition[] = [
     tone: 'explore',
   },
 
-  // ── AKTİVİTE & EĞLENCE ───────────────────────────────────────────────────
+  // AKTİVİTE & EĞLENCE
   {
     id: 'dalis',
     label: 'Dalış',
@@ -155,7 +155,7 @@ export const CATEGORIES: CategoryDefinition[] = [
     tone: 'fun',
   },
 
-  // ── İÇERİK & MEDYA ───────────────────────────────────────────────────────
+  // İÇERİK & MEDYA
   {
     id: 'yazilar',
     label: 'Yazılar',
@@ -202,7 +202,7 @@ export const CATEGORIES: CategoryDefinition[] = [
     tone: 'editorial',
   },
 
-  // ── GENEL ─────────────────────────────────────────────────────────────────
+  // GENEL
   {
     id: 'acil-durum',
     label: 'Acil Durum',
@@ -250,7 +250,7 @@ export const CATEGORY_GROUPS = [
 /** Flat ordered list of category IDs as shown in the homepage filter. */
 export const CATEGORY_IDS = CATEGORY_GROUPS.flatMap((group) => group.ids)
 
-/** O(1) lookup map: category id → CategoryDefinition */
+/** O(1) lookup map: category id -> CategoryDefinition */
 export const CATEGORY_MAP = new Map(CATEGORIES.map((c) => [c.id, c]))
 
 /** Returns the display label for a category ID. */
