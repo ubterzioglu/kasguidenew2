@@ -5,7 +5,7 @@ import { CATEGORY_MAP } from '@/lib/categories'
 const PROMO_CARDS = [
   {
     title: 'Kaş Tatili Günlük Planlayıcı',
-    description: 'Kararsız mı kaldın? Planlayıcımızı kullan, gününü planla!',
+    description: 'Kararsız mı kaldın? Planlayıcımızı kullan, gününü planla.',
     href: '/#categories',
     cta: 'Planlamaya başla',
     imageUrl: CATEGORY_MAP.get('gezi')?.imageUrl ?? '',
@@ -14,7 +14,7 @@ const PROMO_CARDS = [
   },
   {
     title: 'Sık Sorulan Sorular',
-    description: 'Kaş hakkında her şeyi bize sorabilirsin! Geniş veritabanımızda binlerce soruya binlerce cevap var!',
+    description: 'Kaş hakkında her şeyi bize sorabilirsin. Geniş veritabanımızda binlerce soruya binlerce cevap var.',
     href: '/result?categories=oss',
     cta: 'SSS sayfasını keşfet',
     imageUrl: CATEGORY_MAP.get('oss')?.imageUrl ?? '',
@@ -32,7 +32,7 @@ const PROMO_CARDS = [
   },
   {
     title: 'Röportajlar',
-    description: 'Mekanları sahiplerinden dinleyin. Kaş’ın ritmini, hikâyelerini ve önerilerini birinci ağızdan okuyun.',
+    description: "Mekanları sahiplerinden dinleyin. Kaş'ın ritmini, hikayelerini ve önerilerini birinci ağızdan okuyun.",
     href: '/result?categories=roportaj',
     cta: 'Röportajlara git',
     imageUrl: CATEGORY_MAP.get('roportaj')?.imageUrl ?? '',
@@ -49,8 +49,8 @@ export function HomePromoSection() {
           {PROMO_CARDS.map((card) => (
             <Link key={card.title} href={card.href} className={`home-promo-card ${card.toneClassName}`}>
               <div className="home-promo-copy">
-                <span className="home-promo-eyebrow">Kaş Guide</span>
                 <h3 className="home-promo-title">{card.title}</h3>
+                <span className="home-promo-separator" aria-hidden="true" />
                 <p className="home-promo-description">{card.description}</p>
                 <span className="home-promo-cta">{card.cta}</span>
               </div>

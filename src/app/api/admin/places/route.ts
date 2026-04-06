@@ -13,11 +13,11 @@ export const dynamic = 'force-dynamic'
 
 function getAdminAccessError(request: Request): NextResponse | null {
   if (!isAdminApiConfigured()) {
-    return jsonFail('ADMIN_PASSWORD tanimli degil.', 503)
+    return jsonFail('ADMIN_PASSWORD tanımlı değil.', 503)
   }
 
   if (!isPlaceAdminStoreConfigured()) {
-    return jsonFail('Supabase review deposu hazir degil.', 503)
+    return jsonFail('Supabase review deposu hazır değil.', 503)
   }
 
   if (!isAdminRequestAuthorized(request)) {
@@ -40,7 +40,7 @@ export async function GET(request: Request) {
 
     return jsonOk(snapshot, { headers: { 'Cache-Control': 'no-store' } })
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Mevcut mekanlar okunamadi.'
+    const message = error instanceof Error ? error.message : 'Mevcut mekanlar okunamadı.'
     return jsonFail(message, 500)
   }
 }
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
   const parsed = ExistingPlaceSaveBodySchema.safeParse(rawBody)
 
   if (!parsed.success) {
-    return jsonFail(`Gecersiz istek: ${parsed.error.issues[0]?.message ?? 'bilinmeyen hata'}`)
+    return jsonFail(`Geçersiz istek: ${parsed.error.issues[0]?.message ?? 'bilinmeyen hata'}`)
   }
 
   const { placeId, draft } = parsed.data
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
     const snapshot = await applyAdminPlaceAction({ placeId, draft })
     return jsonOk(snapshot)
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Mekan kaydi guncellenemedi.'
+    const message = error instanceof Error ? error.message : 'Mekan kaydı güncellenemedi.'
     return jsonFail(message)
   }
 }

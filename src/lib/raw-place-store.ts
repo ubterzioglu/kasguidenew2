@@ -21,7 +21,7 @@ export {
   persistExistingPlace,
 } from './place-persistence'
 
-const PLACE_SELECT = `
+const PLACE_SELECT_EXTENDED = `
   id,
   slug,
   name,
@@ -60,18 +60,80 @@ const PLACE_SELECT = `
   raw_snapshot
 `
 
+const PLACE_SELECT_LEGACY = `
+  id,
+  slug,
+  name,
+  kasguide_badge,
+  category_primary,
+  address,
+  lat,
+  lng,
+  phone,
+  website,
+  opening_hours,
+  status,
+  verification_status,
+  updated_at,
+  imported_at,
+  primary_source_name,
+  primary_source_id,
+  source_url,
+  grid_key,
+  cell_id,
+  google_maps_uri,
+  intake_channel,
+  is_sweeped,
+  source_sweep_id,
+  review_reason,
+  review_notes,
+  review_score,
+  merge_target_place_id,
+  headline,
+  short_description,
+  long_description,
+  images,
+  source_records,
+  raw_snapshot
+`
+
+type SelectError = {
+  message?: string | null
+  details?: string | null
+  hint?: string | null
+} | null
+
+function isMissingExtendedPlacesColumn(error: SelectError) {
+  const text = `${error?.message ?? ''} ${error?.details ?? ''} ${error?.hint ?? ''}`.toLowerCase()
+  return text.includes('category_ids') || text.includes('kasguide_badges')
+}
+
+async function runPlacesQueryWithFallback<T>(
+  buildQuery: (selectClause: string) => PromiseLike<{ data: T[] | null; error: SelectError } | unknown>,
+) {
+  let response = (await buildQuery(PLACE_SELECT_EXTENDED)) as { data: T[] | null; error: SelectError }
+
+  if (response.error && isMissingExtendedPlacesColumn(response.error)) {
+    response = (await buildQuery(PLACE_SELECT_LEGACY)) as { data: T[] | null; error: SelectError }
+  }
+
+  return response
+}
+
 export async function fetchExistingPlaces(
   client: NonNullable<ReturnType<typeof getSupabaseAdminClient>>,
   limit: number,
 ): Promise<ExistingPlaceItem[]> {
-  const { data, error } = await client
-    .from('places')
-    .select(PLACE_SELECT)
-    .order('updated_at', { ascending: false })
-    .limit(limit)
+  const { data, error } = await runPlacesQueryWithFallback<UnifiedPlaceRow>((selectClause) =>
+    client
+      .from('places')
+      .select(selectClause)
+      .order('updated_at', { ascending: false })
+      .limit(limit),
+  )
 
   if (error) {
-    throw new Error('Mevcut mekan kayitlari okunamadi.')
+    throw new Error('Mevcut mekan kayıtları okunamadı.')
   }
 
   return ((data ?? []) as UnifiedPlaceRow[]).map((place) => ({
@@ -90,16 +152,18 @@ export async function fetchRecentRawPlaces(
   client: NonNullable<ReturnType<typeof getSupabaseAdminClient>>,
   limit: number,
 ): Promise<RecentRawPlaceItem[]> {
-  const { data, error } = await client
-    .from('places')
-    .select(PLACE_SELECT)
-    .eq('is_sweeped', true)
-    .order('imported_at', { ascending: false, nullsFirst: false })
-    .order('updated_at', { ascending: false })
-    .limit(limit)
+  const { data, error } = await runPlacesQueryWithFallback<UnifiedPlaceRow>((selectClause) =>
+    client
+      .from('places')
+      .select(selectClause)
+      .eq('is_sweeped', true)
+      .order('imported_at', { ascending: false, nullsFirst: false })
+      .order('updated_at', { ascending: false })
+      .limit(limit),
+  )
 
   if (error) {
-    throw new Error('Ham sweep sonuclari okunamadi.')
+    throw new Error('Ham sweep sonuçları okunamadı.')
   }
 
   return ((data ?? []) as UnifiedPlaceRow[]).map((row) => mapRecentRawPlaceRow(row))
@@ -116,10 +180,12 @@ export async function loadDraftMapForRawPlaces(
     return map
   }
 
-  const { data, error } = await client.from('places').select(PLACE_SELECT).in('id', ids)
+  const { data, error } = await runPlacesQueryWithFallback<UnifiedPlaceRow>((selectClause) =>
+    client.from('places').select(selectClause).in('id', ids),
+  )
 
   if (error) {
-    throw new Error('Mekan kayitlari okunamadi.')
+    throw new Error('Mekan kayıtları okunamadı.')
   }
 
   for (const place of (data ?? []) as UnifiedPlaceRow[]) {

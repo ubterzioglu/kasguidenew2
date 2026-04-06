@@ -75,7 +75,7 @@ async function fetchBadgeOptions(
   const { data, error } = await client.from('badges').select('slug, emoji, title').order('title')
 
   if (error) {
-    throw new Error('Badge secenekleri okunamadi.')
+    throw new Error('Badge seçenekleri okunamadı.')
   }
 
   return ((data ?? []) as Array<{ slug: string; emoji: string | null; title: string }>).map((badge) => ({

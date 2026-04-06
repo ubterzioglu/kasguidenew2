@@ -72,6 +72,18 @@ type PlaceRow = {
   images: PlaceImageRecord[] | null
 }
 
+const PUBLISHED_PLACE_LIST_SELECT_EXTENDED =
+  'id, slug, name, headline, short_description, category_primary, address, phone, website, kasguide_badge, kasguide_badges, images'
+
+const PUBLISHED_PLACE_LIST_SELECT_LEGACY =
+  'id, slug, name, headline, short_description, category_primary, address, phone, website, kasguide_badge, images'
+
+const PUBLISHED_PLACE_DETAIL_SELECT_EXTENDED =
+  'id, slug, name, headline, short_description, long_description, category_primary, address, phone, website, kasguide_badge, kasguide_badges, images'
+
+const PUBLISHED_PLACE_DETAIL_SELECT_LEGACY =
+  'id, slug, name, headline, short_description, long_description, category_primary, address, phone, website, kasguide_badge, images'
+
 const DEFAULT_GUIDE_BADGE = 'recommend'
 
 function getImageUrls(images: PlaceImageRecord[] | null | undefined) {
@@ -166,6 +178,34 @@ function resolveGuideBadges(rows: BadgeRow[], rawValue: string | string[] | null
   ]
 }
 
+function isMissingMultiBadgeColumn(error: { message?: string | null; details?: string | null; hint?: string | null }) {
+  const text = `${error.message ?? ''} ${error.details ?? ''} ${error.hint ?? ''}`.toLowerCase()
+  return text.includes('kasguide_badges')
+}
+
+async function runPlacesQueryWithBadgeFallback<T>(
+  buildQuery: (selectClause: string) => PromiseLike<{
+    data: T[] | T | null
+    error: { message?: string | null; details?: string | null; hint?: string | null } | null
+  } | unknown>,
+  extendedSelect: string,
+  legacySelect: string,
+) {
+  let response = (await buildQuery(extendedSelect)) as {
+    data: T[] | T | null
+    error: { message?: string | null; details?: string | null; hint?: string | null } | null
+  }
+
+  if (response.error && isMissingMultiBadgeColumn(response.error)) {
+    response = (await buildQuery(legacySelect)) as {
+      data: T[] | T | null
+      error: { message?: string | null; details?: string | null; hint?: string | null } | null
+    }
+  }
+
+  return response
+}
+
 async function fetchBadgeRows() {
   const client = getSupabaseAdminClient()
 
@@ -218,19 +258,23 @@ export async function listPublishedPlaces(input: ListPublishedPlacesInput): Prom
     }
   }
 
-  let query = client
-    .from('places')
-    .select(
-      'id, slug, name, headline, short_description, category_primary, address, phone, website, kasguide_badge, kasguide_badges, images',
-    )
-    .eq('status', 'published')
-    .order('updated_at', { ascending: false })
+  const { data, error } = await runPlacesQueryWithBadgeFallback<PlaceRow>(
+    (selectClause) => {
+      let query = client
+        .from('places')
+        .select(selectClause)
+        .eq('status', 'published')
+        .order('updated_at', { ascending: false })
 
-  query = categoryIds.length === 1
-    ? query.eq('category_primary', categoryIds[0]!)
-    : query.in('category_primary', categoryIds)
+      query = categoryIds.length === 1
+        ? query.eq('category_primary', categoryIds[0]!)
+        : query.in('category_primary', categoryIds)
 
-  const { data, error } = await query.range(offset, offset + limit)
+      return query.range(offset, offset + limit)
+    },
+    PUBLISHED_PLACE_LIST_SELECT_EXTENDED,
+    PUBLISHED_PLACE_LIST_SELECT_LEGACY,
+  )
 
   if (error) {
     throw new Error('Yay\u0131ndaki mekanlar okunamad\u0131.')
@@ -260,20 +304,23 @@ export async function getPublishedPlaceBySlug(slug: string) {
     throw new Error('Supabase admin ba\u011flant\u0131s\u0131 haz\u0131r de\u011fil.')
   }
 
-  const { data, error } = await client
-    .from('places')
-    .select(
-      'id, slug, name, headline, short_description, long_description, category_primary, address, phone, website, kasguide_badge, kasguide_badges, images',
-    )
-    .eq('status', 'published')
-    .eq('slug', slug)
-    .maybeSingle()
+  const response = await runPlacesQueryWithBadgeFallback<PlaceRow>(
+    (selectClause) =>
+      client
+        .from('places')
+        .select(selectClause)
+        .eq('status', 'published')
+        .eq('slug', slug)
+        .maybeSingle(),
+    PUBLISHED_PLACE_DETAIL_SELECT_EXTENDED,
+    PUBLISHED_PLACE_DETAIL_SELECT_LEGACY,
+  )
 
-  if (error) {
+  if (response.error) {
     throw new Error('Mekan detay\u0131 okunamad\u0131.')
   }
 
-  const place = (data ?? null) as PlaceRow | null
+  const place = (response.data ?? null) as PlaceRow | null
 
   if (!place) {
     return null
