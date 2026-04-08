@@ -85,6 +85,7 @@ export function WhatsAppCommunitySection() {
           href="https://chat.whatsapp.com/GODQNmpRlAaDDtyaDnIyn4"
           target="_blank"
           rel="noopener noreferrer"
+          className="whatsapp-community-cta"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -98,14 +99,6 @@ export function WhatsAppCommunitySection() {
             textDecoration: 'none',
             boxShadow: '0 6px 20px rgba(37, 211, 102, 0.35)',
             transition: 'transform 0.18s ease, box-shadow 0.18s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)'
-            e.currentTarget.style.boxShadow = '0 10px 28px rgba(37, 211, 102, 0.45)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)'
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(37, 211, 102, 0.35)'
           }}
         >
           <svg viewBox="0 0 24 24" fill="white" width="20" height="20" aria-hidden="true">

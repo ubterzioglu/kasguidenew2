@@ -1539,6 +1539,17 @@ html {
   background: #128C7E;
 }
 
+.whatsapp-community-cta:hover,
+.whatsapp-community-cta:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(37, 211, 102, 0.45);
+}
+
+.whatsapp-community-cta:focus-visible {
+  outline: 2px solid rgba(37, 211, 102, 0.42);
+  outline-offset: 3px;
+}
+
 .whatsapp-icon {
   width: 24px;
   height: 24px;
