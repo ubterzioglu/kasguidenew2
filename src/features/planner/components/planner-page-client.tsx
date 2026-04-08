@@ -452,7 +452,7 @@ export function PlannerPageClient({ questions, places }: PlannerPageClientProps)
                     <button
                       key={option}
                       type="button"
-                      className={`planner-option-button ${selected ? 'is-selected' : ''}`}
+                      className={`planner-action ${selected ? 'planner-action-primary' : 'planner-action-secondary'} planner-action-unified`}
                       onClick={() => handleSingleSelect(index)}
                     >
                       {option}

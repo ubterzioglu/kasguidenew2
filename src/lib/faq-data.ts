@@ -17,7 +17,7 @@ type LegacyFaqItem = {
 }
 
 export async function getFaqItems(): Promise<FaqItem[]> {
-  const filePath = path.join(process.cwd(), 'old', 'faq', 'faq-list-data.js')
+  const filePath = path.join(process.cwd(), 'temp', 'old', 'faq', 'faq-list-data.js')
   const source = await readFile(filePath, 'utf8')
   const start = source.indexOf('[')
   const end = source.lastIndexOf(']')

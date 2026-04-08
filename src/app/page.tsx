@@ -1,6 +1,7 @@
 import { CategorySection } from '@/features/home/components/category-section'
 import { HeroCarousel } from '@/features/home/components/hero-carousel'
 import { HomePromoSection } from '@/features/home/components/home-promo-section'
+import { WhatsAppCommunitySection } from '@/features/home/components/whatsapp-community-section'
 import { listPublicHeroSlides } from '@/lib/hero-slide-store'
 
 export const dynamic = 'force-dynamic'
@@ -13,6 +14,7 @@ export default async function HomePage() {
 
       <CategorySection />
       <HomePromoSection />
+      <WhatsAppCommunitySection />
 
       <footer className="footer" id="contact">
         <div className="footer-content footer-shell">
