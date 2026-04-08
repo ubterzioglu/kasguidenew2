@@ -16,9 +16,12 @@ type LegacyFaqItem = {
   answer?: string
 }
 
-export async function getFaqItems(): Promise<FaqItem[]> {
-  const filePath = path.join(process.cwd(), 'temp', 'old', 'faq', 'faq-list-data.js')
-  const source = await readFile(filePath, 'utf8')
+const FAQ_SOURCE_PATHS = [
+  path.join(process.cwd(), 'faq', 'faq-list-data.js'),
+  path.join(process.cwd(), 'temp', 'old', 'faq', 'faq-list-data.js'),
+]
+
+function parseLegacyFaqSource(source: string): FaqItem[] {
   const start = source.indexOf('[')
   const end = source.lastIndexOf(']')
 
@@ -35,4 +38,19 @@ export async function getFaqItems(): Promise<FaqItem[]> {
       answer: repairLegacyText(item.answer ?? ''),
     }))
     .filter((item) => item.question && item.answer)
+}
+
+export async function getFaqItems(): Promise<FaqItem[]> {
+  for (const filePath of FAQ_SOURCE_PATHS) {
+    try {
+      const source = await readFile(filePath, 'utf8')
+      return parseLegacyFaqSource(source)
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+        throw error
+      }
+    }
+  }
+
+  return []
 }

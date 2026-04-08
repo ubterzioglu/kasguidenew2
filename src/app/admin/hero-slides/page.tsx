@@ -265,7 +265,7 @@ export default function HeroSlidesAdminPage() {
         <div>
           <h2 className="admin-section-title">Slide listesi</h2>
           <p className="admin-section-copy">
-            Buradan hero slide'larını ekleyebilir, çıkarabilir, sırasını değiştirebilir ve içeriğini anında güncelleyebilirsin.
+            Buradan hero slide&apos;larını ekleyebilir, çıkarabilir, sırasını değiştirebilir ve içeriğini anında güncelleyebilirsin.
           </p>
         </div>
 

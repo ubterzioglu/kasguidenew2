@@ -220,7 +220,7 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
                 <h2 className="hero-insight-title">Öne Çıkan Mekanlar</h2>
               </div>
               <div className="hero-signal-row">
-                <strong>Bi'Lokma</strong>
+                <strong>Bi&apos;Lokma</strong>
                 <span>Anne yemekleri ve vegan seçenekler</span>
               </div>
               <div className="hero-signal-row">
