@@ -44,6 +44,53 @@ export const ExistingPlaceSaveBodySchema = z.object({
   draft: PlaceEditorDraftSchema,
 })
 
+export const ContentStatusSchema = z.enum(['draft', 'published', 'archived'])
+export const AnnouncementPrioritySchema = z.enum(['urgent', 'normal', 'info'])
+
+export const NewsInputSchema = z.object({
+  title: z.string().trim().min(1),
+  slug: z.string().trim().nullish(),
+  summary: z.string().trim().min(1),
+  content: z.string().trim().min(1),
+  imageUrl: z.string().trim().url().nullish().or(z.literal('')),
+  publishedAt: z.string().trim().nullish().or(z.literal('')),
+  isActive: z.boolean(),
+  sortOrder: z.coerce.number().int().min(0).max(9999),
+  status: ContentStatusSchema,
+})
+
+export const AnnouncementInputSchema = z.object({
+  title: z.string().trim().min(1),
+  slug: z.string().trim().nullish(),
+  summary: z.string().trim().min(1),
+  content: z.string().trim().min(1),
+  imageUrl: z.string().trim().url().nullish().or(z.literal('')),
+  priority: AnnouncementPrioritySchema,
+  isPinned: z.boolean(),
+  isActive: z.boolean(),
+  startDate: z.string().trim().nullish().or(z.literal('')),
+  endDate: z.string().trim().nullish().or(z.literal('')),
+  publishedAt: z.string().trim().nullish().or(z.literal('')),
+  sortOrder: z.coerce.number().int().min(0).max(9999),
+  status: ContentStatusSchema,
+})
+
+export const AdminNewsCreateBodySchema = z.object({
+  news: NewsInputSchema,
+})
+
+export const AdminNewsUpdateBodySchema = z.object({
+  news: NewsInputSchema,
+})
+
+export const AdminAnnouncementCreateBodySchema = z.object({
+  announcement: AnnouncementInputSchema,
+})
+
+export const AdminAnnouncementUpdateBodySchema = z.object({
+  announcement: AnnouncementInputSchema,
+})
+
 export const OverpassSweepRunBodySchema = z.object({
   gridX: z.coerce.number().int(),
   gridY: z.coerce.number().int(),

@@ -48,6 +48,94 @@ type PlaceRow = {
   kasguide_badges: string[] | null
 }
 
+const DEFAULT_PLACE_IMAGE_URL = '/kasplaceholder.jpg'
+
+type SelectError = {
+  message?: string | null
+  details?: string | null
+  hint?: string | null
+} | null
+
+const PLACE_SELECT_EXTENDED =
+  'id, slug, name, lat, lng, imported_at, primary_source_name, primary_source_id, source_url, source_records, raw_snapshot, grid_key, cell_id, google_maps_uri, intake_channel, is_sweeped, source_sweep_id, category_ids, kasguide_badges'
+
+const PLACE_SELECT_LEGACY =
+  'id, slug, name, lat, lng, imported_at, primary_source_name, primary_source_id, source_url, source_records, raw_snapshot, grid_key, cell_id, google_maps_uri, intake_channel, is_sweeped, source_sweep_id'
+
+function isMissingExtendedPlacesColumn(error: SelectError) {
+  const text = `${error?.message ?? ''} ${error?.details ?? ''} ${error?.hint ?? ''}`.toLowerCase()
+  return text.includes('category_ids') || text.includes('kasguide_badges')
+}
+
+async function selectPlaceWithSchemaFallback(
+  client: NonNullable<ReturnType<typeof getSupabaseAdminClient>>,
+  placeId: string,
+): Promise<{ place: PlaceRow; supportsExtendedColumns: boolean }> {
+  const extendedResponse = await client.from('places').select(PLACE_SELECT_EXTENDED).eq('id', placeId).maybeSingle()
+
+  if (!extendedResponse.error && extendedResponse.data) {
+    return {
+      place: extendedResponse.data as PlaceRow,
+      supportsExtendedColumns: true,
+    }
+  }
+
+  if (!isMissingExtendedPlacesColumn(extendedResponse.error)) {
+    throw new Error('Mekan kaydi bulunamadi.')
+  }
+
+  const legacyResponse = await client.from('places').select(PLACE_SELECT_LEGACY).eq('id', placeId).maybeSingle()
+
+  if (legacyResponse.error || !legacyResponse.data) {
+    throw new Error('Mekan kaydi bulunamadi.')
+  }
+
+  return {
+    place: {
+      ...(legacyResponse.data as Omit<PlaceRow, 'category_ids' | 'kasguide_badges'>),
+      category_ids: null,
+      kasguide_badges: null,
+    },
+    supportsExtendedColumns: false,
+  }
+}
+
+function buildPlaceUpdatePayload(
+  normalized: ReturnType<typeof validateDraft>,
+  draft: PlaceEditorDraft,
+  existingRawSnapshot: Record<string, unknown> | null | undefined,
+  supportsExtendedColumns: boolean,
+) {
+  const payload: Record<string, unknown> = {
+    slug: draft.slug,
+    name: normalized.normalizedName,
+    headline: normalized.normalizedHeadline,
+    short_description: normalized.normalizedShortDescription,
+    long_description: normalized.normalizedLongDescription,
+    kasguide_badge: normalized.normalizedKasguideBadgePrimary,
+    category_primary: normalized.normalizedCategoryPrimary,
+    category_secondary: null,
+    address: normalized.normalizedAddress,
+    phone: normalized.normalizedPhone,
+    website: normalized.normalizedWebsite,
+    status: normalizeStatus(draft.status),
+    verification_status: draft.verificationStatus,
+    images: buildImages(normalized.normalizedName, normalized.normalizedImages),
+    review_notes: 'Mevcut mekan admin panelinden guncellendi.',
+    raw_snapshot: {
+      ...(existingRawSnapshot ?? {}),
+      last_admin_save_at: new Date().toISOString(),
+    },
+  }
+
+  if (supportsExtendedColumns) {
+    payload.kasguide_badges = normalized.normalizedKasguideBadges
+    payload.category_ids = normalized.normalizedCategoryIds
+  }
+
+  return payload
+}
+
 function normalizeStatus(status: PlaceStatus, publish = false): PlaceStatus {
   if (publish) {
     return 'published'
@@ -144,9 +232,12 @@ function validateDraft(draft: PlaceEditorDraft) {
     throw new Error('Gecersiz kategori secimi.')
   }
 
-  if (normalizedImages.length < 1 || normalizedImages.length > 5) {
+  if (normalizedImages.length > 5) {
     throw new Error('Her mekan icin en az 1, en fazla 5 foto gerekli.')
   }
+
+  const normalizedImagesWithFallback =
+    normalizedImages.length > 0 ? normalizedImages : [DEFAULT_PLACE_IMAGE_URL]
 
   return {
     normalizedName,
@@ -160,7 +251,7 @@ function validateDraft(draft: PlaceEditorDraft) {
     normalizedAddress: normalizeText(draft.address),
     normalizedPhone: normalizePhone(draft.phone),
     normalizedWebsite: normalizeWebsite(draft.website),
-    normalizedImages,
+    normalizedImages: normalizedImagesWithFallback,
   }
 }
 
@@ -205,19 +296,7 @@ export async function persistPlaceFromRaw(
     publish: boolean
   },
 ): Promise<void> {
-  const { data, error } = await client
-    .from('places')
-    .select(
-      'id, slug, name, lat, lng, imported_at, primary_source_name, primary_source_id, source_url, source_records, raw_snapshot, grid_key, cell_id, google_maps_uri, intake_channel, is_sweeped, source_sweep_id, category_ids, kasguide_badges',
-    )
-    .eq('id', input.rawPlaceId)
-    .maybeSingle()
-
-  if (error || !data) {
-    throw new Error('Ham mekan kaydi bulunamadi.')
-  }
-
-  const rawPlace = data as PlaceRow
+  const { place: rawPlace, supportsExtendedColumns } = await selectPlaceWithSchemaFallback(client, input.rawPlaceId)
   const normalized = validateDraft(input.draft)
   const placeId = input.draft.placeId ?? rawPlace.id ?? randomUUID()
   const slugBase =
@@ -236,7 +315,7 @@ export async function persistPlaceFromRaw(
         }
       : null
 
-  const payload = {
+  const payload: Record<string, unknown> = {
     id: placeId,
     slug,
     name: normalized.normalizedName,
@@ -244,9 +323,7 @@ export async function persistPlaceFromRaw(
     short_description: normalized.normalizedShortDescription,
     long_description: normalized.normalizedLongDescription,
     kasguide_badge: normalized.normalizedKasguideBadgePrimary,
-    kasguide_badges: normalized.normalizedKasguideBadges,
     category_primary: normalized.normalizedCategoryPrimary,
-    category_ids: normalized.normalizedCategoryIds,
     category_secondary: null,
     address: normalized.normalizedAddress,
     lat: rawPlace.lat,
@@ -285,6 +362,11 @@ export async function persistPlaceFromRaw(
     },
   }
 
+  if (supportsExtendedColumns) {
+    payload.kasguide_badges = normalized.normalizedKasguideBadges
+    payload.category_ids = normalized.normalizedCategoryIds
+  }
+
   const { error: upsertError } = await client.from('places').upsert(payload, { onConflict: 'id' })
 
   if (upsertError) {
@@ -299,47 +381,26 @@ export async function persistExistingPlace(
     draft: PlaceEditorDraft
   },
 ): Promise<void> {
-  const { data: existing, error: existingError } = await client
-    .from('places')
-    .select(
-      'id, source_records, raw_snapshot, lat, lng, imported_at, primary_source_name, primary_source_id, source_url, grid_key, cell_id, google_maps_uri, intake_channel, is_sweeped, source_sweep_id, category_ids, kasguide_badges',
-    )
-    .eq('id', input.placeId)
-    .single()
-
-  if (existingError || !existing) {
-    throw new Error('Mevcut mekan kaydi bulunamadi.')
-  }
+  const { place: existing, supportsExtendedColumns } = await selectPlaceWithSchemaFallback(client, input.placeId)
 
   const normalized = validateDraft(input.draft)
   const slugBase =
     slugifyText(input.draft.slug || normalized.normalizedName) || `place-${input.placeId.slice(0, 8)}`
   const slug = await ensureUniqueSlug(client, slugBase, input.placeId)
 
+  const payload = buildPlaceUpdatePayload(
+    normalized,
+    {
+      ...input.draft,
+      slug,
+    },
+    (existing.raw_snapshot as Record<string, unknown> | null | undefined) ?? null,
+    supportsExtendedColumns,
+  )
+
   const { error } = await client
     .from('places')
-    .update({
-      slug,
-      name: normalized.normalizedName,
-      headline: normalized.normalizedHeadline,
-      short_description: normalized.normalizedShortDescription,
-      long_description: normalized.normalizedLongDescription,
-      kasguide_badge: normalized.normalizedKasguideBadgePrimary,
-      kasguide_badges: normalized.normalizedKasguideBadges,
-      category_primary: normalized.normalizedCategoryPrimary,
-      category_ids: normalized.normalizedCategoryIds,
-      address: normalized.normalizedAddress,
-      phone: normalized.normalizedPhone,
-      website: normalized.normalizedWebsite,
-      status: normalizeStatus(input.draft.status),
-      verification_status: input.draft.verificationStatus,
-      images: buildImages(normalized.normalizedName, normalized.normalizedImages),
-      review_notes: 'Mevcut mekan admin panelinden guncellendi.',
-      raw_snapshot: {
-        ...((existing.raw_snapshot as Record<string, unknown> | null) ?? {}),
-        last_admin_save_at: new Date().toISOString(),
-      },
-    })
+    .update(payload)
     .eq('id', input.placeId)
 
   if (error) {

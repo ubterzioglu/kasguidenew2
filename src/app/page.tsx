@@ -1,18 +1,25 @@
 import { CategorySection } from '@/features/home/components/category-section'
 import { HeroCarousel } from '@/features/home/components/hero-carousel'
 import { HomePromoSection } from '@/features/home/components/home-promo-section'
+import { NewsAnnouncementsCarousel } from '@/features/home/components/news-announcements-carousel'
 import { WhatsAppCommunitySection } from '@/features/home/components/whatsapp-community-section'
 import { listPublicHeroSlides } from '@/lib/hero-slide-store'
+import { listUpdatesCarouselItems } from '@/lib/updates-store'
 
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
   const heroSnapshot = await listPublicHeroSlides()
+  const updates = await listUpdatesCarouselItems(9).catch((error) => {
+    console.error('[HomePage] Updates carousel data could not be loaded.', error)
+    return []
+  })
   return (
     <>
       <HeroCarousel initialSlides={heroSnapshot.slides} />
 
       <CategorySection />
+      <NewsAnnouncementsCarousel items={updates} />
       <HomePromoSection />
       <WhatsAppCommunitySection />
 

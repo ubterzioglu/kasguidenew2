@@ -3,7 +3,7 @@
 import Link from 'next/link'
 
 type AdminSectionLinksProps = {
-  current: 'places' | 'hero'
+  current: 'places' | 'hero' | 'updates'
   onRefresh: () => void
   refreshLabel: string
   refreshing: boolean
@@ -36,6 +36,13 @@ export function AdminSectionLinks({
           className={`admin-compact-nav-item${current === 'hero' ? ' is-active' : ''}`}
         >
           Hero
+        </Link>
+        <span className="admin-compact-nav-separator" aria-hidden="true" />
+        <Link
+          href="/admin/updates"
+          className={`admin-compact-nav-item${current === 'updates' ? ' is-active' : ''}`}
+        >
+          Haberler ve Duyurular
         </Link>
         <span className="admin-compact-nav-separator" aria-hidden="true" />
         <button type="button" className="admin-compact-nav-item admin-compact-nav-action" onClick={onLogout}>

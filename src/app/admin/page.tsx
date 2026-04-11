@@ -131,6 +131,10 @@ export default function AdminHomePage() {
               <strong>Mekanlar</strong>
               <p>Bütün mekanları tek tabloda yönet</p>
             </Link>
+            <Link href="/admin/updates" className="admin-nav-card admin-nav-card-simple">
+              <strong>Haberler ve Duyurular</strong>
+              <p>Carousel akışındaki haber ve duyuruları tek panelden yönet</p>
+            </Link>
             <Link href="/admin/hero-slides" className="admin-nav-card admin-nav-card-simple">
               <strong>Hero alanı</strong>
               <p>Slide fotoğrafları, başlıklar, alt başlıklar ve tagler</p>
