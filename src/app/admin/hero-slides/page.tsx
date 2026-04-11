@@ -40,18 +40,6 @@ export default function HeroSlidesAdminPage() {
 
   const activeCount = useMemo(() => slides.filter((slide) => slide.isActive).length, [slides])
 
-  useEffect(() => {
-    const storedPassword = getStoredAdminPassword()
-
-    if (!storedPassword) {
-      router.replace('/admin')
-      return
-    }
-
-    setAdminPassword(storedPassword)
-    void loadSlides(storedPassword, true)
-  }, [router])
-
   async function loadSlides(passwordOverride?: string, redirectOnAuthError = false) {
     const password = (passwordOverride ?? adminPassword).trim()
 
@@ -113,6 +101,20 @@ export default function HeroSlidesAdminPage() {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    const storedPassword = getStoredAdminPassword()
+
+    if (!storedPassword) {
+      router.replace('/admin')
+      return
+    }
+
+    setAdminPassword(storedPassword)
+    void loadSlides(storedPassword, true)
+    // loadSlides uses the explicit password override here; rerunning on adminPassword changes would duplicate the request.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router])
 
   async function saveSlides() {
     const password = adminPassword.trim()

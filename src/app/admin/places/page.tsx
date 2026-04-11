@@ -182,7 +182,7 @@ export default function AdminPlacesPage() {
                           <Button
                             type="button"
                             variant="secondary"
-                            onClick={() => runPlaceAction(item.id, 'save')}
+                            onClick={() => runPlaceAction(item.id)}
                             disabled={isBusy}
                           >
                             {isBusy ? 'Kaydediliyor...' : 'Değişiklikleri kaydet'}

@@ -1,7 +1,7 @@
 ﻿import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
-import type { AdminPlacesSnapshot, ExistingPlaceAction, PanelStatus, PlaceEditorDraft } from '@/types/review'
+import type { AdminPlacesSnapshot, PanelStatus, PlaceEditorDraft } from '@/types/review'
 
 import { useAdminAuth } from '../review/useAdminAuth'
 import { useDraftEditor } from '../review/useDraftEditor'
@@ -104,7 +104,7 @@ export function usePlacesDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
-  const runPlaceAction = async (placeId: string, action: ExistingPlaceAction) => {
+  const runPlaceAction = async (placeId: string) => {
     const password = requireAuth()
 
     if (!password) {

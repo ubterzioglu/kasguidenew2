@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 import type { PlaceEditorDraft } from '@/types/review'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -166,7 +168,14 @@ export function PlaceEditorForm({
                 </button>
               </div>
               {imageUrl.trim() ? (
-                <img src={imageUrl} alt="Onizleme" className="place-photo-preview" />
+                <Image
+                  src={imageUrl}
+                  alt="Onizleme"
+                  className="place-photo-preview"
+                  width={160}
+                  height={112}
+                  unoptimized
+                />
               ) : (
                 <div className="place-photo-placeholder">Onizleme yok</div>
               )}
