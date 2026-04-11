@@ -5122,6 +5122,27 @@ body {
   border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+.place-editor-actions .admin-button-secondary,
+.place-photo-header .admin-button-secondary {
+  background: linear-gradient(135deg, #0f8f83 0%, #0b6b63 100%);
+  color: #f7fffd;
+  border: 1px solid rgba(11, 107, 99, 0.9);
+  box-shadow: 0 12px 26px rgba(15, 143, 131, 0.22);
+}
+
+.place-editor-actions .admin-button-secondary:hover,
+.place-photo-header .admin-button-secondary:hover {
+  filter: brightness(1.03);
+  box-shadow: 0 16px 32px rgba(15, 143, 131, 0.28);
+}
+
+.place-editor-actions .admin-button-secondary:disabled,
+.place-photo-header .admin-button-secondary:disabled {
+  background: linear-gradient(135deg, rgba(15, 143, 131, 0.48), rgba(11, 107, 99, 0.48));
+  color: rgba(247, 255, 253, 0.86);
+  border-color: rgba(11, 107, 99, 0.38);
+}
+
 /* Final shell lock: keep hero, category and footer perfectly aligned */
 .hero-content,
 .home-categories-section,
