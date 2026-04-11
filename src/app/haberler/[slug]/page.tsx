@@ -3,13 +3,18 @@ import { notFound } from 'next/navigation'
 
 import { getNewsBySlug } from '@/lib/updates-store'
 
+export const dynamic = 'force-dynamic'
+
 type PageProps = {
   params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const news = await getNewsBySlug(slug)
+  const news = await getNewsBySlug(slug).catch((error) => {
+    console.error('[HaberDetayPage] News metadata could not be loaded.', error)
+    return null
+  })
 
   if (!news) {
     return {
@@ -25,7 +30,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function HaberDetayPage({ params }: PageProps) {
   const { slug } = await params
-  const news = await getNewsBySlug(slug)
+  const news = await getNewsBySlug(slug).catch((error) => {
+    console.error('[HaberDetayPage] News detail could not be loaded.', error)
+    return null
+  })
 
   if (!news) {
     notFound()

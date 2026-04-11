@@ -3,17 +3,22 @@ import { notFound } from 'next/navigation'
 
 import { getAnnouncementBySlug } from '@/lib/updates-store'
 
+export const dynamic = 'force-dynamic'
+
 type PageProps = {
   params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const announcement = await getAnnouncementBySlug(slug)
+  const announcement = await getAnnouncementBySlug(slug).catch((error) => {
+    console.error('[DuyuruDetayPage] Announcement metadata could not be loaded.', error)
+    return null
+  })
 
   if (!announcement) {
     return {
-      title: 'Duyuru bulunamadi | Kaş Guide',
+      title: 'Duyuru bulunamadı | Kaş Guide',
     }
   }
 
@@ -25,7 +30,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function DuyuruDetayPage({ params }: PageProps) {
   const { slug } = await params
-  const announcement = await getAnnouncementBySlug(slug)
+  const announcement = await getAnnouncementBySlug(slug).catch((error) => {
+    console.error('[DuyuruDetayPage] Announcement detail could not be loaded.', error)
+    return null
+  })
 
   if (!announcement) {
     notFound()

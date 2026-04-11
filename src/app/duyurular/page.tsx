@@ -3,21 +3,26 @@ import Link from 'next/link'
 
 import { listPublicAnnouncements } from '@/lib/updates-store'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Duyurular | Kaş Guide',
   description: 'Kaş Guide duyuruları, önemli notlar ve süreli bilgilendirmeler.',
 }
 
 export default async function DuyurularPage() {
-  const announcements = await listPublicAnnouncements(100)
+  const announcements = await listPublicAnnouncements(100).catch((error) => {
+    console.error('[DuyurularPage] Announcement list could not be loaded.', error)
+    return []
+  })
 
   return (
     <main className="updates-page">
       <section className="updates-page-hero updates-page-hero-announcements">
         <p className="updates-page-eyebrow">Duyurular</p>
-        <h1 className="updates-page-title">Guncel Duyurular</h1>
+        <h1 className="updates-page-title">Güncel Duyurular</h1>
         <p className="updates-page-description">
-          Sureli bilgilendirmeler, acil notlar ve takip edilmesi gereken guncellemeler burada.
+          Süreli bilgilendirmeler, acil notlar ve takip edilmesi gereken güncellemeler burada.
         </p>
       </section>
 

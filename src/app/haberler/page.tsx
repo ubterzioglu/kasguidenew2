@@ -3,13 +3,18 @@ import Link from 'next/link'
 
 import { listPublicNews } from '@/lib/updates-store'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Haberler | Kaş Guide',
   description: 'Kaş Guide haberleri, yeni içerikler ve güncel gelişmeler.',
 }
 
 export default async function HaberlerPage() {
-  const news = await listPublicNews(100)
+  const news = await listPublicNews(100).catch((error) => {
+    console.error('[HaberlerPage] News list could not be loaded.', error)
+    return []
+  })
 
   return (
     <main className="updates-page">
