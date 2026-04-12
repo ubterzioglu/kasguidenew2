@@ -8,7 +8,7 @@ export type GridSweepStatus = 'running' | 'completed' | 'partial' | 'failed'
 export type StatusTone = 'neutral' | 'success' | 'error'
 export type RawPlaceAction = 'save_draft' | 'publish' | 'reject'
 export type ExistingPlaceAction = 'save' | 'publish'
-export type PlaceIntakeChannel = 'sweep' | 'manual' | 'import' | 'migrated'
+export type PlaceIntakeChannel = 'sweep' | 'manual' | 'import' | 'migrated' | 'user_submission'
 export type PlaceStatus =
   | 'pending'
   | 'review'

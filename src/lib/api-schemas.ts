@@ -91,6 +91,17 @@ export const AdminAnnouncementUpdateBodySchema = z.object({
   announcement: AnnouncementInputSchema,
 })
 
+export const UserPlaceSubmissionSchema = z.object({
+  name: z.string().trim().min(2, 'Mekan adı en az 2 karakter olmalı').max(200),
+  categoryIds: z.array(z.string().min(1)).min(1, 'En az bir kategori seçin').max(3),
+  address: z.string().trim().min(5, 'Adres en az 5 karakter olmalı').max(500),
+  phone: z.string().trim().max(50).optional(),
+  website: z.string().trim().max(500).optional(),
+  shortDescription: z.string().trim().max(500).optional(),
+  lat: z.coerce.number().min(-90).max(90).optional(),
+  lng: z.coerce.number().min(-180).max(180).optional(),
+})
+
 export const OverpassSweepRunBodySchema = z.object({
   gridX: z.coerce.number().int(),
   gridY: z.coerce.number().int(),

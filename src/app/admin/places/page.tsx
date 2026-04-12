@@ -162,7 +162,7 @@ export default function AdminPlacesPage() {
                         <strong>{draft.name || 'İsimsiz mekan'}</strong>
                         <p>Kategoriler: {formatCategorySummary(draft.categoryIds)}</p>
                         <p>Güncelleme: {formatDate(item.updatedAt)}</p>
-                        <p>Köken: {item.intakeChannel}</p>
+                        <p>Köken: {item.intakeChannel}{item.intakeChannel === 'user_submission' ? ' (Kullanıcı Önerisi)' : ''}</p>
                         {item.sourceName ? <p>Kaynak: {item.sourceName} / {item.sourceId || '-'}</p> : null}
                       </div>
                     </div>
