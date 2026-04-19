@@ -16,9 +16,9 @@ const HERO_SLIDE_SEEDS: HeroSlide[] = [
   {
     id: 'hero-scene-01',
     eyebrow: 'Kaş Sahne 01',
-    title: 'Akşam ışığında Kaş kıyıları.',
-    description: 'Gün batımı, mekan önerileri ve sezonun en güzel rotaları tek vitrinde.',
-    tags: ['Gün Batımı', 'Öne Çıkan', 'Kaş Merkez'],
+    title: "Kaş'ta suyun altı da en az kıyıları kadar büyüleyici.",
+    description: "Dalış noktaları, tekne rotaları ve berrak koylarda geçen yavaş Akdeniz günleri burada başlıyor.",
+    tags: ['Dalış', 'Koylar', 'Akdeniz'],
     imageUrl:
       'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80',
     isActive: true,
@@ -27,9 +27,9 @@ const HERO_SLIDE_SEEDS: HeroSlide[] = [
   {
     id: 'hero-scene-02',
     eyebrow: 'Kaş Sahne 02',
-    title: 'Turkuaz su, sakin koylar ve hafif bir yaz günü.',
-    description: 'Plajlar, deniz keyfi ve günlük kaçamaklar için ferah bir sahne akışı.',
-    tags: ['Plaj', 'Deniz', 'Yaz'],
+    title: 'Turkuaz koylar, taş sokaklar ve iyi gelen bir Kaş ritmi.',
+    description: "Plaj önerileri, gün boyu keşif rotaları ve kısa kaçamaklara eşlik eden duraklar tek yerde.",
+    tags: ['Plajlar', 'Rotalar', 'Kaş'],
     imageUrl:
       'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1600&q=80',
     isActive: true,

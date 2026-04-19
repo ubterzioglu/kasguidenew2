@@ -52,6 +52,11 @@ export function SiteFrame({ children }: SiteFrameProps) {
             </a>
           </nav>
 
+          <div className="header-status-badge" aria-label="Yayın durumu">
+            <span className="header-status-badge-dot" aria-hidden="true"></span>
+            Test yayınındayız
+          </div>
+
           <nav className="header-inline-nav header-inline-nav-right" aria-label="Kısa yol">
             <Link href="/" className="header-inline-item">
               Ana Sayfa
