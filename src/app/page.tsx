@@ -1,10 +1,28 @@
+import type { Metadata } from 'next'
+
 import { CategorySection } from '@/features/home/components/category-section'
 import { HeroCarousel } from '@/features/home/components/hero-carousel'
+import { HomeFaqSection } from '@/features/home/components/home-faq-section'
+import { HomeIntroSection } from '@/features/home/components/home-intro-section'
+import { HomeJsonLd } from '@/features/home/components/home-jsonld'
 import { HomePromoSection } from '@/features/home/components/home-promo-section'
 import { NewsAnnouncementsCarousel } from '@/features/home/components/news-announcements-carousel'
 import { WhatsAppCommunitySection } from '@/features/home/components/whatsapp-community-section'
 import { listPublicHeroSlides } from '@/lib/hero-slide-store'
 import { listUpdatesCarouselItems } from '@/lib/updates-store'
+
+export const metadata: Metadata = {
+  title: 'Kaş Rehberi | Gezilecek Yerler, Restoranlar ve Tatil İpuçları',
+  description:
+    "Kaş rehberi ile tatilinizi planlayın. Kaş'ta gezilecek yerler, restoranlar, plajlar, konaklama önerileri ve yerel travel tips tek yerde.",
+  alternates: { canonical: '/' },
+  openGraph: {
+    url: '/',
+    type: 'website',
+    locale: 'tr_TR',
+    siteName: 'Kaş Guide',
+  },
+}
 
 export const dynamic = 'force-dynamic'
 
@@ -18,10 +36,17 @@ export default async function HomePage() {
     <>
       <HeroCarousel initialSlides={heroSnapshot.slides} />
 
+      <HomeIntroSection />
+
       <CategorySection />
       <NewsAnnouncementsCarousel items={updates} />
+
+      <HomeFaqSection />
+
       <HomePromoSection />
       <WhatsAppCommunitySection />
+
+      <HomeJsonLd />
 
       <footer className="footer" id="contact">
         <div className="footer-content footer-shell">

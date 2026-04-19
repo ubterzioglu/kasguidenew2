@@ -1,4 +1,14 @@
-﻿export default function IletisimPage() {
+﻿import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'İletişim | Kaş Guide',
+  description:
+    "Kaş Guide ekibine ulaşın: e-posta, WhatsApp ve sosyal medya. Öneri, işbirliği ve mekan ekleme talepleri için iletişim bilgileri.",
+  alternates: { canonical: '/iletisim' },
+  openGraph: { url: '/iletisim', type: 'website', locale: 'tr_TR', siteName: 'Kaş Guide' },
+}
+
+export default function IletisimPage() {
   return (
     <main className="container page-shell">
       <section className="page-hero">

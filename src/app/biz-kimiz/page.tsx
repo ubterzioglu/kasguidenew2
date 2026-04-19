@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Biz Kimiz? | Kaş Guide',
+  title: 'Biz Kimiz | Kaş Guide Editoryal Ekibi',
   description:
-    "Kaş Guide ekibini, yaklaşımını ve Kaş'a neden bu kadar bağlı olduğunu anlatan kısa tanışma sayfası.",
+    "Kaş Guide nasıl kuruldu, editoryal yaklaşımımız ne, mekanları nasıl seçiyoruz? Yerel uzman ekibimizi ve misyonumuzu tanıyın.",
+  alternates: { canonical: '/biz-kimiz' },
+  openGraph: { url: '/biz-kimiz', type: 'website', locale: 'tr_TR', siteName: 'Kaş Guide' },
 }
 
 export default function BizKimizPage() {

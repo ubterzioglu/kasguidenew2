@@ -1,4 +1,15 @@
+import type { Metadata } from 'next'
+
 import { SubmitPlaceForm } from './submit-place-form'
+
+export const metadata: Metadata = {
+  title: 'Mekan Öner | Kaş Guide\'a Yeni Yer Ekle',
+  description:
+    "Kaş'ta beğendiğin bir mekanı Kaş Guide'a önermek için formu doldur. Editoryal inceleme sonrası yayımlanır.",
+  alternates: { canonical: '/mekan-oner' },
+  openGraph: { url: '/mekan-oner', type: 'website', locale: 'tr_TR', siteName: 'Kaş Guide' },
+  robots: { index: true, follow: true },
+}
 
 export default function MekanOnerPage() {
   return (

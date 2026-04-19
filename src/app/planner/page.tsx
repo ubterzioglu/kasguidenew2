@@ -6,6 +6,7 @@ import { getPlannerPlaces, PLANNER_QUESTIONS } from '@/lib/planner-data'
 export const metadata: Metadata = {
   title: 'Günlük Planlayıcı | Kaş Guide',
   description: "25 soruluk Kaş planner'ı ile gününüze uygun rota ve mekan önerileri alın.",
+  robots: { index: false, follow: false },
 }
 
 export default async function PlannerPage() {

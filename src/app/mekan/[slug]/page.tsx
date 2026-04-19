@@ -1,13 +1,17 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { PlaceGuideBadges } from '@/components/place-guide-badges'
+import { getCategoryLabel } from '@/lib/categories'
+import { mapCategoryToSchemaType } from '@/lib/place-schema'
 import { getPlaceCategoryLabel } from '@/lib/place-taxonomy'
 import { getPublishedPlaceBySlug } from '@/lib/public-place-store'
+import type { PublicPlaceDetail } from '@/lib/public-place-store'
 import { PlaceDetailGallery } from './place-detail-gallery'
 
-export const revalidate = 3600 // 1 hour caching
+export const revalidate = 3600
 
 type DetailSignalKey = 'address' | 'phone' | 'website'
 
@@ -48,6 +52,75 @@ function renderDetailSignalIcon(key: DetailSignalKey) {
   )
 }
 
+function isThinDescription(description: string | null | undefined): boolean {
+  if (!description) return true
+  return description.trim().split(/\s+/).length < 60
+}
+
+function buildPlaceJsonLd(place: PublicPlaceDetail, slug: string): Record<string, unknown> {
+  const schemaType = mapCategoryToSchemaType(place.categoryPrimary)
+  const placeSchema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': schemaType,
+    name: place.name,
+    description: place.longDescription,
+    url: `https://www.kasguide.de/mekan/${slug}`,
+  }
+
+  if (place.imageUrls.length > 0) {
+    placeSchema.image = place.imageUrls
+  }
+
+  if (place.address) {
+    placeSchema.address = {
+      '@type': 'PostalAddress',
+      streetAddress: place.address,
+      addressLocality: 'Kaş',
+      addressRegion: 'Antalya',
+      addressCountry: 'TR',
+    }
+  }
+
+  if (place.phone) {
+    placeSchema.telephone = place.phone
+  }
+
+  if (place.website) {
+    placeSchema.sameAs = place.website
+  }
+
+  return placeSchema
+}
+
+function buildBreadcrumbJsonLd(place: PublicPlaceDetail): Record<string, unknown> {
+  const categoryLabel = getCategoryLabel(place.categoryPrimary)
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Ana Sayfa',
+        item: 'https://www.kasguide.de',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: categoryLabel,
+        item: 'https://www.kasguide.de/#categories',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: place.name,
+        item: `https://www.kasguide.de/mekan/${place.slug}`,
+      },
+    ],
+  }
+}
+
 type PlaceDetailPageProps = {
   params: Promise<{
     slug: string
@@ -67,14 +140,18 @@ export async function generateMetadata({ params }: PlaceDetailPageProps): Promis
   const title = `${place.headline} | Kaş Guide`
   const description = place.shortDescription
   const image = place.imageUrls[0] ?? null
+  const thinContent = isThinDescription(place.longDescription)
 
   return {
     title,
     description,
+    alternates: {
+      canonical: `/mekan/${slug}`,
+    },
     openGraph: {
       title,
       description,
-      url: `https://kasguide.de/mekan/${slug}`,
+      url: `https://www.kasguide.de/mekan/${slug}`,
       siteName: 'Kaş Guide',
       locale: 'tr_TR',
       type: 'website',
@@ -86,6 +163,7 @@ export async function generateMetadata({ params }: PlaceDetailPageProps): Promis
       description,
       ...(image ? { images: [image] } : {}),
     },
+    robots: thinContent ? { index: false, follow: true } : undefined,
   }
 }
 
@@ -118,13 +196,33 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
     },
   ] as const satisfies Array<{ key: DetailSignalKey; active: boolean }>
 
+  const placeJsonLd = buildPlaceJsonLd(place, slug)
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(place)
+
   return (
     <main className="place-detail-page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(placeJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       <section className="place-detail-shell">
         <div className="place-detail-top-grid">
           <section className="place-detail-hero">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={heroImage} alt={place.name} className="place-detail-hero-media" fetchPriority="high" loading="eager" />
+            <Image
+              src={heroImage}
+              alt={`${place.name} — ${place.shortDescription}`}
+              className="place-detail-hero-media"
+              width={1600}
+              height={900}
+              priority
+              sizes="100vw"
+              style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+            />
             <div className="place-detail-hero-shade" />
             <div className="place-detail-hero-copy">
               <h1 className="place-detail-title place-detail-title-name">{place.name}</h1>

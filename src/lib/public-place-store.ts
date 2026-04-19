@@ -411,4 +411,34 @@ export async function getPublishedPlaceCountsByCategory() {
   return counts
 }
 
+type SitemapPlaceRow = {
+  slug: string | null
+  updated_at: string | null
+}
+
+export async function listPublishedPlaceSitemapEntries(): Promise<Array<{ slug: string; updatedAt: string }>> {
+  const client = getSupabaseAdminClient()
+
+  if (!client) {
+    return []
+  }
+
+  const { data, error } = await client
+    .from('places')
+    .select('slug, updated_at')
+    .eq('status', 'published')
+    .not('slug', 'is', null)
+
+  if (error || !data) {
+    return []
+  }
+
+  return ((data ?? []) as SitemapPlaceRow[])
+    .filter((row) => row.slug)
+    .map((row) => ({
+      slug: row.slug!,
+      updatedAt: row.updated_at ?? new Date().toISOString(),
+    }))
+}
+
 

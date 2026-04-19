@@ -1,4 +1,10 @@
+import type { Metadata } from 'next'
+
 import { ResultsPageClient } from '@/features/results/components/results-page-client'
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 type ResultPageProps = {
   searchParams: Promise<{
