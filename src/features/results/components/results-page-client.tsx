@@ -245,7 +245,13 @@ export function ResultsPageClient({ initialCategoryIds }: ResultsPageClientProps
 
                 {hasMore ? (
                   <div className="category-results-actions">
-                    <Button type="button" variant="secondary" onClick={loadMore} disabled={isLoadingMore}>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      className="result-load-more-button"
+                      onClick={loadMore}
+                      disabled={isLoadingMore}
+                    >
                       {isLoadingMore ? 'Yükleniyor...' : 'Daha fazla yükle'}
                     </Button>
                   </div>
