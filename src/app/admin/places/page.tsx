@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { CATEGORIES, CATEGORY_GROUPS } from '@/lib/categories'
 
 import { AdminSectionLinks } from '../components/AdminSectionLinks'
 import { PlaceEditorForm } from '../review/components/PlaceEditorForm'
@@ -13,6 +14,7 @@ type FilterMode = 'all' | 'published' | 'draft'
 
 export default function AdminPlacesPage() {
   const [filter, setFilter] = useState<FilterMode>('all')
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 50
   const {
@@ -33,15 +35,26 @@ export default function AdminPlacesPage() {
   } = usePlacesDashboard()
 
   const filteredPlaces = useMemo(() => {
+    let result = snapshot.places
+
     switch (filter) {
       case 'published':
-        return snapshot.places.filter((item) => (drafts[item.id] ?? item.draft).status === 'published')
+        result = result.filter((item) => (drafts[item.id] ?? item.draft).status === 'published')
+        break
       case 'draft':
-        return snapshot.places.filter((item) => (drafts[item.id] ?? item.draft).status !== 'published')
-      default:
-        return snapshot.places
+        result = result.filter((item) => (drafts[item.id] ?? item.draft).status !== 'published')
+        break
     }
-  }, [drafts, filter, snapshot.places])
+
+    if (categoryFilter) {
+      result = result.filter((item) => {
+        const draft = drafts[item.id] ?? item.draft
+        return draft.categoryIds.includes(categoryFilter)
+      })
+    }
+
+    return result
+  }, [drafts, filter, categoryFilter, snapshot.places])
 
   const totalPages = Math.max(1, Math.ceil(filteredPlaces.length / itemsPerPage))
   const paginatedPlaces = filteredPlaces.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
@@ -97,6 +110,30 @@ export default function AdminPlacesPage() {
         <Button type="button" variant={filter === 'draft' ? 'primary' : 'secondary'} onClick={() => { setFilter('draft'); setCurrentPage(1) }}>
           Taslak
         </Button>
+
+        <select
+          value={categoryFilter ?? ''}
+          onChange={(e) => {
+            setCategoryFilter(e.target.value || null)
+            setCurrentPage(1)
+          }}
+          className="admin-category-select"
+        >
+          <option value="">Tüm kategoriler</option>
+          {CATEGORY_GROUPS.map((group) => (
+            <optgroup key={group.title} label={group.title}>
+              {group.ids.map((id) => {
+                const cat = CATEGORIES.find((c) => c.id === id)
+                return cat ? (
+                  <option key={id} value={id}>{cat.icon} {cat.label}</option>
+                ) : null
+              })}
+            </optgroup>
+          ))}
+          {CATEGORIES.filter((c) => c.group === null).map((cat) => (
+            <option key={cat.id} value={cat.id}>{cat.icon} {cat.label}</option>
+          ))}
+        </select>
       </section>
 
       <section className="admin-hero admin-hero-review admin-places-hero-stack">

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1775295400035,
-  "projectRoot": "C:\\.temp_private\\kasguidenew2",
+  "lastScanned": 1776632675217,
+  "projectRoot": "C:\\temp_private\\kasguidede",
   "techStack": {
     "languages": [
       {
@@ -54,8 +54,6 @@
       "prestart": "node scripts/sync-next-server-chunks.mjs",
       "start": "next start",
       "lint": "next lint",
-      "import:osm": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/import-osm.ts",
-      "import:google:grid": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/import-google-grid.ts",
       "normalize:places": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/normalize-places.ts",
       "dedupe:places": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/dedupe-places.ts",
       "backfill:legacy-review": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/backfill-legacy-items-to-review.ts",
@@ -75,7 +73,6 @@
     "isMonorepo": false,
     "workspaces": [],
     "mainDirectories": [
-      "docs",
       "public",
       "scripts",
       "src"
@@ -91,7 +88,7 @@
       "path": "db",
       "purpose": null,
       "fileCount": 21,
-      "lastAccessed": 1775295399968,
+      "lastAccessed": 1776632675152,
       "keyFiles": [
         "add_article_interview_types.sql",
         "connection.js",
@@ -100,46 +97,30 @@
         "import-data.js"
       ]
     },
-    "docs": {
-      "path": "docs",
-      "purpose": "Documentation",
-      "fileCount": 6,
-      "lastAccessed": 1775295399968,
-      "keyFiles": [
-        "grid-sweep-runbook.md",
-        "kas-run-report.md",
-        "kas.md",
-        "sweep-agent-handoff.md",
-        "sweep-ne-cekiyor.md"
-      ]
-    },
-    "old": {
-      "path": "old",
+    "faq": {
+      "path": "faq",
       "purpose": null,
-      "fileCount": 37,
-      "lastAccessed": 1775295399969,
+      "fileCount": 1,
+      "lastAccessed": 1776632675153,
       "keyFiles": [
-        "404.html",
-        "AGENTS.md",
-        "article_ornek.html",
-        "bigsummary-2601192106.md",
-        "categories.js"
+        "faq-list-data.js"
       ]
     },
     "public": {
       "path": "public",
       "purpose": "Public files",
-      "fileCount": 1,
-      "lastAccessed": 1775295399969,
+      "fileCount": 2,
+      "lastAccessed": 1776632675193,
       "keyFiles": [
+        "kasplaceholder.jpg",
         "upup.png"
       ]
     },
     "scripts": {
       "path": "scripts",
       "purpose": "Build/utility scripts",
-      "fileCount": 15,
-      "lastAccessed": 1775295399969,
+      "fileCount": 14,
+      "lastAccessed": 1776632675193,
       "keyFiles": [
         "backfill-legacy-items-to-review.ts",
         "consolidate-raw-into-places.ts",
@@ -152,23 +133,30 @@
       "path": "src",
       "purpose": "Source code",
       "fileCount": 0,
-      "lastAccessed": 1775295399969,
+      "lastAccessed": 1776632675193,
       "keyFiles": []
     },
     "supabase": {
       "path": "supabase",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1775295399969,
+      "lastAccessed": 1776632675194,
       "keyFiles": [
         "config.toml"
       ]
+    },
+    "temp": {
+      "path": "temp",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1776632675194,
+      "keyFiles": []
     },
     "scripts\\lib": {
       "path": "scripts\\lib",
       "purpose": "Library code",
       "fileCount": 2,
-      "lastAccessed": 1775295399970,
+      "lastAccessed": 1776632675195,
       "keyFiles": [
         "ingestion-config.ts",
         "supabase-admin.ts"
@@ -178,7 +166,7 @@
       "path": "src\\app",
       "purpose": "Application code",
       "fileCount": 5,
-      "lastAccessed": 1775295399971,
+      "lastAccessed": 1776632675195,
       "keyFiles": [
         "error.tsx",
         "globals.css",
@@ -188,8 +176,8 @@
     "src\\components": {
       "path": "src\\components",
       "purpose": "UI components",
-      "fileCount": 4,
-      "lastAccessed": 1775295399971,
+      "fileCount": 5,
+      "lastAccessed": 1776632675196,
       "keyFiles": [
         "back-to-top-button.tsx",
         "client-header.tsx",
@@ -199,8 +187,8 @@
     "src\\lib": {
       "path": "src\\lib",
       "purpose": "Library code",
-      "fileCount": 14,
-      "lastAccessed": 1775295399971,
+      "fileCount": 21,
+      "lastAccessed": 1776632675196,
       "keyFiles": [
         "admin-auth.ts",
         "admin-password-client.ts",
@@ -210,138 +198,179 @@
     "src\\types": {
       "path": "src\\types",
       "purpose": "Type definitions",
-      "fileCount": 1,
-      "lastAccessed": 1775295399971,
+      "fileCount": 2,
+      "lastAccessed": 1776632675196,
       "keyFiles": [
-        "review.ts"
+        "review.ts",
+        "updates.ts"
       ]
     },
     "supabase\\migrations": {
       "path": "supabase\\migrations",
       "purpose": "Database migrations",
-      "fileCount": 7,
-      "lastAccessed": 1775295399972,
+      "fileCount": 12,
+      "lastAccessed": 1776632675197,
       "keyFiles": [
         "20260326215500_create_hero_slides.sql",
         "20260328193000_create_place_ingestion_core.sql",
         "20260328211000_add_grid_sweeps.sql"
       ]
+    },
+    "temp\\docs": {
+      "path": "temp\\docs",
+      "purpose": "Documentation",
+      "fileCount": 10,
+      "lastAccessed": 1776632675197,
+      "keyFiles": [
+        "grid-sweep-runbook.md",
+        "kas-run-report.md",
+        "kas.md"
+      ]
+    },
+    "temp\\tests": {
+      "path": "temp\\tests",
+      "purpose": "Test files",
+      "fileCount": 4,
+      "lastAccessed": 1776632675198,
+      "keyFiles": [
+        "test-api-limit.mjs",
+        "test-limit.mjs",
+        "test-limit2.mjs"
+      ]
     }
   },
   "hotPaths": [
     {
-      "path": "src\\features\\home\\components\\category-section.tsx",
-      "accessCount": 11,
-      "lastAccessed": 1775295474190,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\admin\\review\\page.tsx",
-      "accessCount": 9,
-      "lastAccessed": 1775311210935,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\api-helpers.ts",
+      "path": "placesclaudeadd\\placeholder-batch.sql",
       "accessCount": 8,
-      "lastAccessed": 1775296735199,
+      "lastAccessed": 1776636280512,
       "type": "file"
     },
     {
-      "path": "src\\lib\\place-review-store.ts",
+      "path": "placesclaudeadd\\placeholder-single.sql",
       "accessCount": 6,
-      "lastAccessed": 1775311146199,
+      "lastAccessed": 1776635517236,
       "type": "file"
     },
     {
-      "path": "src\\app\\admin\\review\\useReviewDashboard.ts",
+      "path": "placesclaudeadd\\README.md",
+      "accessCount": 6,
+      "lastAccessed": 1776635814160,
+      "type": "file"
+    },
+    {
+      "path": "placesclaudeadd",
       "accessCount": 4,
-      "lastAccessed": 1775296719065,
-      "type": "file"
-    },
-    {
-      "path": "src\\types\\review.ts",
-      "accessCount": 3,
-      "lastAccessed": 1775295813856,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\admin\\review\\components\\PlaceEditorForm.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1775296134343,
-      "type": "file"
-    },
-    {
-      "path": "",
-      "accessCount": 3,
-      "lastAccessed": 1775296442192,
+      "lastAccessed": 1776635819735,
       "type": "directory"
+    },
+    {
+      "path": "placesclaudeadd\\placeholder-batch-prompt.md",
+      "accessCount": 2,
+      "lastAccessed": 1776635827804,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\layout.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776632775274,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776632775655,
+      "type": "file"
+    },
+    {
+      "path": "next.config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776632776023,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 1,
+      "lastAccessed": 1776632776450,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\categories.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776632783286,
+      "type": "file"
     },
     {
       "path": "src",
-      "accessCount": 3,
-      "lastAccessed": 1775296536555,
+      "accessCount": 1,
+      "lastAccessed": 1776632820897,
       "type": "directory"
     },
     {
-      "path": "src\\app\\api\\admin\\review\\route.ts",
-      "accessCount": 3,
-      "lastAccessed": 1775296628697,
+      "path": "src\\app\\mekan\\[slug]\\page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776632821069,
       "type": "file"
     },
     {
-      "path": "src\\app\\api\\admin\\raw-places\\route.ts",
-      "accessCount": 3,
-      "lastAccessed": 1775296635809,
+      "path": "bigconvert.md",
+      "accessCount": 1,
+      "lastAccessed": 1776633053556,
       "type": "file"
     },
     {
-      "path": "src\\app\\api\\admin\\places\\route.ts",
-      "accessCount": 3,
-      "lastAccessed": 1775296650921,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\raw-place-store.ts",
-      "accessCount": 3,
-      "lastAccessed": 1775311145907,
+      "path": "src\\lib\\public-place-store.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776633157795,
       "type": "file"
     },
     {
       "path": "src\\lib\\place-persistence.ts",
       "accessCount": 1,
-      "lastAccessed": 1775295790798,
+      "lastAccessed": 1776633158039,
+      "type": "file"
+    },
+    {
+      "path": "db\\schema-unified.sql",
+      "accessCount": 1,
+      "lastAccessed": 1776633164020,
       "type": "file"
     },
     {
       "path": "src\\lib\\place-review-utils.ts",
       "accessCount": 1,
-      "lastAccessed": 1775295911017,
+      "lastAccessed": 1776633164968,
+      "type": "file"
+    },
+    {
+      "path": "db\\schema.sql",
+      "accessCount": 1,
+      "lastAccessed": 1776633175462,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 1,
+      "lastAccessed": 1776633178814,
       "type": "directory"
     },
     {
-      "path": "src\\app\\admin\\review\\useDraftEditor.ts",
+      "path": "supabase\\migrations\\20260404123000_unify_places_single_table.sql",
       "accessCount": 1,
-      "lastAccessed": 1775296229057,
+      "lastAccessed": 1776633185328,
       "type": "file"
     },
     {
-      "path": "src\\app\\admin\\review\\useAdminAuth.ts",
+      "path": "supabase\\migrations\\20260406113000_add_multi_category_and_badges_to_places.sql",
       "accessCount": 1,
-      "lastAccessed": 1775296321619,
+      "lastAccessed": 1776633185392,
       "type": "file"
     },
     {
-      "path": "src\\lib\\api-schemas.ts",
+      "path": "placesclaudeadd\\APPLY_MIGRATION_IF_NEEDED.sql",
       "accessCount": 1,
-      "lastAccessed": 1775296481771,
+      "lastAccessed": 1776634706678,
       "type": "file"
-    },
-    {
-      "path": "src\\app\\api",
-      "accessCount": 1,
-      "lastAccessed": 1775296531782,
-      "type": "directory"
     }
   ],
   "userDirectives": []

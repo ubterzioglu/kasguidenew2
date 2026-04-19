@@ -15,8 +15,6 @@ type FormData = {
   phone: string
   website: string
   shortDescription: string
-  lat: string
-  lng: string
 }
 
 const INITIAL_FORM: FormData = {
@@ -26,8 +24,6 @@ const INITIAL_FORM: FormData = {
   phone: '',
   website: '',
   shortDescription: '',
-  lat: '',
-  lng: '',
 }
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
@@ -60,8 +56,6 @@ export function SubmitPlaceForm() {
       phone: form.phone || undefined,
       website: form.website || undefined,
       shortDescription: form.shortDescription || undefined,
-      lat: form.lat ? Number(form.lat) : undefined,
-      lng: form.lng ? Number(form.lng) : undefined,
     }
 
     try {
@@ -246,41 +240,6 @@ export function SubmitPlaceForm() {
           />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-          <div>
-            <label htmlFor="lat" style={{ display: 'block', fontWeight: 600, marginBottom: '0.4rem' }}>
-              Enlem (opsiyonel)
-            </label>
-            <input
-              id="lat"
-              type="number"
-              step="any"
-              min={-90}
-              max={90}
-              value={form.lat}
-              onChange={(e) => setForm((p) => ({ ...p, lat: e.target.value }))}
-              placeholder="ör: 36.2012"
-              style={inputStyle}
-            />
-          </div>
-          <div>
-            <label htmlFor="lng" style={{ display: 'block', fontWeight: 600, marginBottom: '0.4rem' }}>
-              Boylam (opsiyonel)
-            </label>
-            <input
-              id="lng"
-              type="number"
-              step="any"
-              min={-180}
-              max={180}
-              value={form.lng}
-              onChange={(e) => setForm((p) => ({ ...p, lng: e.target.value }))}
-              placeholder="ör: 29.6386"
-              style={inputStyle}
-            />
-          </div>
-        </div>
-
         {errorMsg && (
           <p style={{ color: 'var(--color-error, #ef4444)', fontSize: '0.9rem', margin: 0 }}>{errorMsg}</p>
         )}
@@ -315,4 +274,5 @@ const inputStyle: React.CSSProperties = {
   background: 'transparent',
   color: 'inherit',
   fontSize: '0.95rem',
+  boxSizing: 'border-box',
 }

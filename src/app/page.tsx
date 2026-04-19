@@ -107,6 +107,26 @@ export default async function HomePage() {
                   </svg>
                 </a>
               </div>
+              <div className="footer-partner-links" aria-label="Partner bağlantıları">
+                <p className="footer-bottom-note">
+                  SEO Aracı:{' '}
+                  <a href="https://spindorai.com" target="_blank" rel="noopener noreferrer">
+                    Spindora
+                  </a>
+                </p>
+                <p className="footer-bottom-note">
+                  SEO Hizmetleri:{' '}
+                  <a href="https://cortext.net" target="_blank" rel="noopener noreferrer">
+                    Corteqs
+                  </a>
+                </p>
+                <p className="footer-bottom-note">
+                  Diasporayı Birleştiren Platform:{' '}
+                  <a href="https://spindorai.com" target="_blank" rel="noopener noreferrer">
+                    Spindora
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
 
