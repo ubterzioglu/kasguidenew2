@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 const HOME_FAQ_ITEMS = [
   {
     question: "Kaş'ta kaç gün kalınır?",
@@ -33,16 +35,43 @@ const HOME_FAQ_ITEMS = [
 
 export function HomeFaqSection() {
   return (
-    <section className="container page-shell" aria-label="Sık sorulan sorular">
-      <h2>Kaş Hakkında Sık Sorulan Sorular</h2>
-      {HOME_FAQ_ITEMS.map((item, index) => (
-        <details key={index} style={{ marginBottom: '1rem' }}>
-          <summary style={{ cursor: 'pointer', fontWeight: 600, fontSize: '1.05rem' }}>
-            <span style={{ display: 'inline' }}>{item.question}</span>
-          </summary>
-          <p style={{ marginTop: '0.5rem', lineHeight: 1.7 }}>{item.answer}</p>
-        </details>
-      ))}
+    <section className="home-faq-section" aria-labelledby="home-faq-title">
+      <div className="home-faq-shell">
+        <div className="home-faq-header">
+          <div className="home-faq-copy">
+            <p className="home-faq-eyebrow">Hızlı Başlangıç</p>
+            <h2 id="home-faq-title" className="home-faq-title">
+              Kaş hakkında ilk bakışta en çok merak edilenler
+            </h2>
+            <p className="home-faq-description">
+              İlk geliş, konaklama bölgesi, plaj seçimi ve bütçe gibi temel soruların kısa cevaplarını burada
+              toparladık.
+            </p>
+          </div>
+
+          <div className="home-faq-aside" aria-label="SSS özet bilgileri">
+            <strong className="home-faq-aside-count">{HOME_FAQ_ITEMS.length} temel soru</strong>
+            <p className="home-faq-aside-text">
+              Daha detaylı cevaplar ve arama destekli tüm içerik için geniş SSS arşivine geçebilirsiniz.
+            </p>
+            <Link href="/faq" className="home-faq-link">
+              Tüm SSS sayfasını aç
+            </Link>
+          </div>
+        </div>
+
+        <div className="home-faq-list">
+          {HOME_FAQ_ITEMS.map((item, index) => (
+            <details key={index} className="home-faq-item" open={index === 0}>
+              <summary className="home-faq-question">
+                <span className="home-faq-question-text">{item.question}</span>
+                <span className="home-faq-question-icon" aria-hidden="true" />
+              </summary>
+              <p className="home-faq-answer">{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
     </section>
   )
 }
