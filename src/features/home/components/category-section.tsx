@@ -172,7 +172,7 @@ export function CategorySection() {
       <div className="category-section-shell" id="categories">
         <div className="category-topline">
           <div>
-            <h3 className="section-title">Kaş'ta Gezilecek Yerler, Restoranlar ve Aktiviteler</h3>
+            <h3 className="section-title">Kaş&apos;ta Gezilecek Yerler, Restoranlar ve Aktiviteler</h3>
           </div>
           <div className="category-topline-actions">
             <button

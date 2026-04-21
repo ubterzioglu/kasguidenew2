@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 
 import { SiteFrame } from '@/components/site-frame'
 import { HomeJsonLd, buildBreadcrumbListSchema } from '@/features/home/components/home-jsonld'
@@ -68,9 +69,9 @@ export default async function KasTatilRehberiPage() {
         <section className="page-internal-links">
           <h2>Daha Fazla Keşif</h2>
           <p>
-            <a href="/">Ana Sayfaya Dön</a> |{' '}
-            <a href="/kas-otel-onerileri">Otel Önerileri</a> |{' '}
-            <a href="/kas-aktiviteler">Aktiviteler</a>
+            <Link href="/">Ana Sayfaya Dön</Link> |{' '}
+            <Link href="/kas-otel-onerileri">Otel Önerileri</Link> |{' '}
+            <Link href="/kas-aktiviteler">Aktiviteler</Link>
           </p>
         </section>
 

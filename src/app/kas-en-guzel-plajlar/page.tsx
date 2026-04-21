@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 
 import { SiteFrame } from '@/components/site-frame'
 import { HomeJsonLd, buildBreadcrumbListSchema } from '@/features/home/components/home-jsonld'
@@ -84,9 +85,9 @@ export default async function KasEnGuzelPlajlarPage() {
         <section className="page-internal-links">
           <h2>Daha Fazla Keşif</h2>
           <p>
-            <a href="/">Ana Sayfaya Dön</a> |{' '}
-            <a href="/kas-koylari">Koylar Listesi</a> |{' '}
-            <a href="/kas-tekne-turu">Tekne Turları</a>
+            <Link href="/">Ana Sayfaya Dön</Link> |{' '}
+            <Link href="/kas-koylari">Koylar Listesi</Link> |{' '}
+            <Link href="/kas-tekne-turu">Tekne Turları</Link>
           </p>
         </section>
 
