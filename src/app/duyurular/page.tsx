@@ -36,8 +36,7 @@ export default async function DuyurularPage() {
           <div className="updates-list-grid">
             {announcements.map((item) => (
               <Link key={item.id} href={`/duyurular/${item.slug}`} className="updates-list-card updates-list-card-announcement">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={item.imageUrl || '/kasplaceholder.jpg'} alt={item.title} className="updates-list-image" />
+                <img src={item.imageUrl || '/kasplaceholder.jpg'} alt={item.title} className="updates-list-image" width={600} height={400} loading="lazy" />
                 <div className="updates-list-copy">
                   <span className={`updates-list-type updates-list-type-${item.priority}`}>Duyuru</span>
                   <h2>{item.title}</h2>

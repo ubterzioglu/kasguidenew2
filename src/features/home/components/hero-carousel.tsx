@@ -125,9 +125,9 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
         >
           <div className="hero-featured-card hero-carousel-card hero-story-card hero-story-featured-pane">
             <div className="hero-featured-copy hero-carousel-copy hero-story-copy-tuned">
-              <h1 className="hero-story-title">
+              <h2 className="hero-story-title">
                 {scene.title}
-              </h1>
+              </h2>
               <p className="hero-featured-description hero-story-description">
                 {scene.description}
               </p>
@@ -143,10 +143,10 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
 
               <div className="hero-featured-actions">
                 <a href="#categories" className="hero-primary-action">
-                  Tatilimi planla!
+                  Kaş Tatilini Planla
                 </a>
-                <a href="#routes" className="hero-primary-action">
-                  Ben Yerlisiyim!
+                <a href="/mekan-oner" className="hero-primary-action">
+                  Kaş Yerel Rehberi Ol
                 </a>
                 <a
                   href="https://chat.whatsapp.com/GODQNmpRlAaDDtyaDnIyn4"

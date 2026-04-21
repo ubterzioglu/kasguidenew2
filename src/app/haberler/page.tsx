@@ -36,8 +36,7 @@ export default async function HaberlerPage() {
           <div className="updates-list-grid">
             {news.map((item) => (
               <Link key={item.id} href={`/haberler/${item.slug}`} className="updates-list-card">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={item.imageUrl || '/kasplaceholder.jpg'} alt={item.title} className="updates-list-image" />
+                <img src={item.imageUrl || '/kasplaceholder.jpg'} alt={item.title} className="updates-list-image" width={600} height={400} loading="lazy" />
                 <div className="updates-list-copy">
                   <span className="updates-list-type">Haber</span>
                   <h2>{item.title}</h2>

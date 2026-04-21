@@ -25,7 +25,7 @@ const HOME_INTRO_SECTIONS = [
         <p>
           İster romantik bir hafta sonu kaçamağı, ister aile tatili, ister backpacker rotası arıyor olun, Kaş her
           bütçeye ve her tarza hitap eder. Kaş&apos;ta nerede kalınır konusunda detaylı bilgilerimizi{' '}
-          <Link href="/kas-nerede-kalinir">Kaş konaklama rehberinden</Link> bulabilirsiniz.
+          <Link href="/kas-tekne-turu">Kaş tekne turu rehberinden</Link> bulabilirsiniz.
         </p>
       </>
     ),
@@ -117,7 +117,7 @@ export function HomeIntroSection() {
         <div className="home-intro-hero">
           <p className="home-intro-eyebrow">Kaş Rehberi</p>
           <h1 id="home-intro-title" className="home-intro-title">
-            Gezilecek yerler, restoranlar, plajlar ve yerel öneriler
+            Kaş Gezi Rehberi – Gezilecek Yerler, Plajlar ve Yerel Öneriler
           </h1>
           <p className="home-intro-lead">
             Kaş&apos;ı ilk kez keşfedenler için temel bilgileri, sık aranan başlıkları ve planlama ipuçlarını daha

@@ -7,14 +7,15 @@ import { HomeIntroSection } from '@/features/home/components/home-intro-section'
 import { HomeJsonLd } from '@/features/home/components/home-jsonld'
 import { HomePromoSection } from '@/features/home/components/home-promo-section'
 import { NewsAnnouncementsCarousel } from '@/features/home/components/news-announcements-carousel'
+import { QuickLinksSection } from '@/features/home/components/quick-links-section'
 import { WhatsAppCommunitySection } from '@/features/home/components/whatsapp-community-section'
 import { listPublicHeroSlides } from '@/lib/hero-slide-store'
 import { listUpdatesCarouselItems } from '@/lib/updates-store'
 
 export const metadata: Metadata = {
-  title: 'Kaş Rehberi | Gezilecek Yerler, Restoranlar ve Tatil İpuçları',
+  title: 'Kaş Gezi Rehberi | Gezilecek Yerler ve Tatil İpuçları',
   description:
-    "Kaş rehberi ile tatilinizi planlayın. Kaş'ta gezilecek yerler, restoranlar, plajlar, konaklama önerileri ve yerel travel tips tek yerde.",
+    "Kaş gezi rehberi ile tatilinizi planlayın! Gezilecek yerler, en iyi restoranlar, plaj önerileri, dalış noktaları, tekne turları ve konaklama ipuçları güncel bilgilerle burada.",
   alternates: { canonical: '/' },
   openGraph: {
     url: '/',
@@ -39,6 +40,7 @@ export default async function HomePage() {
       <HomeIntroSection />
 
       <CategorySection />
+      <QuickLinksSection />
       <NewsAnnouncementsCarousel items={updates} />
 
       <HomeFaqSection />
@@ -124,6 +126,18 @@ export default async function HomePage() {
                   Diasporayı Birleştiren Platform:{' '}
                   <a href="https://spindorai.com" target="_blank" rel="noopener noreferrer">
                     Spindora
+                  </a>
+                </p>
+                <p className="footer-bottom-note">
+                  Resmi Kaynak:{' '}
+                  <a href="https://kas.antalya.gov.tr" target="_blank" rel="noopener noreferrer">
+                    Kaş Belediyesi
+                  </a>
+                </p>
+                <p className="footer-bottom-note">
+                  Ziyaretçi Yorumları:{' '}
+                  <a href="https://www.tripadvisor.com/Tourism-g297970-Kas_Antalya_Cote_Azur_Turkey-Vacations.html" target="_blank" rel="noopener noreferrer">
+                    TripAdvisor Kaş
                   </a>
                 </p>
               </div>

@@ -31,6 +31,31 @@ const HOME_FAQ_ITEMS = [
     answer:
       "Evet, Kaş her bütçeye uygun seçenekler sunar. Merkezdeki pansiyonlar ve butik oteller uygun fiyatlarla konaklama imkânı sağlarken, sokak aralarındaki lokantalar ve meyhane tarzı mekanlar bütçe dostu yeme-içme deneyimleri sunar. Plajlar genellikle ücretsizdir ve yürüyerek keşfedilebilen kompakt yapısı sayesinde ulaşım masrafı minimumda tutulabilir.",
   },
+  {
+    question: "Kaş'ta tekne turu ne kadar sürer?",
+    answer:
+      "Kaş tekne turları genelde tam gün (09:00-18:00) sürer. Yarım gün turlar da mevcuttur. Kekova rotası tam gün, koy turları yarım gün veya tam gün seçenekleriyle sunulur.",
+  },
+  {
+    question: "Kaş'ta dalış noktaları nerelerdir?",
+    answer:
+      "Uluburun batığı, Tünel dalışı, Kaya dalışları ve Kekova batık şehri öne çıkan dalış noktalarıdır. Her biri farklı seviye ve deneyim sunar.",
+  },
+  {
+    question: "Kaş'ta nerede ne yenir?",
+    answer:
+      "Merkezdeki balık restoranları, Çarşı'daki meyhaneler ve limandaki gün batımı mekanları öne çıkar. Vegan ve geleneksel Türk mutfağı seçenekleri de boldur.",
+  },
+  {
+    question: "Kaş'ta günlük gezi planı nasıl yapılır?",
+    answer:
+      "3 günlük plan: Gün 1 - Merkez gezisi + plaj, Gün 2 - Tekne turu, Gün 3 - Dalış + Çukurbağ. Her gün farklı bir tema ile planlanabilir.",
+  },
+  {
+    question: "Kaş en güzel plajlar hangileri?",
+    answer:
+      "Kaputaş (en fotojenik), Büyük Çakıl (aileler için), Akçagerme (sakinlik) en iyileridir. Her plaj farklı bir deneyim sunar.",
+  },
 ] as const
 
 export function HomeFaqSection() {

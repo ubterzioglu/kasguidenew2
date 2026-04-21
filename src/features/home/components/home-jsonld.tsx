@@ -80,12 +80,36 @@ function buildFaqPageSchema(): Record<string, unknown> {
   }
 }
 
+function buildWebPageSchema(): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Kaş Gezi Rehberi',
+    description: "Kaş'ta gezilecek yerler, restoranlar, plajlar ve yerel öneriler.",
+    url: 'https://www.kasguide.de/',
+    inLanguage: 'tr-TR',
+    isPartOf: { '@type': 'WebSite', url: 'https://www.kasguide.de/' },
+  }
+}
+
+function buildBreadcrumbListSchema(pageName: string, pageUrl: string): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: 'https://www.kasguide.de/' },
+      { '@type': 'ListItem', position: 2, name: pageName, item: pageUrl },
+    ],
+  }
+}
+
 export function HomeJsonLd() {
   const graphs: JsonLdGraph = [
     buildOrganizationSchema(),
     buildWebSiteSchema(),
     buildCollectionPageSchema(),
     buildFaqPageSchema(),
+    buildWebPageSchema(),
   ]
 
   return (
@@ -95,3 +119,5 @@ export function HomeJsonLd() {
     />
   )
 }
+
+export { buildBreadcrumbListSchema }
