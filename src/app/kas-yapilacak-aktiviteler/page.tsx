@@ -4,8 +4,8 @@ import { SiteFrame } from '@/components/site-frame'
 import { HomeJsonLd, buildBreadcrumbListSchema } from '@/features/home/components/home-jsonld'
 
 export const metadata: Metadata = {
-  title: 'Kaş'ta Yapılacak Aktiviteler | Aktivite Rehberi',
-  description: 'Kaş'ta yapılacak aktiviteler: Tekne turları, dalış, rafting, jeep safari, yayla gezileri ve daha fazlası.',
+  title: 'Kaş&apos;ta Yapılacak Aktiviteler | Aktivite Rehberi',
+  description: 'Kaş&apos;ta yapılacak aktiviteler: Tekne turları, dalış, rafting, jeep safari, yayla gezileri ve daha fazlası.',
   alternates: { canonical: '/kas-yapilacak-aktiviteler' },
   openGraph: {
     url: '/kas-yapilacak-aktiviteler',
@@ -72,7 +72,7 @@ export default async function KasYapilacakAktivitelerPage() {
         <HomeJsonLd />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbListSchema('Kaş'ta Yapılacak Aktiviteler', 'https://www.kasguide.de/kas-yapilacak-aktiviteler')) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbListSchema('Kaş&apos;ta Yapılacak Aktiviteler', 'https://www.kasguide.de/kas-yapilacak-aktiviteler')) }}
         />
       </main>
     </SiteFrame>

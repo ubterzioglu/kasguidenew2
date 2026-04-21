@@ -4,8 +4,8 @@ import { SiteFrame } from '@/components/site-frame'
 import { HomeJsonLd, buildBreadcrumbListSchema } from '@/features/home/components/home-jsonld'
 
 export const metadata: Metadata = {
-  title: 'Kaş'ta Nerede Ne Yenir | Yeme-İçme Rehberi',
-  description: 'Kaş'ta nerede ne yenir: Balık restoranları, meyhaneler, kahvaltı mekanları ve sokak lezzetleri.',
+  title: 'Kaş&apos;ta Nerede Ne Yenir | Yeme-İçme Rehberi',
+  description: 'Kaş&apos;ta nerede ne yenir: Balık restoranları, meyhaneler, kahvaltı mekanları ve sokak lezzetleri.',
   alternates: { canonical: '/kas-nerede-ne-yenir' },
   openGraph: {
     url: '/kas-nerede-ne-yenir',
@@ -78,7 +78,7 @@ export default async function KasNeredeNeYenirPage() {
         <HomeJsonLd />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbListSchema('Kaş'ta Nerede Ne Yenir', 'https://www.kasguide.de/kas-nerede-ne-yenir')) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbListSchema('Kaş&apos;ta Nerede Ne Yenir', 'https://www.kasguide.de/kas-nerede-ne-yenir')) }}
         />
       </main>
     </SiteFrame>

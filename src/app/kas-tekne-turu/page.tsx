@@ -79,7 +79,6 @@ export default async function KasTekneTuruPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbListSchema('Kaş Tekne Turu', 'https://www.kasguide.de/kas-tekne-turu')) }}
         />
       </main>
-      </main>
     </SiteFrame>
   )
 }
