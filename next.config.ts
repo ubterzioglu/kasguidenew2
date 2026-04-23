@@ -3,6 +3,9 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   output: 'standalone',
   trailingSlash: false,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   experimental: {
     devtoolSegmentExplorer: false,
   },

@@ -82,11 +82,11 @@ export function SubmitPlaceForm() {
 
   if (status === 'success') {
     return (
-      <section className="page-card page-card-wide">
-        <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Teşekkürler!</h2>
-          <p style={{ color: 'var(--color-muted, #888)', marginBottom: '1.5rem' }}>
+      <section className="submit-place-card submit-place-success-card">
+        <div className="submit-place-success-content">
+          <div className="submit-place-success-icon" aria-hidden="true">✅</div>
+          <h2 className="submit-place-success-title">Teşekkürler!</h2>
+          <p className="submit-place-success-copy">
             Mekan öneriniz alındı. Ekibimiz en kısa sürede inceleyecek.
           </p>
           <button
@@ -96,15 +96,7 @@ export function SubmitPlaceForm() {
               setStatus('idle')
               setErrorMsg('')
             }}
-            style={{
-              padding: '0.75rem 1.5rem',
-              borderRadius: 'var(--radius-md, 8px)',
-              border: '1px solid var(--color-border, #333)',
-              background: 'transparent',
-              color: 'inherit',
-              cursor: 'pointer',
-              fontSize: '0.95rem',
-            }}
+            className="submit-place-secondary-button"
           >
             Başka Mekan Öner
           </button>
@@ -114,10 +106,10 @@ export function SubmitPlaceForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="page-card page-card-wide">
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-        <div>
-          <label htmlFor="name" style={{ display: 'block', fontWeight: 600, marginBottom: '0.4rem' }}>
+    <form onSubmit={handleSubmit} className="submit-place-card">
+      <div className="submit-place-stack">
+        <div className="submit-place-field">
+          <label htmlFor="name" className="submit-place-label">
             Mekan Adı *
           </label>
           <input
@@ -129,19 +121,17 @@ export function SubmitPlaceForm() {
             value={form.name}
             onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
             placeholder="ör: Güzel Kafe"
-            style={inputStyle}
+            className="submit-place-input"
           />
         </div>
 
-        <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
-          <legend style={{ fontWeight: 600, marginBottom: '0.5rem' }}>Kategori * (en fazla 3)</legend>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+        <fieldset className="submit-place-fieldset">
+          <legend className="submit-place-legend">Kategori * (en fazla 3)</legend>
+          <div className="submit-place-groups">
             {CATEGORY_GROUPS.filter((g) => g.tone !== 'editorial').map((group) => (
-              <div key={group.title} style={{ width: '100%', marginBottom: '0.25rem' }}>
-                <p style={{ fontSize: '0.8rem', color: 'var(--color-muted, #888)', marginBottom: '0.25rem' }}>
-                  {group.title}
-                </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+              <div key={group.title} className="submit-place-group">
+                <p className="submit-place-group-title">{group.title}</p>
+                <div className="submit-place-chip-list">
                   {group.ids.filter((id) => SUBMITTABLE_CATEGORY_IDS.includes(id)).map((id) => {
                     const cat = CATEGORIES.find((c) => c.id === id)
                     if (!cat) return null
@@ -151,16 +141,8 @@ export function SubmitPlaceForm() {
                         key={id}
                         type="button"
                         onClick={() => toggleCategory(id)}
-                        style={{
-                          padding: '0.4rem 0.75rem',
-                          borderRadius: 'var(--radius-md, 8px)',
-                          border: `1px solid ${selected ? 'var(--color-accent, #f59e0b)' : 'var(--color-border, #333)'}`,
-                          background: selected ? 'var(--color-accent, #f59e0b)' : 'transparent',
-                          color: selected ? '#000' : 'inherit',
-                          cursor: 'pointer',
-                          fontSize: '0.85rem',
-                          transition: 'all 0.15s',
-                        }}
+                        className={`submit-place-chip${selected ? ' is-selected' : ''}`}
+                        aria-pressed={selected}
                       >
                         {cat.icon} {cat.label}
                       </button>
@@ -171,14 +153,14 @@ export function SubmitPlaceForm() {
             ))}
           </div>
           {form.categoryIds.length === 0 && (
-            <p style={{ fontSize: '0.8rem', color: 'var(--color-error, #ef4444)', marginTop: '0.25rem' }}>
+            <p className="submit-place-helper-error">
               En az bir kategori seçin
             </p>
           )}
         </fieldset>
 
-        <div>
-          <label htmlFor="address" style={{ display: 'block', fontWeight: 600, marginBottom: '0.4rem' }}>
+        <div className="submit-place-field">
+          <label htmlFor="address" className="submit-place-label">
             Adres *
           </label>
           <input
@@ -190,13 +172,13 @@ export function SubmitPlaceForm() {
             value={form.address}
             onChange={(e) => setForm((p) => ({ ...p, address: e.target.value }))}
             placeholder="ör: Cumhuriyet Mah. Çarşı Cd. No:12, Kaş"
-            style={inputStyle}
+            className="submit-place-input"
           />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-          <div>
-            <label htmlFor="phone" style={{ display: 'block', fontWeight: 600, marginBottom: '0.4rem' }}>
+        <div className="submit-place-grid">
+          <div className="submit-place-field">
+            <label htmlFor="phone" className="submit-place-label">
               Telefon
             </label>
             <input
@@ -206,11 +188,11 @@ export function SubmitPlaceForm() {
               value={form.phone}
               onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
               placeholder="ör: +90 242 836 1234"
-              style={inputStyle}
+              className="submit-place-input"
             />
           </div>
-          <div>
-            <label htmlFor="website" style={{ display: 'block', fontWeight: 600, marginBottom: '0.4rem' }}>
+          <div className="submit-place-field">
+            <label htmlFor="website" className="submit-place-label">
               Website
             </label>
             <input
@@ -220,13 +202,13 @@ export function SubmitPlaceForm() {
               value={form.website}
               onChange={(e) => setForm((p) => ({ ...p, website: e.target.value }))}
               placeholder="ör: https://ornek.com"
-              style={inputStyle}
+              className="submit-place-input"
             />
           </div>
         </div>
 
-        <div>
-          <label htmlFor="shortDescription" style={{ display: 'block', fontWeight: 600, marginBottom: '0.4rem' }}>
+        <div className="submit-place-field">
+          <label htmlFor="shortDescription" className="submit-place-label">
             Kısa Açıklama
           </label>
           <textarea
@@ -236,43 +218,22 @@ export function SubmitPlaceForm() {
             value={form.shortDescription}
             onChange={(e) => setForm((p) => ({ ...p, shortDescription: e.target.value }))}
             placeholder="Mekan hakkında kısa bilgi..."
-            style={{ ...inputStyle, resize: 'vertical' }}
+            className="submit-place-input submit-place-textarea"
           />
         </div>
 
         {errorMsg && (
-          <p style={{ color: 'var(--color-error, #ef4444)', fontSize: '0.9rem', margin: 0 }}>{errorMsg}</p>
+          <p className="submit-place-error-banner">{errorMsg}</p>
         )}
 
         <button
           type="submit"
           disabled={status === 'submitting' || form.categoryIds.length === 0}
-          style={{
-            padding: '0.85rem 1.5rem',
-            borderRadius: 'var(--radius-md, 8px)',
-            border: 'none',
-            background: 'var(--color-accent, #f59e0b)',
-            color: '#000',
-            fontWeight: 600,
-            fontSize: '1rem',
-            cursor: status === 'submitting' ? 'wait' : 'pointer',
-            opacity: status === 'submitting' ? 0.7 : 1,
-          }}
+          className="submit-place-submit"
         >
           {status === 'submitting' ? 'Gönderiliyor...' : 'Mekan Öner'}
         </button>
       </div>
     </form>
   )
-}
-
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  padding: '0.65rem 0.85rem',
-  borderRadius: 'var(--radius-md, 8px)',
-  border: '1px solid var(--color-border, #333)',
-  background: 'transparent',
-  color: 'inherit',
-  fontSize: '0.95rem',
-  boxSizing: 'border-box',
 }

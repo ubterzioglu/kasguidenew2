@@ -1,8 +1,17 @@
 # Coolify Deploy
 
-This project is ready to deploy on Coolify with the `Dockerfile` build pack.
+This project can deploy with both `Dockerfile` and `Nixpacks`.
+For fastest incremental deploys, prefer `Nixpacks` with the repository `nixpacks.toml`.
 
-## Coolify Settings
+## Coolify Settings (Recommended: Nixpacks)
+
+- Build Pack: `Nixpacks`
+- Base Directory: `/`
+- Port: `3000`
+- Health Check Path: `/api/health`
+- `NIXPACKS_NODE_VERSION`: `22.13.1`
+
+## Alternative Settings (Dockerfile)
 
 - Build Pack: `Dockerfile`
 - Base Directory: `/`
@@ -25,3 +34,4 @@ For the current homepage-only build, none of them are strictly required.
 - The app listens on `0.0.0.0:3000` inside the container.
 - Production image uses Next.js `standalone` output for smaller deploys.
 - Health checks return JSON from `/api/health`.
+- `.dockerignore` is optimized to reduce upload/build context for faster builds.
