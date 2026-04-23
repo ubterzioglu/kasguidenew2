@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
 
 import { DEFAULT_HERO_SLIDES, HERO_ROTATION_MS, type HeroSlide } from '@/lib/hero-slide-data'
 
@@ -141,20 +142,23 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
                 </div>
               ) : null}
 
-              <div className="hero-featured-actions">
-                <a href="#categories" className="hero-primary-action">
-                  Kaş Tatilini Planla
-                </a>
-                <a href="/mekan-oner" className="hero-primary-action">
-                  Kaş Yerel Rehberi Ol
-                </a>
+              <div className="hero-featured-actions hero-featured-actions-glass">
+                <Link href="/planner" className="hero-glass-action">
+                  Tatilini Planla
+                </Link>
+                <Link href="/mekan-oner" className="hero-glass-action">
+                  Mekan Öner
+                </Link>
+                <Link href="/#categories" className="hero-glass-action">
+                  Mekan Ara
+                </Link>
                 <a
                   href="https://chat.whatsapp.com/GODQNmpRlAaDDtyaDnIyn4"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hero-primary-action"
+                  className="hero-glass-action"
                 >
-                  WhatsApp Topluluğu
+                  WA Topluluğu
                 </a>
               </div>
             </div>
