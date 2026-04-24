@@ -1,48 +1,37 @@
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 
-import {
-  clearStoredAdminPassword,
-  getStoredAdminPassword,
-  storeAdminPassword,
-} from '@/lib/admin-password-client'
+import { adminLogin, adminLogout, hasSessionCookie } from '@/lib/admin-session-client'
 
-/**
- * Manages admin password state, session persistence, and logout.
- * Returns a `requireAuth` guard used at the top of each action handler.
- */
 export function useAdminAuth() {
   const router = useRouter()
-  const [adminPassword, setAdminPassword] = useState('')
+  const [isLoggedIn, setIsLoggedIn] = useState(hasSessionCookie)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const logout = useCallback(() => {
-    clearStoredAdminPassword()
-    setAdminPassword('')
+  const login = useCallback(async (password: string): Promise<boolean> => {
+    setIsLoading(true)
+    try {
+      const success = await adminLogin(password)
+      setIsLoggedIn(success)
+      return success
+    } catch {
+      setIsLoggedIn(false)
+      return false
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  const logout = useCallback(async () => {
+    await adminLogout()
+    setIsLoggedIn(false)
     router.replace('/admin')
   }, [router])
 
-  /** Returns trimmed password or redirects to /admin and returns null. */
-  const requireAuth = useCallback((): string | null => {
-    const password = adminPassword.trim()
-    if (!password) {
-      router.replace('/admin')
-      return null
-    }
-    return password
-  }, [adminPassword, router])
-
-  /** Persists a valid password after a successful API call. */
-  const persistPassword = useCallback((password: string) => {
-    storeAdminPassword(password)
-    setAdminPassword(password)
-  }, [])
-
   return {
-    adminPassword,
-    setAdminPassword,
-    getStoredAdminPassword,
+    isLoggedIn,
+    isLoading,
+    login,
     logout,
-    requireAuth,
-    persistPassword,
   }
 }

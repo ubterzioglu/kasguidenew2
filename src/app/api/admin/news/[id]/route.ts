@@ -1,11 +1,11 @@
-import { isAdminApiConfigured, isAdminRequestAuthorized } from '@/lib/admin-auth'
+import { isAdminApiConfigured, isAdminSessionValid } from '@/lib/admin-auth'
 import { AdminNewsUpdateBodySchema } from '@/lib/api-schemas'
 import { jsonFail, jsonOk } from '@/lib/api-helpers'
 import { archiveNews, isUpdatesStoreConfigured, listAdminUpdatesSnapshot, updateNews } from '@/lib/updates-store'
 
 export const dynamic = 'force-dynamic'
 
-function getAdminAccessError(request: Request) {
+async function getAdminAccessError(request: Request) {
   if (!isAdminApiConfigured()) {
     return jsonFail('ADMIN_PASSWORD tanimli degil.', 503)
   }
@@ -14,7 +14,7 @@ function getAdminAccessError(request: Request) {
     return jsonFail('Guncellemeler veri deposu hazir degil.', 503)
   }
 
-  if (!isAdminRequestAuthorized(request)) {
+  if (!(await isAdminSessionValid(request))) {
     return jsonFail('Yetkisiz istek.', 401)
   }
 
@@ -26,7 +26,7 @@ type RouteProps = {
 }
 
 export async function PUT(request: Request, { params }: RouteProps) {
-  const authError = getAdminAccessError(request)
+  const authError = await getAdminAccessError(request)
   if (authError) {
     return authError
   }
@@ -49,7 +49,7 @@ export async function PUT(request: Request, { params }: RouteProps) {
 }
 
 export async function DELETE(request: Request, { params }: RouteProps) {
-  const authError = getAdminAccessError(request)
+  const authError = await getAdminAccessError(request)
   if (authError) {
     return authError
   }

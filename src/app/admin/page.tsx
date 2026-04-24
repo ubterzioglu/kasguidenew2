@@ -1,10 +1,10 @@
-﻿'use client'
+'use client'
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { clearStoredAdminPassword, getStoredAdminPassword, storeAdminPassword } from '@/lib/admin-password-client'
+import { adminLogin, adminLogout, hasSessionCookie } from '@/lib/admin-session-client'
 
 type StatusTone = 'neutral' | 'success' | 'error'
 
@@ -26,9 +26,7 @@ export default function AdminHomePage() {
   const [status, setStatus] = useState<PanelStatus>(INITIAL_STATUS)
 
   useEffect(() => {
-    const storedPassword = getStoredAdminPassword()
-
-    if (storedPassword) {
+    if (hasSessionCookie()) {
       router.replace('/admin/places')
     }
   }, [router])
@@ -45,34 +43,23 @@ export default function AdminHomePage() {
     setStatus({ tone: 'neutral', message: '' })
 
     try {
-      const response = await fetch('/api/admin/session', {
-        method: 'POST',
-        headers: {
-          'X-Admin-Password': password,
-        },
-      })
+      const success = await adminLogin(password)
 
-      const payload = (await response.json().catch(() => null)) as { error?: string } | null
-
-      if (!response.ok) {
-        throw new Error(payload?.error || 'Parola doğrulanamadı.')
+      if (!success) {
+        throw new Error('Admin şifresi hatalı. ADMIN_PASSWORD değiştiyse sunucuyu yeniden başlatın.')
       }
 
-      storeAdminPassword(password)
       setIsAuthorized(true)
+      setAdminPassword('')
       setStatus({ tone: 'success', message: 'Giriş başarılı. Devam etmek istediğin alanı seç.' })
       router.replace('/admin/places')
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Parola doğrulanamadı.'
 
-      clearStoredAdminPassword()
       setIsAuthorized(false)
       setStatus({
         tone: 'error',
-        message:
-          message === 'Yetkisiz istek.'
-            ? 'Admin şifresi hatalı. ADMIN_PASSWORD değiştiyse sunucuyu yeniden başlatın.'
-            : message,
+        message,
       })
     } finally {
       setIsLoading(false)
@@ -80,7 +67,7 @@ export default function AdminHomePage() {
   }
 
   function resetGate() {
-    clearStoredAdminPassword()
+    void adminLogout()
     setAdminPassword('')
     setIsAuthorized(false)
     setStatus({ tone: 'neutral', message: '' })

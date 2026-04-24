@@ -152,6 +152,8 @@ function normalizeStatus(status: PlaceStatus, publish = false): PlaceStatus {
   return status
 }
 
+const MAX_SLUG_ITERATIONS = 100
+
 async function ensureUniqueSlug(
   client: NonNullable<ReturnType<typeof getSupabaseAdminClient>>,
   baseSlug: string,
@@ -160,7 +162,7 @@ async function ensureUniqueSlug(
   let slug = baseSlug
   let suffix = 1
 
-  while (true) {
+  for (let iteration = 0; iteration < MAX_SLUG_ITERATIONS; iteration++) {
     const { data, error } = await client.from('places').select('id, slug').eq('slug', slug).maybeSingle()
 
     if (error) {
@@ -176,6 +178,8 @@ async function ensureUniqueSlug(
     suffix += 1
     slug = `${baseSlug}-${suffix}`
   }
+
+  throw new Error('Slug benzersizliği sağlanamadı.')
 }
 
 function buildImages(name: string, imageUrls: string[]): ImageRecord[] {

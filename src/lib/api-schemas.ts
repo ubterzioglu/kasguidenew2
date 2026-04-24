@@ -4,16 +4,16 @@ import { z } from 'zod'
 
 export const PlaceEditorDraftSchema = z.object({
   placeId: z.string().nullable(),
-  slug: z.string().nullable(),
-  name: z.string(),
-  shortDescription: z.string(),
-  longDescription: z.string(),
-  kasguideBadges: z.array(z.string()),
-  categoryIds: z.array(z.string()),
-  address: z.string(),
-  phone: z.string(),
-  website: z.string(),
-  imageUrls: z.array(z.string()).max(5),
+  slug: z.string().nullable().max(300),
+  name: z.string().max(300),
+  shortDescription: z.string().max(1000),
+  longDescription: z.string().max(50000),
+  kasguideBadges: z.array(z.string().max(100)),
+  categoryIds: z.array(z.string().max(100)),
+  address: z.string().max(1000),
+  phone: z.string().max(50),
+  website: z.string().max(500),
+  imageUrls: z.array(z.string().max(2000)).max(5),
   status: z.enum(['pending', 'review', 'admin', 'published', 'archived', 'rejected', 'merged', 'error']),
   verificationStatus: z.enum(['pending', 'reviewed', 'verified', 'rejected']),
 })
@@ -24,7 +24,7 @@ export const ReviewActionBodySchema = z.object({
   reviewId: z.string().min(1),
   action: z.enum(['start_review', 'approve', 'merge', 'reject']),
   candidatePlaceId: z.string().nullish(),
-  notes: z.string().nullish(),
+  notes: z.string().max(2000).nullish(),
 })
 
 export const RawPlaceSaveBodySchema = z.object({
@@ -48,11 +48,11 @@ export const ContentStatusSchema = z.enum(['draft', 'published', 'archived'])
 export const AnnouncementPrioritySchema = z.enum(['urgent', 'normal', 'info'])
 
 export const NewsInputSchema = z.object({
-  title: z.string().trim().min(1),
-  slug: z.string().trim().nullish(),
-  summary: z.string().trim().min(1),
-  content: z.string().trim().min(1),
-  imageUrl: z.string().trim().url().nullish().or(z.literal('')),
+  title: z.string().trim().min(1).max(500),
+  slug: z.string().trim().max(300).nullish(),
+  summary: z.string().trim().min(1).max(2000),
+  content: z.string().trim().min(1).max(100000),
+  imageUrl: z.string().trim().url().max(2000).nullish().or(z.literal('')),
   publishedAt: z.string().trim().nullish().or(z.literal('')),
   isActive: z.boolean(),
   sortOrder: z.coerce.number().int().min(0).max(9999),
@@ -60,11 +60,11 @@ export const NewsInputSchema = z.object({
 })
 
 export const AnnouncementInputSchema = z.object({
-  title: z.string().trim().min(1),
-  slug: z.string().trim().nullish(),
-  summary: z.string().trim().min(1),
-  content: z.string().trim().min(1),
-  imageUrl: z.string().trim().url().nullish().or(z.literal('')),
+  title: z.string().trim().min(1).max(500),
+  slug: z.string().trim().max(300).nullish(),
+  summary: z.string().trim().min(1).max(2000),
+  content: z.string().trim().min(1).max(100000),
+  imageUrl: z.string().trim().url().max(2000).nullish().or(z.literal('')),
   priority: AnnouncementPrioritySchema,
   isPinned: z.boolean(),
   isActive: z.boolean(),

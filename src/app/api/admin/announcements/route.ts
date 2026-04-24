@@ -1,4 +1,4 @@
-import { isAdminApiConfigured, isAdminRequestAuthorized } from '@/lib/admin-auth'
+import { isAdminApiConfigured, isAdminSessionValid } from '@/lib/admin-auth'
 import { AdminAnnouncementCreateBodySchema } from '@/lib/api-schemas'
 import { jsonFail, jsonOk } from '@/lib/api-helpers'
 import {
@@ -9,7 +9,7 @@ import {
 
 export const dynamic = 'force-dynamic'
 
-function getAdminAccessError(request: Request) {
+async function getAdminAccessError(request: Request) {
   if (!isAdminApiConfigured()) {
     return jsonFail('ADMIN_PASSWORD tanimli degil.', 503)
   }
@@ -18,7 +18,7 @@ function getAdminAccessError(request: Request) {
     return jsonFail('Guncellemeler veri deposu hazir degil.', 503)
   }
 
-  if (!isAdminRequestAuthorized(request)) {
+  if (!(await isAdminSessionValid(request))) {
     return jsonFail('Yetkisiz istek.', 401)
   }
 
@@ -26,7 +26,7 @@ function getAdminAccessError(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const authError = getAdminAccessError(request)
+  const authError = await getAdminAccessError(request)
   if (authError) {
     return authError
   }
@@ -41,7 +41,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const authError = getAdminAccessError(request)
+  const authError = await getAdminAccessError(request)
   if (authError) {
     return authError
   }

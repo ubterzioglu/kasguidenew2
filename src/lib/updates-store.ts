@@ -89,6 +89,8 @@ function normalizeDate(value: string | null | undefined) {
   return date.toISOString()
 }
 
+const MAX_SLUG_ITERATIONS = 100
+
 async function ensureUniqueSlug(
   tableName: typeof NEWS_TABLE | typeof ANNOUNCEMENTS_TABLE,
   title: string,
@@ -100,7 +102,7 @@ async function ensureUniqueSlug(
   let slug = baseSlug
   let suffix = 1
 
-  while (true) {
+  for (let iteration = 0; iteration < MAX_SLUG_ITERATIONS; iteration++) {
     const { data, error } = await client.from(tableName).select('id, slug').eq('slug', slug).maybeSingle()
 
     if (error) {
@@ -115,6 +117,8 @@ async function ensureUniqueSlug(
     suffix += 1
     slug = `${baseSlug}-${suffix}`
   }
+
+  throw new Error('Slug kontrolü aşırı tekrara ulaştı.')
 }
 
 function mapNews(row: NewsRow): NewsItem {

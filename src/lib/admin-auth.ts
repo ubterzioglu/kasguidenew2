@@ -2,6 +2,8 @@ import 'server-only'
 
 import { timingSafeEqual } from 'node:crypto'
 
+import { isSessionAuthenticated } from '@/lib/admin-session'
+
 const ADMIN_PASSWORD_HEADER = 'X-Admin-Password'
 const LEGACY_ADMIN_HEADER = 'X-API-Key'
 
@@ -17,14 +19,17 @@ export function isAdminRequestAuthorized(request: Request) {
     return false
   }
 
-  const expectedBuffer = Buffer.from(expectedSecret)
-  const providedBuffer = Buffer.from(providedSecret)
-
-  if (expectedBuffer.length !== providedBuffer.length) {
-    return false
-  }
+  const FIXED_LENGTH = 64
+  const expectedBuffer = Buffer.alloc(FIXED_LENGTH)
+  const providedBuffer = Buffer.alloc(FIXED_LENGTH)
+  Buffer.from(expectedSecret).copy(expectedBuffer)
+  Buffer.from(providedSecret).copy(providedBuffer)
 
   return timingSafeEqual(expectedBuffer, providedBuffer)
+}
+
+export async function isAdminSessionValid(request: Request): Promise<boolean> {
+  return isSessionAuthenticated(request)
 }
 
 function getExpectedAdminSecret() {

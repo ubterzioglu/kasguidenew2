@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { isAdminApiConfigured, isAdminRequestAuthorized } from '@/lib/admin-auth'
+import { isAdminApiConfigured, isAdminSessionValid } from '@/lib/admin-auth'
 import { jsonFail, jsonOk, readLimit } from '@/lib/api-helpers'
 import { ExistingPlaceSaveBodySchema } from '@/lib/api-schemas'
 import {
@@ -11,7 +11,7 @@ import {
 
 export const dynamic = 'force-dynamic'
 
-function getAdminAccessError(request: Request): NextResponse | null {
+async function getAdminAccessError(request: Request): Promise<NextResponse | null> {
   if (!isAdminApiConfigured()) {
     return jsonFail('ADMIN_PASSWORD tanımlı değil.', 503)
   }
@@ -20,7 +20,7 @@ function getAdminAccessError(request: Request): NextResponse | null {
     return jsonFail('Supabase review deposu hazır değil.', 503)
   }
 
-  if (!isAdminRequestAuthorized(request)) {
+  if (!(await isAdminSessionValid(request))) {
     return jsonFail('Yetkisiz istek.', 401)
   }
 
@@ -28,7 +28,7 @@ function getAdminAccessError(request: Request): NextResponse | null {
 }
 
 export async function GET(request: Request) {
-  const authError = getAdminAccessError(request)
+  const authError = await getAdminAccessError(request)
 
   if (authError) {
     return authError
@@ -46,7 +46,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const authError = getAdminAccessError(request)
+  const authError = await getAdminAccessError(request)
 
   if (authError) {
     return authError

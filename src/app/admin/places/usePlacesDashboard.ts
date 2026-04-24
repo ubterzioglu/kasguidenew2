@@ -1,9 +1,9 @@
-﻿import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import type { AdminPlacesSnapshot, PanelStatus, PlaceEditorDraft } from '@/types/review'
 
-import { useAdminAuth } from '../review/useAdminAuth'
+import { adminLogout, hasSessionCookie } from '@/lib/admin-session-client'
 import { useDraftEditor } from '../review/useDraftEditor'
 
 const INITIAL_STATUS: PanelStatus = {
@@ -26,14 +26,6 @@ type ApiEnvelope<T> = { success: true; data: T } | { success: false; error: stri
 
 export function usePlacesDashboard() {
   const router = useRouter()
-  const {
-    adminPassword,
-    setAdminPassword,
-    getStoredAdminPassword,
-    logout,
-    requireAuth,
-    persistPassword,
-  } = useAdminAuth()
   const editor = useDraftEditor()
 
   const [snapshot, setSnapshot] = useState<AdminPlacesSnapshot>(EMPTY_SNAPSHOT)
@@ -47,20 +39,13 @@ export function usePlacesDashboard() {
     setActivePlaceId((current) => current ?? items[0]?.id ?? null)
   }, [editor])
 
-  const loadDashboard = useCallback(async (passwordOverride?: string, redirectOnAuthError = false) => {
-    const password = (passwordOverride ?? adminPassword).trim()
-
-    if (!password) {
-      router.replace('/admin')
-      return
-    }
-
+  const loadDashboard = useCallback(async (redirectOnAuthError = false) => {
     setIsLoading(true)
     setStatus({ tone: 'neutral', message: 'Mekan listesi yükleniyor...' })
 
     try {
       const response = await fetch('/api/admin/places?limit=2000', {
-        headers: { 'X-Admin-Password': password },
+        credentials: 'include',
         cache: 'no-store',
       })
 
@@ -70,7 +55,6 @@ export function usePlacesDashboard() {
         throw new Error(!envelope.success ? envelope.error : 'Mekan paneli yüklenemedi.')
       }
 
-      persistPassword(password)
       setSnapshot(envelope.data)
       hydrateDrafts(envelope.data.places)
       setStatus({
@@ -81,7 +65,7 @@ export function usePlacesDashboard() {
       const message = error instanceof Error ? error.message : 'Mekan paneli yüklenemedi.'
 
       if (redirectOnAuthError && message.toLowerCase().includes('yetkisiz')) {
-        logout()
+        await logout()
         return
       }
 
@@ -89,28 +73,24 @@ export function usePlacesDashboard() {
     } finally {
       setIsLoading(false)
     }
-  }, [adminPassword, hydrateDrafts, logout, persistPassword, router])
+  }, [hydrateDrafts, router])
 
   useEffect(() => {
-    const storedPassword = getStoredAdminPassword()
-
-    if (!storedPassword) {
+    if (!hasSessionCookie()) {
       router.replace('/admin')
       return
     }
 
-    setAdminPassword(storedPassword)
-    void loadDashboard(storedPassword, true)
+    void loadDashboard(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
+  async function logout() {
+    await adminLogout()
+    router.replace('/admin')
+  }
+
   const runPlaceAction = async (placeId: string) => {
-    const password = requireAuth()
-
-    if (!password) {
-      return
-    }
-
     const draft = editor.drafts[placeId]
 
     if (!draft) {
@@ -133,7 +113,8 @@ export function usePlacesDashboard() {
     try {
       const response = await fetch('/api/admin/places', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Admin-Password': password },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ placeId, draft: nextDraft }),
       })
 
@@ -143,7 +124,6 @@ export function usePlacesDashboard() {
         throw new Error(!envelope.success ? envelope.error : 'Mekan kaydı güncellenemedi.')
       }
 
-      persistPassword(password)
       setSnapshot(envelope.data)
       hydrateDrafts(envelope.data.places)
       setStatus({

@@ -14,6 +14,10 @@ export function normalizeWebsite(value: string | null | undefined): string | nul
     return null
   }
 
+  if (/^(javascript|data|vbscript):/i.test(normalized)) {
+    return null
+  }
+
   if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
     return normalized
   }

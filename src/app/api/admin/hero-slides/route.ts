@@ -1,13 +1,32 @@
 import { NextResponse } from 'next/server'
 
-import { isAdminApiConfigured, isAdminRequestAuthorized } from '@/lib/admin-auth'
+import { isAdminApiConfigured, isAdminSessionValid } from '@/lib/admin-auth'
 import { normalizeHeroSlidesInput } from '@/lib/hero-slide-data'
 import { isHeroSlideStoreConfigured, listAdminHeroSlides, saveHeroSlides } from '@/lib/hero-slide-store'
 
 export const dynamic = 'force-dynamic'
 
+async function getAdminAccessError(request: Request): Promise<NextResponse | null> {
+  if (!isAdminApiConfigured()) {
+    return NextResponse.json({ error: 'ADMIN_PASSWORD tanimli degil.' }, { status: 503 })
+  }
+
+  if (!isHeroSlideStoreConfigured()) {
+    return NextResponse.json(
+      { error: 'SUPABASE_SERVICE_ROLE_KEY ile hero veri deposu hazir degil.' },
+      { status: 503 },
+    )
+  }
+
+  if (!(await isAdminSessionValid(request))) {
+    return NextResponse.json({ error: 'Yetkisiz istek.' }, { status: 401 })
+  }
+
+  return null
+}
+
 export async function GET(request: Request) {
-  const authError = getAdminAccessError(request)
+  const authError = await getAdminAccessError(request)
 
   if (authError) {
     return authError
@@ -34,7 +53,7 @@ export async function GET(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const authError = getAdminAccessError(request)
+  const authError = await getAdminAccessError(request)
 
   if (authError) {
     return authError
@@ -60,23 +79,4 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ error: message }, { status })
   }
-}
-
-function getAdminAccessError(request: Request) {
-  if (!isAdminApiConfigured()) {
-    return NextResponse.json({ error: 'ADMIN_PASSWORD tanimli degil.' }, { status: 503 })
-  }
-
-  if (!isHeroSlideStoreConfigured()) {
-    return NextResponse.json(
-      { error: 'SUPABASE_SERVICE_ROLE_KEY ile hero veri deposu hazir degil.' },
-      { status: 503 },
-    )
-  }
-
-  if (!isAdminRequestAuthorized(request)) {
-    return NextResponse.json({ error: 'Yetkisiz istek.' }, { status: 401 })
-  }
-
-  return null
 }
