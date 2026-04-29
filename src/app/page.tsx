@@ -62,11 +62,9 @@ export default async function HomePage() {
 
       <NewsAnnouncementsCarousel items={updates} />
       <CategorySection />
-      <HomeIntroSection />
       <QuickLinksSection />
-
       <HomeFaqSection />
-
+      <HomeIntroSection />
       <HomePromoSection />
       <WhatsAppCommunitySection />
 

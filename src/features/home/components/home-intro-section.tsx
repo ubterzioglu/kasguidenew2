@@ -124,7 +124,7 @@ export function HomeIntroSection() {
             <span className="home-intro-hero-summary-copy">
               <span className="home-intro-eyebrow">Kaş Rehberi</span>
               <h1 id="home-intro-title" className="home-intro-title">
-                Kaş Gezi Rehberi – Gezilecek Yerler, Plajlar ve Yerel Öneriler
+                Kaş Gezi Rehberi ile gezilecek yerleri, plajları ve yerel önerileri nasıl keşfedersiniz?
               </h1>
             </span>
             <span className="home-intro-card-icon" aria-hidden="true" />
