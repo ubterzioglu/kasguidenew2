@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 export const PlaceEditorDraftSchema = z.object({
   placeId: z.string().nullable(),
-  slug: z.string().nullable().max(300),
+  slug: z.string().max(300).nullable(),
   name: z.string().max(300),
   shortDescription: z.string().max(1000),
   longDescription: z.string().max(50000),
