@@ -41,7 +41,7 @@ export default async function KasNeredeNeYenirPage() {
             Çarşı ve liman bölgesinde birçok meyhane bulunur.
           </p>
 
-          <h2>Kahvaltı Mekanları</h2>
+          <h2 id="kahvalti-mekanlari">Kahvaltı Mekanları</h2>
           <p>
             Serpme kahvaltı, yerel peynirler, zeytinyağlılar ve menemen ile güne başlayın.
             Çarşı içindeki kafeler ve merkez dışındaki bahçeli mekanlar önerilir.

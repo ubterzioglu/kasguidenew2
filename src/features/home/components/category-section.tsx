@@ -172,7 +172,7 @@ export function CategorySection() {
       <div className="category-section-shell" id="categories">
         <div className="category-topline">
           <div>
-            <h3 className="section-title">Kaş&apos;ta Gezilecek Yerler, Restoranlar ve Aktiviteler</h3>
+            <h2 className="section-title">Kaş&apos;ta gezilecek yerler, restoranlar ve aktiviteler nasıl bulunur?</h2>
           </div>
           <div className="category-topline-actions">
             <button
@@ -263,9 +263,9 @@ export function CategorySection() {
           {activeCategoryIds.length > 0 ? (
             <div className="category-results-header">
               <div>
-                <h4 className="category-results-title">
+                <h3 className="category-results-title">
                   {`${activeCategoryIds.length} kategori için seçilen mekanlar`}
-                </h4>
+                </h3>
                 {isCategoryLoading || filteredCategoryPlaces.length > 0 ? (
                   <p className="category-results-copy">
                     {normalizedSearchQuery && categoryPlaces.length > 0

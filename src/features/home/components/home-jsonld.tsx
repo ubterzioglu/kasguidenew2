@@ -4,6 +4,10 @@ type JsonLdGraph =
   | Record<string, unknown>
   | Record<string, unknown>[]
 
+const HOME_PUBLISHED_AT = '2026-01-15T09:00:00+03:00'
+const HOME_MODIFIED_AT = '2026-04-29T08:48:15+03:00'
+const HOME_OG_IMAGE_URL = 'https://www.kasguide.de/og.jpg'
+
 function buildOrganizationSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -47,6 +51,9 @@ function buildCollectionPageSchema(): Record<string, unknown> {
     url: 'https://www.kasguide.de',
     description:
       "Kaş'ın en kapsamlı yerel rehberi. Gezilecek yerler, restoranlar, plajlar, dalış noktaları ve konaklama önerileri.",
+    image: HOME_OG_IMAGE_URL,
+    datePublished: HOME_PUBLISHED_AT,
+    dateModified: HOME_MODIFIED_AT,
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: 9,
@@ -84,11 +91,46 @@ function buildWebPageSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
+    '@id': 'https://www.kasguide.de/#webpage',
     name: 'Kaş Gezi Rehberi',
+    headline: 'Kaş Gezi Rehberi – Gezilecek Yerler, Plajlar ve Yerel Öneriler',
     description: "Kaş'ta gezilecek yerler, restoranlar, plajlar ve yerel öneriler.",
     url: 'https://www.kasguide.de/',
+    image: HOME_OG_IMAGE_URL,
+    datePublished: HOME_PUBLISHED_AT,
+    dateModified: HOME_MODIFIED_AT,
     inLanguage: 'tr-TR',
     isPartOf: { '@type': 'WebSite', url: 'https://www.kasguide.de/' },
+    breadcrumb: { '@id': 'https://www.kasguide.de/#breadcrumb' },
+    primaryImageOfPage: { '@id': 'https://www.kasguide.de/#primaryimage' },
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['#home-intro-definition', '#home-intro-summary'],
+    },
+  }
+}
+
+function buildHomeBreadcrumbSchema(): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    '@id': 'https://www.kasguide.de/#breadcrumb',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: 'https://www.kasguide.de/' },
+    ],
+  }
+}
+
+function buildPrimaryImageSchema(): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ImageObject',
+    '@id': 'https://www.kasguide.de/#primaryimage',
+    contentUrl: HOME_OG_IMAGE_URL,
+    url: HOME_OG_IMAGE_URL,
+    width: 1200,
+    height: 630,
+    caption: 'Kaş kıyıları, plajları, dalış rotaları ve yerel önerileri bir araya getiren Kaş Guide kapak görseli.',
   }
 }
 
@@ -110,6 +152,8 @@ export function HomeJsonLd() {
     buildCollectionPageSchema(),
     buildFaqPageSchema(),
     buildWebPageSchema(),
+    buildHomeBreadcrumbSchema(),
+    buildPrimaryImageSchema(),
   ]
 
   return (
@@ -121,3 +165,4 @@ export function HomeJsonLd() {
 }
 
 export { buildBreadcrumbListSchema }
+export { HOME_MODIFIED_AT, HOME_OG_IMAGE_URL, HOME_PUBLISHED_AT }

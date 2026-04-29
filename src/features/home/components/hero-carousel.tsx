@@ -126,9 +126,9 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
         >
           <div className="hero-featured-card hero-carousel-card hero-story-card hero-story-featured-pane">
             <div className="hero-featured-copy hero-carousel-copy hero-story-copy-tuned">
-              <h2 className="hero-story-title">
+              <p className="hero-story-title">
                 {scene.title}
-              </h2>
+              </p>
               <p className="hero-featured-description hero-story-description">
                 {scene.description}
               </p>
@@ -201,7 +201,7 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
           <aside className="hero-story-aside">
             <div className="hero-insight-card hero-insight-card-proof">
               <div className="hero-insight-header hero-insight-header-accent">
-                <h2 className="hero-insight-title">Kaş için bugün</h2>
+                <p className="hero-insight-title">Kaş için bugün</p>
               </div>
               <div className="hero-weather-panel" aria-label="Bugünkü hava durumu">
                 <span className="hero-weather-date">{weather.dateLabel}</span>
@@ -221,7 +221,7 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
 
             <div className="hero-insight-card hero-insight-card-weather">
               <div className="hero-insight-header hero-insight-header-accent">
-                <h2 className="hero-insight-title">Öne Çıkan Mekanlar</h2>
+                <p className="hero-insight-title">Öne Çıkan Mekanlar</p>
               </div>
               <div className="hero-signal-row">
                 <strong>Bi&apos;Lokma</strong>

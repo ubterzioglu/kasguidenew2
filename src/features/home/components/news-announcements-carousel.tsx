@@ -140,7 +140,7 @@ export function NewsAnnouncementsCarousel({ items }: Props) {
       <div className="updates-section-header">
         <div>
           <p className="updates-section-eyebrow">Güncel</p>
-          <h2 className="updates-section-title">Haberler ve Duyurular</h2>
+          <h2 className="updates-section-title">Kaş&apos;ta bu sezon hangi haberler ve duyurular öne çıkıyor?</h2>
         </div>
         <Link href="/haberler" className="updates-section-link">
           Tümünü Gör

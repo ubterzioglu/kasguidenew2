@@ -36,6 +36,13 @@ const QUICK_LINKS = [
     link: '/kas-koylari',
     linkText: 'Koylar Listesi',
   },
+  {
+    title: 'Kaş Kahvaltı',
+    excerpt:
+      'Serpme kahvaltı, deniz manzaralı masalar ve bahçeli mekanlar. Güne Kaş merkezde veya yarımada tarafında uzun bir kahvaltıyla başlayın.',
+    link: '/kas-kahvalti-mekanlari',
+    linkText: 'Kahvaltı Rehberi',
+  },
 ] as const
 
 export function QuickLinksSection() {
@@ -43,7 +50,7 @@ export function QuickLinksSection() {
     <section className="quick-links-section" aria-labelledby="quick-links-title">
       <div className="quick-links-shell">
         <h2 id="quick-links-title" className="quick-links-title">
-          Popüler Rehberler
+          Kaş&apos;ta en çok hangi rehberler açılıyor?
         </h2>
         <p className="quick-links-intro">
           Kaş&apos;ın en çok aranan konularını özetledik. Detaylı rehberler için tıklayın.

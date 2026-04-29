@@ -4,7 +4,7 @@ import { CATEGORY_MAP } from '@/lib/categories'
 
 const PROMO_CARDS = [
   {
-    title: 'Kaş Tatili Günlük Planlayıcı',
+    title: 'Kaş tatili günlük olarak nasıl planlanır?',
     description: 'Kararsız kaldığında 25 soruluk planner ile gününü ritmine, bütçene ve ilgi alanına göre şekillendir.',
     href: '/planner',
     cta: 'Planlamaya başla',
@@ -13,7 +13,7 @@ const PROMO_CARDS = [
     toneClassName: 'home-promo-card-plan',
   },
   {
-    title: 'Sık Sorulan Sorular',
+    title: 'Kaş hakkında daha fazla sorunun cevabı nerede?',
     description: 'Eski FAQ arşivindeki yüzlerce soruyu tek yerde toplayan, arama destekli Kaş bilgi bankasına göz at.',
     href: '/faq',
     cta: 'SSS sayfasını keşfet',
@@ -22,7 +22,7 @@ const PROMO_CARDS = [
     toneClassName: 'home-promo-card-faq',
   },
   {
-    title: 'Yazı Dizileri',
+    title: 'Kaş&apos;ı farklı bakış açılarından nasıl okuyabilirsin?',
     description: "Kaş'ı başka tatilcilerden ve yerlisinden dinleyin. İlham veren yazıları ve rotaları keşfedin.",
     href: '/result?categories=yazilar',
     cta: 'Yazı dizilerine git',
@@ -31,7 +31,7 @@ const PROMO_CARDS = [
     toneClassName: 'home-promo-card-series',
   },
   {
-    title: 'Kaş Local: Ben Yerlisiyim',
+    title: 'Kaş&apos;ı daha yerel bir gözle keşfetmek ister misin?',
     description: 'Daha içeriden, daha yerel bir Kaş rehberi için hazırladığımız yeni alanın ilk iskeletini keşfedin.',
     href: '/local',
     cta: 'Local sayfasına git',

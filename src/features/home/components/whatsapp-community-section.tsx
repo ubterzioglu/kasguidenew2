@@ -52,7 +52,7 @@ export function WhatsAppCommunitySection() {
               fontWeight: 700,
             }}
           >
-            WhatsApp Topluluğuna Katıl!
+            Kaş&apos;a giderken WhatsApp topluluğuna katılmalı mısın?
           </h2>
           <span
             style={{

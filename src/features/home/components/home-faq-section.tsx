@@ -66,7 +66,7 @@ export function HomeFaqSection() {
           <div className="home-faq-copy">
             <p className="home-faq-eyebrow">Hızlı Başlangıç</p>
             <h2 id="home-faq-title" className="home-faq-title">
-              Kaş hakkında ilk bakışta en çok merak edilenler
+              Kaş hakkında ilk bakışta en çok ne merak ediliyor?
             </h2>
             <p className="home-faq-description">
               İlk geliş, konaklama bölgesi, plaj seçimi ve bütçe gibi temel soruların kısa cevaplarını burada
@@ -87,7 +87,7 @@ export function HomeFaqSection() {
 
         <div className="home-faq-list">
           {HOME_FAQ_ITEMS.map((item, index) => (
-            <details key={index} className="home-faq-item" open={index === 0}>
+            <details key={index} className="home-faq-item">
               <summary className="home-faq-question">
                 <span className="home-faq-question-text">{item.question}</span>
                 <span className="home-faq-question-icon" aria-hidden="true" />
