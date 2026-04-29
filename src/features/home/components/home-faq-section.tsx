@@ -69,18 +69,13 @@ export function HomeFaqSection() {
               Kaş hakkında ilk bakışta en çok ne merak ediliyor?
             </h2>
             <p className="home-faq-description">
-              İlk geliş, konaklama bölgesi, plaj seçimi ve bütçe gibi temel soruların kısa cevaplarını burada
-              toparladık.
+              İlk geliş, konaklama bölgesi, plaj seçimi ve bütçe gibi temel sorular için hazırladığımız {HOME_FAQ_ITEMS.length}{' '}
+              temel sorunun kısa cevaplarını burada bulabilir, daha detaylı cevaplar ve arama destekli tüm içerik için geniş
+              SSS arşivine geçebilirsiniz.
             </p>
-            <div className="home-faq-inline-meta" aria-label="SSS özet bilgileri">
-              <strong className="home-faq-aside-count">{HOME_FAQ_ITEMS.length} temel soru</strong>
-              <p className="home-faq-aside-text">
-                Daha detaylı cevaplar ve arama destekli tüm içerik için geniş SSS arşivine geçebilirsiniz.
-              </p>
-              <Link href="/faq" className="home-faq-link">
-                Tüm SSS sayfasını aç
-              </Link>
-            </div>
+            <Link href="/faq" className="home-faq-link">
+              Tüm SSS sayfasını aç
+            </Link>
           </div>
         </div>
 
