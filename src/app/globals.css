@@ -8406,6 +8406,14 @@ body {
   line-height: 1.45;
 }
 
+.home-intro-rich-title,
+.home-intro-card-title,
+.quick-links-card-title,
+.home-promo-title,
+.updates-card-title {
+  font-size: 1.06rem;
+}
+
 .home-faq-question-icon {
   position: relative;
   width: 1.05rem;
@@ -8483,9 +8491,10 @@ body {
 
 .quick-links-card {
   display: grid;
-  gap: 0.85rem;
-  min-height: 170px;
-  padding: 1.15rem 1.15rem 1.05rem;
+  grid-template-columns: minmax(0, 1fr) clamp(150px, 20vw, 220px);
+  align-items: stretch;
+  gap: 0;
+  min-height: 212px;
   border-radius: 24px;
   text-decoration: none;
   border: 1px solid rgba(0, 168, 150, 0.12);
@@ -8494,6 +8503,7 @@ body {
     radial-gradient(circle at top right, rgba(149, 236, 226, 0.16), transparent 30%),
     linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(244, 241, 234, 0.94));
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  overflow: hidden;
 }
 
 .quick-links-card:hover {
@@ -8512,6 +8522,14 @@ body {
   color: #004d40;
   font-size: clamp(1.18rem, 1.95vw, 1.45rem);
   line-height: 1.2;
+}
+
+.quick-links-card-copy {
+  display: grid;
+  align-content: start;
+  gap: 0.85rem;
+  min-width: 0;
+  padding: 1.2rem 1.2rem 1.1rem;
 }
 
 .quick-links-card-excerpt {
@@ -8534,9 +8552,66 @@ body {
   font-weight: 700;
 }
 
+.quick-links-card-media-wrap {
+  position: relative;
+  min-height: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-left: 1px solid rgba(0, 168, 150, 0.1);
+  background: linear-gradient(180deg, rgba(216, 242, 238, 0.72), rgba(230, 247, 243, 0.58));
+}
+
+.quick-links-card-media-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 252, 247, 0.52) 0%, rgba(255, 252, 247, 0) 16%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
+  z-index: 1;
+  pointer-events: none;
+}
+
+.quick-links-card-media {
+  object-fit: cover;
+  transition: transform 0.24s ease;
+}
+
+.quick-links-card:hover .quick-links-card-media {
+  transform: scale(1.03);
+}
+
 @media (max-width: 900px) {
   .quick-links-grid {
     grid-template-columns: 1fr;
+  }
+
+  .quick-links-card {
+    grid-template-columns: minmax(0, 1fr) 190px;
+  }
+}
+
+@media (max-width: 640px) {
+  .quick-links-card {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .quick-links-card-copy {
+    padding-bottom: 0.95rem;
+  }
+
+  .quick-links-card-media-wrap {
+    min-height: 220px;
+    border-left: 0;
+    border-top: 1px solid rgba(0, 168, 150, 0.1);
+  }
+
+  .quick-links-card-media-wrap::before {
+    background:
+      linear-gradient(180deg, rgba(255, 252, 247, 0.34) 0%, rgba(255, 252, 247, 0) 18%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
   }
 }
 
@@ -8950,6 +9025,14 @@ body {
     font-size: 1rem;
   }
 
+  .home-intro-rich-title,
+  .home-intro-card-title,
+  .quick-links-card-title,
+  .home-promo-title,
+  .updates-card-title {
+    font-size: 1rem;
+  }
+
   .home-faq-answer {
     padding: 0 1rem 1rem;
   }
@@ -9248,5 +9331,101 @@ body {
 
   .planner-action-unified {
     flex-basis: 0;
+  }
+}
+
+.hero-featured-title,
+.hero-title,
+.category-group-title,
+.admin-title,
+.admin-section-title,
+.item-card-title,
+.about-title,
+.not-found-title,
+.submit-page-title,
+.submit-place-group-title,
+.submit-place-success-title,
+.section-title,
+.whatsapp-community-title,
+.review-card-title,
+.sweep-card-title,
+.review-row-title,
+.category-results-title,
+.category-place-title,
+.hero-story-title,
+.hero-insight-title,
+.landing-section-title,
+.footer-brand-title,
+.footer-column-title,
+.place-detail-title,
+.error-title,
+.place-review-single-title,
+.admin-places-title,
+.search-page-title,
+.faq-title,
+.faq-card-question,
+.updates-section-title,
+.updates-card-title,
+.updates-page-title,
+.home-intro-title,
+.home-intro-rich-title,
+.home-intro-card-title,
+.home-faq-title,
+.home-faq-question-text,
+.quick-links-title,
+.quick-links-card-title,
+.home-promo-title,
+.planner-title,
+.planner-title-results,
+.planner-question-text {
+  font-size: 1.06rem !important;
+}
+
+@media (max-width: 700px) {
+  .hero-featured-title,
+  .hero-title,
+  .category-group-title,
+  .admin-title,
+  .admin-section-title,
+  .item-card-title,
+  .about-title,
+  .not-found-title,
+  .submit-page-title,
+  .submit-place-group-title,
+  .submit-place-success-title,
+  .section-title,
+  .whatsapp-community-title,
+  .review-card-title,
+  .sweep-card-title,
+  .review-row-title,
+  .category-results-title,
+  .category-place-title,
+  .hero-story-title,
+  .hero-insight-title,
+  .landing-section-title,
+  .footer-brand-title,
+  .footer-column-title,
+  .place-detail-title,
+  .error-title,
+  .place-review-single-title,
+  .admin-places-title,
+  .search-page-title,
+  .faq-title,
+  .faq-card-question,
+  .updates-section-title,
+  .updates-card-title,
+  .updates-page-title,
+  .home-intro-title,
+  .home-intro-rich-title,
+  .home-intro-card-title,
+  .home-faq-title,
+  .home-faq-question-text,
+  .quick-links-title,
+  .quick-links-card-title,
+  .home-promo-title,
+  .planner-title,
+  .planner-title-results,
+  .planner-question-text {
+    font-size: 1rem !important;
   }
 }
