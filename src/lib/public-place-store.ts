@@ -1,5 +1,6 @@
 ﻿import 'server-only'
 
+import { getCategoryLabel } from '@/lib/categories'
 import type { PublicPlaceBadge } from '@/lib/public-place-types'
 import { getSupabaseAdminClient } from '@/lib/supabase-admin'
 
@@ -41,6 +42,11 @@ export type ListPublishedPlacesInput = {
 export type ListPublishedPlacesResult = {
   places: PublicPlaceListItem[]
   hasMore: boolean
+}
+
+export type SearchPublishedPlacesInput = {
+  query: string
+  limit?: number
 }
 
 export type PublicPlaceDetail = {
@@ -114,6 +120,13 @@ function getFallbackShortDescription(placeName: string) {
 
 function getFallbackLongDescription(placeName: string) {
   return `${placeName} i\u00e7in detayl\u0131 i\u00e7erik yak\u0131nda eklenecek.`
+}
+
+function normalizeSearchText(value: string) {
+  return value
+    .toLocaleLowerCase('tr-TR')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
 }
 
 function normalizeBadgeToken(value: string) {
@@ -327,6 +340,43 @@ export async function listPublishedPlannerPlaces(): Promise<PlannerPlaceListItem
 
   const badgeRows = await fetchBadgeRows()
   return ((data ?? []) as PlaceRow[]).map((place) => mapPlaceListItem(place, badgeRows))
+}
+
+export async function searchPublishedPlaces(input: SearchPublishedPlacesInput): Promise<PublicPlaceListItem[]> {
+  const client = getSupabaseAdminClient()
+  const normalizedQuery = normalizeSearchText(input.query.trim())
+  const limit = Math.max(1, Math.min(input.limit ?? 12, 48))
+
+  if (!client || !normalizedQuery) {
+    return []
+  }
+
+  const { data, error } = await runPlacesQueryWithBadgeFallback<PlaceRow>(
+    (selectClause) =>
+      client
+        .from('places')
+        .select(selectClause)
+        .eq('status', 'published')
+        .order('updated_at', { ascending: false })
+        .range(0, 199),
+    PUBLISHED_PLACE_LIST_SELECT_EXTENDED,
+    PUBLISHED_PLACE_LIST_SELECT_LEGACY,
+  )
+
+  if (error) {
+    throw new Error('Arama sonuçları okunamadı.')
+  }
+
+  const badgeRows = await fetchBadgeRows()
+  const places = ((data ?? []) as PlaceRow[]).map((place) => mapPlaceListItem(place, badgeRows))
+
+  return places
+    .filter((place) =>
+      normalizeSearchText(
+        [place.name, place.headline, place.shortDescription, place.address ?? '', getCategoryLabel(place.categoryPrimary)].join(' '),
+      ).includes(normalizedQuery),
+    )
+    .slice(0, limit)
 }
 
 export async function getPublishedPlaceBySlug(slug: string) {

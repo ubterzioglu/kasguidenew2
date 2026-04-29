@@ -36,7 +36,7 @@ function buildWebSiteSchema(): Record<string, unknown> {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://www.kasguide.de/?q={search_term_string}',
+        urlTemplate: 'https://www.kasguide.de/arama?q={search_term_string}',
       },
       'query-input': 'required name=search_term_string',
     },
@@ -105,7 +105,7 @@ function buildWebPageSchema(): Record<string, unknown> {
     primaryImageOfPage: { '@id': 'https://www.kasguide.de/#primaryimage' },
     speakable: {
       '@type': 'SpeakableSpecification',
-      cssSelector: ['#home-intro-definition', '#home-intro-summary'],
+      cssSelector: ['#home-intro-summary'],
     },
   }
 }

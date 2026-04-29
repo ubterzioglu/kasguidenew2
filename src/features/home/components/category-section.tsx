@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 
 import { CATEGORY_IDS, CATEGORY_MAP } from '@/lib/categories'
@@ -18,6 +19,7 @@ type PlacesEnvelope = {
 }
 
 export function CategorySection() {
+  const router = useRouter()
   const [activeCategoryIds, setActiveCategoryIds] = useState<string[]>([])
   const [draftCategoryIds, setDraftCategoryIds] = useState<string[]>([])
   const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({})
@@ -52,6 +54,17 @@ export function CategorySection() {
   const resultHref = activeCategoryIds.length > 0
     ? `/result?categories=${encodeURIComponent(activeCategoryIds.join(','))}`
     : '/result'
+
+  function submitSearch() {
+    const normalizedQuery = searchQuery.trim()
+
+    if (!normalizedQuery) {
+      router.push('/arama')
+      return
+    }
+
+    router.push(`/arama?q=${encodeURIComponent(normalizedQuery)}`)
+  }
 
   function setImmediateCategoryIds(nextCategoryIds: string[]) {
     setActiveCategoryIds(nextCategoryIds)
@@ -345,8 +358,14 @@ export function CategorySection() {
             aria-label="Mekan ara"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault()
+                submitSearch()
+              }
+            }}
           />
-          <button type="button" className="search-button" aria-label="Aramayı çalıştır">
+          <button type="button" className="search-button" aria-label="Aramayı çalıştır" onClick={submitSearch}>
             Ara
           </button>
         </div>

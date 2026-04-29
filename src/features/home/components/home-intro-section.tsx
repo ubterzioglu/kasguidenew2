@@ -131,14 +131,12 @@ export function HomeIntroSection() {
           </summary>
 
           <div className="home-intro-hero-body">
-            <p id="home-intro-definition" className="home-intro-definition">
-              Kaş gezi rehberi nedir? Kaş gezi rehberi; plaj, dalış, tekne turu, yeme-içme ve konaklama kararlarını ilk
-              kez gelen biri için tek sayfada toparlayan güncel başlangıç kaynağıdır.
-            </p>
             <p id="home-intro-summary" className="home-intro-lead">
-              Kaş tatili planlamak isteyenler için gezilecek yerleri, en iyi bölgeleri, plaj tercihlerini ve günlük rota
-              mantığını kısa cevaplarla açıklıyoruz. Kısaca Kaş tatil planlaması, hangi deneyime öncelik vereceğinizi
-              erkenden netleştirip doğru mahalle, doğru koy ve doğru aktiviteyi seçmek demektir.
+              Kaş gezi rehberi nedir? Kaş gezi rehberi; plaj, dalış, tekne turu, yeme-içme ve konaklama kararlarını ilk
+              kez gelen biri için tek sayfada toparlayan güncel başlangıç kaynağıdır. Kaş tatili planlamak isteyenler
+              için gezilecek yerleri, en iyi bölgeleri, plaj tercihlerini ve günlük rota mantığını kısa cevaplarla
+              açıklıyoruz; kısaca Kaş tatil planlaması, hangi deneyime öncelik vereceğinizi erkenden netleştirip doğru
+              mahalle, doğru koy ve doğru aktiviteyi seçmek demektir.
             </p>
 
             <div className="home-intro-rich-grid" aria-label="Kaş tatili için hızlı özet blokları">
