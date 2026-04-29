@@ -22,7 +22,7 @@ const PROMO_CARDS = [
     toneClassName: 'home-promo-card-faq',
   },
   {
-    title: 'Kaş&apos;ı farklı bakış açılarından nasıl okuyabilirsin?',
+    title: "Kaş'ı farklı bakış açılarından nasıl okuyabilirsin?",
     description: "Kaş'ı başka tatilcilerden ve yerlisinden dinleyin. İlham veren yazıları ve rotaları keşfedin.",
     href: '/result?categories=yazilar',
     cta: 'Yazı dizilerine git',
@@ -31,7 +31,7 @@ const PROMO_CARDS = [
     toneClassName: 'home-promo-card-series',
   },
   {
-    title: 'Kaş&apos;ı daha yerel bir gözle keşfetmek ister misin?',
+    title: "Kaş'ı daha yerel bir gözle keşfetmek ister misin?",
     description: 'Daha içeriden, daha yerel bir Kaş rehberi için hazırladığımız yeni alanın ilk iskeletini keşfedin.',
     href: '/local',
     cta: 'Local sayfasına git',
