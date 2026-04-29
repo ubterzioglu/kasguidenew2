@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { CATEGORIES, CATEGORY_GROUPS } from '@/lib/categories'
@@ -16,6 +16,7 @@ export default function AdminPlacesPage() {
   const [filter, setFilter] = useState<FilterMode>('all')
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [pageJumpValue, setPageJumpValue] = useState('1')
   const itemsPerPage = 50
   const {
     snapshot,
@@ -73,6 +74,89 @@ export default function AdminPlacesPage() {
     return categoryIds
       .map((categoryId) => categoryLabelMap.get(categoryId) ?? categoryId)
       .join(', ')
+  }
+
+  useEffect(() => {
+    setCurrentPage((page) => Math.min(Math.max(1, page), totalPages))
+  }, [totalPages])
+
+  useEffect(() => {
+    setPageJumpValue(String(currentPage))
+  }, [currentPage])
+
+  const commitPageJump = () => {
+    const parsedPage = Number.parseInt(pageJumpValue, 10)
+
+    if (!Number.isFinite(parsedPage)) {
+      setPageJumpValue(String(currentPage))
+      return
+    }
+
+    const clampedPage = Math.min(totalPages, Math.max(1, parsedPage))
+    setCurrentPage(clampedPage)
+    setPageJumpValue(String(clampedPage))
+  }
+
+  const renderPagination = (position: 'top' | 'bottom') => {
+    if (totalPages <= 1) {
+      return null
+    }
+
+    return (
+      <div className={`admin-pagination admin-pagination-${position}`}>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+          disabled={currentPage === 1}
+        >
+          Önceki
+        </Button>
+
+        <span className="admin-pagination-label">
+          Sayfa {currentPage} / {totalPages}
+        </span>
+
+        <div className="admin-pagination-jump">
+          <label htmlFor={`admin-page-jump-${position}`} className="admin-pagination-jump-label">
+            Sayfaya git
+          </label>
+          <input
+            id={`admin-page-jump-${position}`}
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            className="admin-input admin-pagination-input"
+            value={pageJumpValue}
+            onChange={(event) => setPageJumpValue(event.target.value)}
+            onBlur={() => {
+              if (!pageJumpValue.trim()) {
+                setPageJumpValue(String(currentPage))
+              }
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault()
+                commitPageJump()
+              }
+            }}
+            aria-label="Gitmek istediğin sayfa numarası"
+          />
+          <Button type="button" variant="secondary" onClick={commitPageJump}>
+            Git
+          </Button>
+        </div>
+
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+          disabled={currentPage === totalPages}
+        >
+          Sonraki
+        </Button>
+      </div>
+    )
   }
 
   return (
@@ -157,6 +241,7 @@ export default function AdminPlacesPage() {
         <div>
           <h2 className="admin-section-title">Mekan Listesi</h2>
         </div>
+        {renderPagination('top')}
       </section>
 
       {filteredPlaces.length === 0 ? (
@@ -233,29 +318,7 @@ export default function AdminPlacesPage() {
             )
           })}
 
-          {totalPages > 1 ? (
-            <div className="admin-pagination">
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
-                disabled={currentPage === 1}
-              >
-                Önceki Sayfa
-              </Button>
-              <span className="admin-pagination-label">
-                Sayfa {currentPage} / {totalPages}
-              </span>
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
-                disabled={currentPage === totalPages}
-              >
-                Sonraki Sayfa
-              </Button>
-            </div>
-          ) : null}
+          {renderPagination('bottom')}
         </section>
       )}
     </main>
