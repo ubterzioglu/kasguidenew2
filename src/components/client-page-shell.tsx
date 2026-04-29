@@ -6,8 +6,9 @@ import { usePathname } from 'next/navigation'
 
 export function ClientPageShell({ children }: { children: ReactNode }) {
   const pathname = usePathname()
-  const isHomePage = pathname === '/'
-  const isAdminRoute = pathname.startsWith('/admin')
+  const normalizedPathname = pathname ?? ''
+  const isHomePage = normalizedPathname === '/'
+  const isAdminRoute = normalizedPathname.startsWith('/admin')
 
   useEffect(() => {
     // Cross-page hash navigation fix
@@ -20,7 +21,7 @@ export function ClientPageShell({ children }: { children: ReactNode }) {
         }
       }, 150)
     }
-  }, [pathname])
+  }, [normalizedPathname])
 
   return (
     <div className={`page-shell ${isHomePage ? 'page-shell-home' : isAdminRoute ? 'page-shell-admin' : 'page-shell-subpage'}`}>

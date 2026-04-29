@@ -26,8 +26,12 @@ export function SiteFrame({ children }: SiteFrameProps) {
               Kaş Guide
             </Link>
             <span className="header-inline-separator" aria-hidden="true"></span>
-            <Link href="/#categories" className="header-inline-item">
-              Kategoriler
+            <Link href="/planner" className="header-inline-item">
+              Tatilini Planla
+            </Link>
+            <span className="header-inline-separator" aria-hidden="true"></span>
+            <Link href="/arama" className="header-inline-item">
+              Mekan Ara
             </Link>
             <span className="header-inline-separator" aria-hidden="true"></span>
             <Link href="/mekan-oner" className="header-inline-item">
@@ -65,8 +69,11 @@ export function SiteFrame({ children }: SiteFrameProps) {
               <Link href="/" className="header-mobile-link">
                 Ana Sayfa
               </Link>
-              <Link href="/#categories" className="header-mobile-link">
-                Kategoriler
+              <Link href="/planner" className="header-mobile-link">
+                Tatilini Planla
+              </Link>
+              <Link href="/arama" className="header-mobile-link">
+                Mekan Ara
               </Link>
               <Link href="/mekan-oner" className="header-mobile-link">
                 Mekan Öner
