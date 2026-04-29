@@ -19,6 +19,7 @@ type PlacesEnvelope = {
 
 export function CategorySection() {
   const [activeCategoryIds, setActiveCategoryIds] = useState<string[]>([])
+  const [draftCategoryIds, setDraftCategoryIds] = useState<string[]>([])
   const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({})
   const [categoryPlaces, setCategoryPlaces] = useState<CategoryPlace[]>([])
   const [isCategoryLoading, setIsCategoryLoading] = useState(false)
@@ -52,12 +53,46 @@ export function CategorySection() {
     ? `/result?categories=${encodeURIComponent(activeCategoryIds.join(','))}`
     : '/result'
 
+  function setImmediateCategoryIds(nextCategoryIds: string[]) {
+    setActiveCategoryIds(nextCategoryIds)
+    setDraftCategoryIds(nextCategoryIds)
+  }
+
   function toggleCategoryFilter(categoryId: string) {
     setActiveCategoryIds((current) =>
       current.includes(categoryId)
         ? current.filter((id) => id !== categoryId)
         : [...current, categoryId],
     )
+  }
+
+  function toggleDraftCategoryFilter(categoryId: string) {
+    setDraftCategoryIds((current) =>
+      current.includes(categoryId)
+        ? current.filter((id) => id !== categoryId)
+        : [...current, categoryId],
+    )
+  }
+
+  function openMobileCategorySheet() {
+    setDraftCategoryIds(activeCategoryIds)
+    setIsMobileCategoryMenuOpen(true)
+  }
+
+  function closeMobileCategorySheet() {
+    setDraftCategoryIds(activeCategoryIds)
+    setIsMobileCategoryMenuOpen(false)
+  }
+
+  function applyMobileCategories() {
+    setActiveCategoryIds(draftCategoryIds)
+    setIsMobileCategoryMenuOpen(false)
+  }
+
+  function clearMobileCategories() {
+    setDraftCategoryIds([])
+    setActiveCategoryIds([])
+    setIsMobileCategoryMenuOpen(false)
   }
 
   useEffect(() => {
@@ -178,7 +213,7 @@ export function CategorySection() {
             <button
               type="button"
               className="category-clear-filters"
-              onClick={() => setActiveCategoryIds([])}
+              onClick={() => setImmediateCategoryIds([])}
               disabled={activeCategoryIds.length === 0}
             >
               Filtreleri temizle
@@ -188,10 +223,10 @@ export function CategorySection() {
             <button
               type="button"
               className="category-mobile-trigger"
-              onClick={() => setIsMobileCategoryMenuOpen(true)}
+              onClick={openMobileCategorySheet}
               aria-label="Kategori menüsünü aç"
             >
-              Kategoriler
+              Kategori seç
             </button>
           </div>
         </div>
@@ -202,20 +237,59 @@ export function CategorySection() {
           onToggleCategory={toggleCategoryFilter}
         />
 
+        <div className="category-mobile-selection-summary" aria-live="polite">
+          {activeCategoryIds.length > 0 ? (
+            <>
+              <div className="category-mobile-chip-list">
+                {activeCategoryIds.map((categoryId) => {
+                  const category = CATEGORY_MAP.get(categoryId)
+                  if (!category) {
+                    return null
+                  }
+
+                  return (
+                    <button
+                      key={`selected-${categoryId}`}
+                      type="button"
+                      className="category-mobile-chip"
+                      onClick={() =>
+                        setImmediateCategoryIds(activeCategoryIds.filter((id) => id !== categoryId))
+                      }
+                    >
+                      <span>{category.label}</span>
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  )
+                })}
+              </div>
+              <p className="category-mobile-summary-copy">
+                Seçili filtreleri kaldırabilir veya yeni kategori eklemek için sheet&apos;i açabilirsin.
+              </p>
+            </>
+          ) : (
+            <p className="category-mobile-summary-copy">
+              İlk kez geliyorsan önce ilgi alanını seç. Plaj, restoran, dalış veya gece hayatına göre hızlı daraltma yap.
+            </p>
+          )}
+        </div>
+
         <div
           className={`category-mobile-backdrop${isMobileCategoryMenuOpen ? ' is-open' : ''}`}
-          onClick={() => setIsMobileCategoryMenuOpen(false)}
+          onClick={closeMobileCategorySheet}
         ></div>
         <aside
           className={`category-mobile-drawer${isMobileCategoryMenuOpen ? ' is-open' : ''}`}
           aria-label="Mobil kategori filtreleri"
         >
           <div className="category-mobile-drawer-head">
-            <strong>Kategori Seç</strong>
+            <div className="category-mobile-drawer-copy">
+              <strong>Kategori seç</strong>
+              <p>Önce ilgi alanlarını işaretle, sonra uygula.</p>
+            </div>
             <button
               type="button"
               className="category-mobile-close"
-              onClick={() => setIsMobileCategoryMenuOpen(false)}
+              onClick={closeMobileCategorySheet}
               aria-label="Kategorileri kapat"
             >
               X
@@ -228,19 +302,37 @@ export function CategorySection() {
                 return null
               }
 
-              const checked = activeCategoryIds.includes(categoryId)
+              const isDraftActive = draftCategoryIds.includes(categoryId)
 
               return (
                 <label key={categoryId} className="category-mobile-option">
                   <input
                     type="checkbox"
-                    checked={checked}
-                    onChange={() => toggleCategoryFilter(categoryId)}
+                    checked={isDraftActive}
+                    onChange={() => toggleDraftCategoryFilter(categoryId)}
                   />
                   <span>{category.label}</span>
+                  <strong>{categoryCounts[category.id] ?? 0}</strong>
                 </label>
               )
             })}
+          </div>
+          <div className="category-mobile-drawer-actions">
+            <button
+              type="button"
+              className="category-mobile-secondary-action"
+              onClick={clearMobileCategories}
+              disabled={activeCategoryIds.length === 0 && draftCategoryIds.length === 0}
+            >
+              Temizle
+            </button>
+            <button
+              type="button"
+              className="category-mobile-primary-action"
+              onClick={applyMobileCategories}
+            >
+              {draftCategoryIds.length > 0 ? `${draftCategoryIds.length} filtreyi uygula` : 'Filtreleri uygula'}
+            </button>
           </div>
         </aside>
 
@@ -307,7 +399,8 @@ export function CategorySection() {
             )
           ) : (
             <div className="category-results-empty category-results-empty-centered">
-              Kategorini seç! Sonuçlar burada gözükecek.
+              Kategorini seç! Sonuçlar burada gözükecek. İstersen plaj, restoran veya dalış gibi en çok aranan
+              başlıklardan başlayabilirsin.
             </div>
           )}
         </section>

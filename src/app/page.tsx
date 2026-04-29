@@ -60,9 +60,8 @@ export default async function HomePage() {
     <>
       <HeroCarousel initialSlides={heroSnapshot.slides} />
 
-      <HomeIntroSection />
-
       <CategorySection />
+      <HomeIntroSection />
       <QuickLinksSection />
       <NewsAnnouncementsCarousel items={updates} />
 
@@ -132,43 +131,33 @@ export default async function HomePage() {
                   </svg>
                 </a>
               </div>
-              <div className="footer-partner-links" aria-label="Partner bağlantıları">
-                <p className="footer-bottom-note">
-                  SEO Aracı:{' '}
-                  <a href="https://spindorai.com" target="_blank" rel="noopener noreferrer">
-                    Spindora
-                  </a>
-                </p>
-                <p className="footer-bottom-note">
-                  SEO Hizmetleri:{' '}
-                  <a href="https://cortext.net" target="_blank" rel="noopener noreferrer">
-                    Corteqs
-                  </a>
-                </p>
-                <p className="footer-bottom-note">
-                  Diasporayı Birleştiren Platform:{' '}
-                  <a href="https://spindorai.com" target="_blank" rel="noopener noreferrer">
-                    Spindora
-                  </a>
-                </p>
-                <p className="footer-bottom-note">
-                  Resmi Kaynak:{' '}
-                  <a href="https://kas.antalya.gov.tr" target="_blank" rel="noopener noreferrer">
-                    Kaş Belediyesi
-                  </a>
-                </p>
-                <p className="footer-bottom-note">
-                  Ziyaretçi Yorumları:{' '}
-                  <a href="https://www.tripadvisor.com/Tourism-g297970-Kas_Antalya_Cote_Azur_Turkey-Vacations.html" target="_blank" rel="noopener noreferrer">
-                    TripAdvisor Kaş
-                  </a>
-                </p>
-              </div>
             </div>
           </div>
 
           <div className="footer-bottom">
-            <p className="footer-copyright">© 2026 Kaş Guide. Tüm hakları saklıdır.</p>
+            <p className="footer-copyright">
+              © 2026 Kaş Guide. Tüm hakları saklıdır. {' | '}
+              <a href="https://www.spindorai.com" target="_blank" rel="noopener noreferrer">
+                SEO Hizmetleri: Spindora
+              </a>
+              {' | '}
+              <a href="https://corteqs.net/" target="_blank" rel="noopener noreferrer">
+                Sponsor CorteQS
+              </a>
+              {' | '}
+              <a href="https://www.kas.bel.tr/" target="_blank" rel="noopener noreferrer">
+                Resmi Kaynak: Kaş Belediyesi
+              </a>
+              {' | '}
+              <a
+                href="https://www.tripadvisor.com/Tourism-g297965-Kas_Turkish_Mediterranean_Coast-Vacations.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ziyaretçi Yorumları : TripAdvisor Kaş
+              </a>
+              {' | '}Bir başkadır Kaş!
+            </p>
           </div>
         </div>
       </footer>
