@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 
 import type { AdminPlacesSnapshot, PanelStatus, PlaceEditorDraft } from '@/types/review'
 
-import { adminLogout, hasSessionCookie } from '@/lib/admin-session-client'
+import { adminLogout, hasActiveSession } from '@/lib/admin-session-client'
 import { useDraftEditor } from '../review/useDraftEditor'
 
 const INITIAL_STATUS: PanelStatus = {
@@ -76,12 +76,14 @@ export function usePlacesDashboard() {
   }, [hydrateDrafts, router])
 
   useEffect(() => {
-    if (!hasSessionCookie()) {
-      router.replace('/admin')
-      return
-    }
+    void (async () => {
+      if (!(await hasActiveSession())) {
+        router.replace('/admin')
+        return
+      }
 
-    void loadDashboard(true)
+      await loadDashboard(true)
+    })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 

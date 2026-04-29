@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { isAdminApiConfigured, isAdminRequestAuthorized } from '@/lib/admin-auth'
+import { isAdminApiConfigured, isAdminRequestAuthorized, isAdminSessionValid } from '@/lib/admin-auth'
 import { clearSessionCookie, createSessionToken, setSessionCookie } from '@/lib/admin-session'
 import { checkRateLimit, getRateLimitKeyFromRequest } from '@/lib/rate-limit'
 
@@ -33,6 +33,18 @@ export async function POST(request: Request) {
   setSessionCookie(response, token)
 
   return response
+}
+
+export async function GET(request: Request) {
+  if (!isAdminApiConfigured()) {
+    return NextResponse.json({ error: 'ADMIN_PASSWORD tanimli degil.' }, { status: 503 })
+  }
+
+  if (!(await isAdminSessionValid(request))) {
+    return NextResponse.json({ error: 'Yetkisiz istek.' }, { status: 401 })
+  }
+
+  return NextResponse.json({ ok: true })
 }
 
 export async function DELETE() {

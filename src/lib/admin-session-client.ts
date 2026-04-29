@@ -4,7 +4,25 @@ export async function isAdminLoggedIn(): Promise<boolean> {
   }
 
   try {
-    const response = await fetch('/api/admin/session', { method: 'POST' })
+    const response = await fetch('/api/admin/session', { method: 'GET', credentials: 'include' })
+    return response.ok
+  } catch {
+    return false
+  }
+}
+
+export async function hasActiveSession(): Promise<boolean> {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  try {
+    const response = await fetch('/api/admin/session', {
+      method: 'GET',
+      credentials: 'include',
+      cache: 'no-store',
+    })
+
     return response.ok
   } catch {
     return false

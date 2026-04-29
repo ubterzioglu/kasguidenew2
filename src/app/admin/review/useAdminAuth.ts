@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import {
@@ -6,13 +6,19 @@ import {
   getStoredAdminPassword as readStoredAdminPassword,
   storeAdminPassword,
 } from '@/lib/admin-password-client'
-import { adminLogin, adminLogout, hasSessionCookie } from '@/lib/admin-session-client'
+import { adminLogin, adminLogout, hasActiveSession } from '@/lib/admin-session-client'
 
 export function useAdminAuth() {
   const router = useRouter()
   const [adminPassword, setAdminPassword] = useState('')
-  const [isLoggedIn, setIsLoggedIn] = useState(hasSessionCookie)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    void (async () => {
+      setIsLoggedIn(await hasActiveSession())
+    })()
+  }, [])
 
   const login = useCallback(async (password: string): Promise<boolean> => {
     setIsLoading(true)

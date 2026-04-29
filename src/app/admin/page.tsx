@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { adminLogin, adminLogout, hasSessionCookie } from '@/lib/admin-session-client'
+import { storeAdminPassword } from '@/lib/admin-password-client'
+import { adminLogin, adminLogout, hasActiveSession } from '@/lib/admin-session-client'
 
 type StatusTone = 'neutral' | 'success' | 'error'
 
@@ -26,9 +27,11 @@ export default function AdminHomePage() {
   const [status, setStatus] = useState<PanelStatus>(INITIAL_STATUS)
 
   useEffect(() => {
-    if (hasSessionCookie()) {
-      router.replace('/admin/places')
-    }
+    void (async () => {
+      if (await hasActiveSession()) {
+        router.replace('/admin/places')
+      }
+    })()
   }, [router])
 
   async function validatePassword() {
@@ -50,6 +53,7 @@ export default function AdminHomePage() {
       }
 
       setIsAuthorized(true)
+      storeAdminPassword(password)
       setAdminPassword('')
       setStatus({ tone: 'success', message: 'Giriş başarılı. Devam etmek istediğin alanı seç.' })
       router.replace('/admin/places')
