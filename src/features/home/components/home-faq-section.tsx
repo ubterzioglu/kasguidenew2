@@ -63,7 +63,7 @@ export function HomeFaqSection() {
     <section className="home-faq-section" aria-labelledby="home-faq-title">
       <div className="home-faq-shell">
         <div className="home-faq-header">
-          <div className="home-faq-copy">
+          <div className="home-faq-copy home-faq-copy-combined">
             <p className="home-faq-eyebrow">Hızlı Başlangıç</p>
             <h2 id="home-faq-title" className="home-faq-title">
               Kaş hakkında ilk bakışta en çok ne merak ediliyor?
@@ -72,16 +72,15 @@ export function HomeFaqSection() {
               İlk geliş, konaklama bölgesi, plaj seçimi ve bütçe gibi temel soruların kısa cevaplarını burada
               toparladık.
             </p>
-          </div>
-
-          <div className="home-faq-aside" aria-label="SSS özet bilgileri">
-            <strong className="home-faq-aside-count">{HOME_FAQ_ITEMS.length} temel soru</strong>
-            <p className="home-faq-aside-text">
-              Daha detaylı cevaplar ve arama destekli tüm içerik için geniş SSS arşivine geçebilirsiniz.
-            </p>
-            <Link href="/faq" className="home-faq-link">
-              Tüm SSS sayfasını aç
-            </Link>
+            <div className="home-faq-inline-meta" aria-label="SSS özet bilgileri">
+              <strong className="home-faq-aside-count">{HOME_FAQ_ITEMS.length} temel soru</strong>
+              <p className="home-faq-aside-text">
+                Daha detaylı cevaplar ve arama destekli tüm içerik için geniş SSS arşivine geçebilirsiniz.
+              </p>
+              <Link href="/faq" className="home-faq-link">
+                Tüm SSS sayfasını aç
+              </Link>
+            </div>
           </div>
         </div>
 

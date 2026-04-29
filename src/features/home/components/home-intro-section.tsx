@@ -119,101 +119,109 @@ export function HomeIntroSection() {
   return (
     <section className="home-intro-section" aria-labelledby="home-intro-title">
       <div className="home-intro-shell">
-        <div className="home-intro-hero">
-          <p className="home-intro-eyebrow">Kaş Rehberi</p>
-          <h1 id="home-intro-title" className="home-intro-title">
-            Kaş Gezi Rehberi – Gezilecek Yerler, Plajlar ve Yerel Öneriler
-          </h1>
-          <p id="home-intro-definition" className="home-intro-definition">
-            Kaş gezi rehberi nedir? Kaş gezi rehberi; plaj, dalış, tekne turu, yeme-içme ve konaklama kararlarını ilk
-            kez gelen biri için tek sayfada toparlayan güncel başlangıç kaynağıdır.
-          </p>
-          <p id="home-intro-summary" className="home-intro-lead">
-            Kaş tatili planlamak isteyenler için gezilecek yerleri, en iyi bölgeleri, plaj tercihlerini ve günlük rota
-            mantığını kısa cevaplarla açıklıyoruz. Kısaca Kaş tatil planlaması, hangi deneyime öncelik vereceğinizi
-            erkenden netleştirip doğru mahalle, doğru koy ve doğru aktiviteyi seçmek demektir.
-          </p>
+        <details className="home-intro-hero home-intro-hero-accordion">
+          <summary className="home-intro-card-summary home-intro-hero-summary">
+            <span className="home-intro-hero-summary-copy">
+              <span className="home-intro-eyebrow">Kaş Rehberi</span>
+              <h1 id="home-intro-title" className="home-intro-title">
+                Kaş Gezi Rehberi – Gezilecek Yerler, Plajlar ve Yerel Öneriler
+              </h1>
+            </span>
+            <span className="home-intro-card-icon" aria-hidden="true" />
+          </summary>
 
-          <div className="home-intro-rich-grid" aria-label="Kaş tatili için hızlı özet blokları">
-            <article className="home-intro-rich-card">
-              <h2 className="home-intro-rich-title">Kaş&apos;ta ilk kez gelenler için hızlı özet</h2>
-              <ul className="home-intro-list">
-                <li>Merkez, yürüyerek gezmek ve akşamları çarşıya karışmak isteyenler için en pratik bölgedir.</li>
-                <li>Çukurbağ Yarımadası, manzara ve sakinlik arayanlar için güçlü bir konaklama alternatifidir.</li>
-                <li>Dalış, tekne turu ve koy keşfi Kaş&apos;ta ilk üç deneyim olarak öne çıkar.</li>
-              </ul>
-            </article>
+          <div className="home-intro-hero-body">
+            <p id="home-intro-definition" className="home-intro-definition">
+              Kaş gezi rehberi nedir? Kaş gezi rehberi; plaj, dalış, tekne turu, yeme-içme ve konaklama kararlarını ilk
+              kez gelen biri için tek sayfada toparlayan güncel başlangıç kaynağıdır.
+            </p>
+            <p id="home-intro-summary" className="home-intro-lead">
+              Kaş tatili planlamak isteyenler için gezilecek yerleri, en iyi bölgeleri, plaj tercihlerini ve günlük rota
+              mantığını kısa cevaplarla açıklıyoruz. Kısaca Kaş tatil planlaması, hangi deneyime öncelik vereceğinizi
+              erkenden netleştirip doğru mahalle, doğru koy ve doğru aktiviteyi seçmek demektir.
+            </p>
 
-            <article className="home-intro-rich-card">
-              <h2 className="home-intro-rich-title">Kaş tatili nasıl planlanır?</h2>
-              <ol className="home-intro-list home-intro-list-ordered">
-                <li>Önce merkeze mi yoksa yarımadaya mı yakın kalacağını belirle.</li>
-                <li>Bir gününü tekne turu veya dalış gibi yüksek niyetli deneyimlere ayır.</li>
-                <li>Plaj, akşam yemeği ve çarşı ritmini aynı gün içinde dengele.</li>
-              </ol>
-            </article>
+            <div className="home-intro-rich-grid" aria-label="Kaş tatili için hızlı özet blokları">
+              <article className="home-intro-rich-card">
+                <h2 className="home-intro-rich-title">Kaş&apos;ta ilk kez gelenler için hızlı özet</h2>
+                <ul className="home-intro-list">
+                  <li>Merkez, yürüyerek gezmek ve akşamları çarşıya karışmak isteyenler için en pratik bölgedir.</li>
+                  <li>Çukurbağ Yarımadası, manzara ve sakinlik arayanlar için güçlü bir konaklama alternatifidir.</li>
+                  <li>Dalış, tekne turu ve koy keşfi Kaş&apos;ta ilk üç deneyim olarak öne çıkar.</li>
+                </ul>
+              </article>
 
-            <article className="home-intro-rich-card home-intro-rich-card-wide">
-              <h2 className="home-intro-rich-title">Hangi tatil tarzı sana daha uygun?</h2>
-              <div className="home-intro-table-wrap">
-                <table className="home-intro-table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Tatil odağı</th>
-                      <th scope="col">En uygun bölge</th>
-                      <th scope="col">Kimler için iyi?</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Merkez odaklı</td>
-                      <td>Kaş merkez</td>
-                      <td>Yürüyerek gezen, restoran ve gece hayatını öne alanlar</td>
-                    </tr>
-                    <tr>
-                      <td>Manzara ve sakinlik</td>
-                      <td>Çukurbağ Yarımadası</td>
-                      <td>Çiftler, sakin konaklama arayanlar ve uzun tatil yapanlar</td>
-                    </tr>
-                    <tr>
-                      <td>Dalış ve aktivite</td>
-                      <td>Liman çevresi</td>
-                      <td>Dalış merkezlerine, tekne turlarına ve sabah çıkışlarına yakın olmak isteyenler</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </article>
+              <article className="home-intro-rich-card">
+                <h2 className="home-intro-rich-title">Kaş tatili nasıl planlanır?</h2>
+                <ol className="home-intro-list home-intro-list-ordered">
+                  <li>Önce merkeze mi yoksa yarımadaya mı yakın kalacağını belirle.</li>
+                  <li>Bir gününü tekne turu veya dalış gibi yüksek niyetli deneyimlere ayır.</li>
+                  <li>Plaj, akşam yemeği ve çarşı ritmini aynı gün içinde dengele.</li>
+                </ol>
+              </article>
 
-            <figure className="home-intro-figure">
-              <picture>
-                <source media="(min-width: 768px)" srcSet="/og.jpg" />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/og.jpg"
-                  alt="Kaş kıyı hattını, taş merkez dokusunu ve turkuaz koylarını özetleyen görünüm"
-                  className="home-intro-figure-image"
-                  loading="lazy"
-                />
-              </picture>
-              <figcaption className="home-intro-figure-caption">
-                Kaş&apos;ın taş sokakları, turkuaz koyları ve dalışa uygun berrak suları aynı rotada buluşur; bu yüzden
-                ilk kez gelenler için merkez, plaj ve aktivite dengesini birlikte planlamak önemlidir.
-              </figcaption>
-            </figure>
+              <article className="home-intro-rich-card home-intro-rich-card-wide">
+                <h2 className="home-intro-rich-title">Hangi tatil tarzı sana daha uygun?</h2>
+                <div className="home-intro-table-wrap">
+                  <table className="home-intro-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Tatil odağı</th>
+                        <th scope="col">En uygun bölge</th>
+                        <th scope="col">Kimler için iyi?</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Merkez odaklı</td>
+                        <td>Kaş merkez</td>
+                        <td>Yürüyerek gezen, restoran ve gece hayatını öne alanlar</td>
+                      </tr>
+                      <tr>
+                        <td>Manzara ve sakinlik</td>
+                        <td>Çukurbağ Yarımadası</td>
+                        <td>Çiftler, sakin konaklama arayanlar ve uzun tatil yapanlar</td>
+                      </tr>
+                      <tr>
+                        <td>Dalış ve aktivite</td>
+                        <td>Liman çevresi</td>
+                        <td>Dalış merkezlerine, tekne turlarına ve sabah çıkışlarına yakın olmak isteyenler</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+
+              <figure className="home-intro-figure">
+                <picture>
+                  <source media="(min-width: 768px)" srcSet="/og.jpg" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/og.jpg"
+                    alt="Kaş kıyı hattını, taş merkez dokusunu ve turkuaz koylarını özetleyen görünüm"
+                    className="home-intro-figure-image"
+                    loading="lazy"
+                  />
+                </picture>
+                <figcaption className="home-intro-figure-caption">
+                  Kaş&apos;ın taş sokakları, turkuaz koyları ve dalışa uygun berrak suları aynı rotada buluşur; bu yüzden
+                  ilk kez gelenler için merkez, plaj ve aktivite dengesini birlikte planlamak önemlidir.
+                </figcaption>
+              </figure>
+            </div>
+
+            <p className="home-intro-dive-note">
+              Kaş dalış rehberi arıyorsanız fiyat, merkez, okul ve deneme dalışı niyetlerini{' '}
+              <Link href="/kas-dalis-noktalari">Kaş dalış noktaları sayfasında</Link> ayrı ayrı toparlıyoruz.
+            </p>
+
+            <p className="home-intro-meta">
+              <time dateTime={HOME_PUBLISHED_AT}>Yayınlandı: {PUBLISHED_LABEL}</time>
+              {' • '}
+              <time dateTime={HOME_MODIFIED_AT}>Son güncelleme: {MODIFIED_LABEL}</time>
+            </p>
           </div>
-
-          <p className="home-intro-dive-note">
-            Kaş dalış rehberi arıyorsanız fiyat, merkez, okul ve deneme dalışı niyetlerini{' '}
-            <Link href="/kas-dalis-noktalari">Kaş dalış noktaları sayfasında</Link> ayrı ayrı toparlıyoruz.
-          </p>
-
-          <p className="home-intro-meta">
-            <time dateTime={HOME_PUBLISHED_AT}>Yayınlandı: {PUBLISHED_LABEL}</time>
-            {' • '}
-            <time dateTime={HOME_MODIFIED_AT}>Son güncelleme: {MODIFIED_LABEL}</time>
-          </p>
-        </div>
+        </details>
 
         <div className="home-intro-accordion">
           {HOME_INTRO_SECTIONS.map((section) => (

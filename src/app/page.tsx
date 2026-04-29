@@ -60,10 +60,10 @@ export default async function HomePage() {
     <>
       <HeroCarousel initialSlides={heroSnapshot.slides} />
 
+      <NewsAnnouncementsCarousel items={updates} />
       <CategorySection />
       <HomeIntroSection />
       <QuickLinksSection />
-      <NewsAnnouncementsCarousel items={updates} />
 
       <HomeFaqSection />
 
