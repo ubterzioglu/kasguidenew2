@@ -4839,7 +4839,8 @@ body {
 
 .footer-copyright {
   text-align: center;
-  line-height: 1.8;
+  font-size: 0.88rem;
+  line-height: 1.55;
 }
 
 .footer-copyright a {
@@ -7856,14 +7857,43 @@ body {
   gap: 1rem;
 }
 
-.home-faq-header {
-  display: block;
-}
-
 .home-faq-copy,
 .home-faq-aside {
   border: 1px solid rgba(0, 168, 150, 0.12);
   box-shadow: 0 22px 52px rgba(26, 78, 74, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.home-faq-header {
+  display: block;
+}
+
+.home-faq-header-card {
+  border-radius: 28px;
+  border: 1px solid rgba(0, 168, 150, 0.12);
+  box-shadow: 0 22px 52px rgba(26, 78, 74, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  background:
+    radial-gradient(circle at top right, rgba(149, 236, 226, 0.22), transparent 28%),
+    linear-gradient(135deg, rgba(255, 252, 247, 0.98), rgba(244, 241, 234, 0.94));
+  overflow: hidden;
+}
+
+.home-faq-header-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.45rem 1.5rem;
+  list-style: none;
+  cursor: pointer;
+}
+
+.home-faq-header-summary::-webkit-details-marker {
+  display: none;
+}
+
+.home-faq-header-copy {
+  display: grid;
+  gap: 0.5rem;
 }
 
 .home-faq-copy {
@@ -7900,6 +7930,13 @@ body {
 .home-faq-copy-combined {
   display: grid;
   gap: 0.95rem;
+}
+
+.home-faq-header-body {
+  padding-top: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
 }
 
 .home-faq-aside {
@@ -8005,6 +8042,10 @@ body {
 }
 
 .home-faq-item[open] .home-faq-question-icon::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.home-faq-header-card[open] .home-faq-question-icon::after {
   transform: translate(-50%, -50%) rotate(0deg);
 }
 
@@ -8118,8 +8159,8 @@ body {
   grid-template-columns: minmax(0, 1fr) 300px;
   align-items: stretch;
   gap: 0;
-  min-height: 150px;
-  height: 150px;
+  min-height: 114px;
+  height: 114px;
   padding: 0 0 0 1.25rem;
   border-radius: 28px;
   text-decoration: none;
@@ -8157,18 +8198,30 @@ body {
 .home-promo-copy {
   display: grid;
   align-content: start;
-  gap: 0.8rem;
+  gap: 0.45rem;
   min-height: 0;
-  padding: 1.3rem 1.2rem 1.3rem 0;
+  padding: 0.95rem 0.95rem 0.95rem 0;
   overflow: hidden;
 }
 
 .home-promo-title {
   margin: 0;
   color: #004d40;
-  font-size: clamp(1.3rem, 2vw, 1.75rem);
-  line-height: 1.1;
+  font-size: clamp(1.05rem, 1.65vw, 1.35rem);
+  line-height: 1.08;
   align-self: start;
+}
+
+.home-promo-description {
+  font-size: 0.9rem;
+  line-height: 1.42;
+}
+
+.home-promo-cta {
+  min-height: 30px;
+  margin-top: 0.15rem;
+  padding: 0.3rem 0.72rem;
+  font-size: 0.8rem;
 }
 
 .admin-shell-updates {
@@ -8477,6 +8530,7 @@ body {
 
   .home-faq-copy,
   .home-faq-aside,
+  .home-faq-header-card,
   .home-faq-item {
     border-radius: 20px;
   }
@@ -8484,6 +8538,11 @@ body {
   .home-faq-copy,
   .home-faq-aside {
     padding: 1.1rem;
+  }
+
+  .home-faq-header-summary {
+    padding: 1.1rem;
+    gap: 0.75rem;
   }
 
   .home-faq-question {
@@ -8500,18 +8559,19 @@ body {
   }
 
   .home-promo-card {
-    padding: 1rem;
+    padding: 0.9rem;
     border-radius: 24px;
   }
 
   .home-promo-copy {
     padding: 0;
+    gap: 0.5rem;
   }
 
   .home-promo-media-wrap {
     max-width: none;
-    min-height: 150px;
-    height: 150px;
+    min-height: 132px;
+    height: 132px;
     border-radius: 18px;
   }
 }

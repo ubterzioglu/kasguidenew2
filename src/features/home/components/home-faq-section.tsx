@@ -62,12 +62,18 @@ export function HomeFaqSection() {
   return (
     <section className="home-faq-section" aria-labelledby="home-faq-title">
       <div className="home-faq-shell">
-        <div className="home-faq-header">
-          <div className="home-faq-copy home-faq-copy-combined">
-            <p className="home-faq-eyebrow">Hızlı Başlangıç</p>
-            <h2 id="home-faq-title" className="home-faq-title">
-              Kaş hakkında ilk bakışta en çok ne merak ediliyor?
-            </h2>
+        <details className="home-faq-header home-faq-header-card">
+          <summary className="home-faq-header-summary">
+            <span className="home-faq-header-copy">
+              <span className="home-faq-eyebrow">Hızlı Başlangıç</span>
+              <h2 id="home-faq-title" className="home-faq-title">
+                Kaş hakkında ilk bakışta en çok ne merak ediliyor?
+              </h2>
+            </span>
+            <span className="home-faq-question-icon" aria-hidden="true" />
+          </summary>
+
+          <div className="home-faq-copy home-faq-copy-combined home-faq-header-body">
             <p className="home-faq-description">
               İlk geliş, konaklama bölgesi, plaj seçimi ve bütçe gibi temel sorular için hazırladığımız {HOME_FAQ_ITEMS.length}{' '}
               temel sorunun kısa cevaplarını burada bulabilir, daha detaylı cevaplar ve arama destekli tüm içerik için geniş
@@ -77,7 +83,7 @@ export function HomeFaqSection() {
               Tüm SSS sayfasını aç
             </Link>
           </div>
-        </div>
+        </details>
 
         <div className="home-faq-list">
           {HOME_FAQ_ITEMS.map((item, index) => (
