@@ -44,6 +44,12 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
   )
 
   const scene = heroSlides[activeScene] ?? heroSlides[0]
+  const goToPreviousScene = () => {
+    setActiveScene((current) => (current - 1 + heroSlides.length) % heroSlides.length)
+  }
+  const goToNextScene = () => {
+    setActiveScene((current) => (current + 1) % heroSlides.length)
+  }
 
   useEffect(() => {
     if (heroSlides.length <= 1) {
@@ -162,40 +168,6 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
                 </a>
               </div>
             </div>
-
-            <div className="hero-carousel-controls">
-              <div className="hero-carousel-nav">
-                <button
-                  type="button"
-                  className="hero-carousel-arrow"
-                  onClick={() => setActiveScene((current) => (current - 1 + heroSlides.length) % heroSlides.length)}
-                  aria-label="Önceki sahne"
-                >
-                  ‹
-                </button>
-                <button
-                  type="button"
-                  className="hero-carousel-arrow"
-                  onClick={() => setActiveScene((current) => (current + 1) % heroSlides.length)}
-                  aria-label="Sonraki sahne"
-                >
-                  ›
-                </button>
-              </div>
-
-              <div className="hero-carousel-dots" aria-label="Hero sahneleri">
-                {heroSlides.map((heroScene, index) => (
-                  <button
-                    key={heroScene.id}
-                    type="button"
-                    className={`hero-carousel-dot${index === activeScene ? ' active' : ''}`}
-                    onClick={() => setActiveScene(index)}
-                    aria-label={`Sahne ${index + 1}`}
-                    aria-pressed={index === activeScene}
-                  ></button>
-                ))}
-              </div>
-            </div>
           </div>
 
           <aside className="hero-story-aside">
@@ -233,6 +205,40 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
               </div>
             </div>
           </aside>
+
+          <div className="hero-carousel-controls">
+            <div className="hero-carousel-nav">
+              <button
+                type="button"
+                className="hero-carousel-arrow"
+                onClick={goToPreviousScene}
+                aria-label="Önceki sahne"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className="hero-carousel-arrow"
+                onClick={goToNextScene}
+                aria-label="Sonraki sahne"
+              >
+                ›
+              </button>
+            </div>
+
+            <div className="hero-carousel-dots" aria-label="Hero sahneleri">
+              {heroSlides.map((heroScene, index) => (
+                <button
+                  key={heroScene.id}
+                  type="button"
+                  className={`hero-carousel-dot${index === activeScene ? ' active' : ''}`}
+                  onClick={() => setActiveScene(index)}
+                  aria-label={`Sahne ${index + 1}`}
+                  aria-pressed={index === activeScene}
+                ></button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
