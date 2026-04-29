@@ -151,11 +151,11 @@ export function HomeIntroSection() {
 
               <article className="home-intro-rich-card">
                 <h2 className="home-intro-rich-title">Kaş tatili nasıl planlanır?</h2>
-                <ol className="home-intro-list home-intro-list-ordered">
+                <ul className="home-intro-list home-intro-list-bulleted">
                   <li>Önce merkeze mi yoksa yarımadaya mı yakın kalacağını belirle.</li>
                   <li>Bir gününü tekne turu veya dalış gibi yüksek niyetli deneyimlere ayır.</li>
                   <li>Plaj, akşam yemeği ve çarşı ritmini aynı gün içinde dengele.</li>
-                </ol>
+                </ul>
               </article>
 
               <article className="home-intro-rich-card home-intro-rich-card-wide">

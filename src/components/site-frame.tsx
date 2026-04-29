@@ -30,16 +30,8 @@ export function SiteFrame({ children }: SiteFrameProps) {
               Kategoriler
             </Link>
             <span className="header-inline-separator" aria-hidden="true"></span>
-            <Link href="/biz-kimiz" className="header-inline-item">
-              Biz Kimiz
-            </Link>
-            <span className="header-inline-separator" aria-hidden="true"></span>
             <Link href="/mekan-oner" className="header-inline-item">
               Mekan Öner
-            </Link>
-            <span className="header-inline-separator" aria-hidden="true"></span>
-            <Link href="/iletisim" className="header-inline-item">
-              İletişim
             </Link>
             <span className="header-inline-separator" aria-hidden="true"></span>
             <a
@@ -76,14 +68,8 @@ export function SiteFrame({ children }: SiteFrameProps) {
               <Link href="/#categories" className="header-mobile-link">
                 Kategoriler
               </Link>
-              <Link href="/biz-kimiz" className="header-mobile-link">
-                Biz Kimiz
-              </Link>
               <Link href="/mekan-oner" className="header-mobile-link">
                 Mekan Öner
-              </Link>
-              <Link href="/iletisim" className="header-mobile-link">
-                İletişim
               </Link>
               <a
                 href="https://wa.me/4915258450111"
