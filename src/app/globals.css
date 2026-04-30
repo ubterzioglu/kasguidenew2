@@ -50,7 +50,7 @@ html {
 /* Hero Section */
 .hero {
   position: relative;
-  min-height: 76vh;
+  min-height: 75.75vh;
   display: flex;
   align-items: center;
   justify-content: center;

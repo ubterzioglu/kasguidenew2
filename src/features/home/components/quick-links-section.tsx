@@ -8,8 +8,8 @@ const QUICK_LINKS = [
       "Kekova rotası, batık şehir ve gizli koylar. Tekne turları ile Kaş'ın en ikonik deneyimini yaşayın. Grup veya özel tur seçenekleri mevcuttur.",
     link: '/kas-tekne-turu',
     linkText: 'Tekne Turu Rehberi',
-    imageUrl: '/quick-links/boat-tour.jpg',
-    imageAlt: 'Turkuaz denizde ilerleyen tekne turu manzarası',
+    imageUrl: '/og.jpg',
+    imageAlt: 'Kaş kıyılarında marina, koylar ve deniz manzarası',
   },
   {
     title: 'Kaş Dalış Noktaları',
