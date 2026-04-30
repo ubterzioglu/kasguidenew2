@@ -4017,7 +4017,7 @@ body {
 }
 
 .hero-story-card {
-  min-height: 576px;
+  min-height: 432px;
   padding: 2.115rem;
 }
 
@@ -4510,7 +4510,7 @@ body {
   }
 
   .hero-story-card {
-    min-height: 504px;
+    min-height: 378px;
   }
 
   .experience-bento-card:nth-child(1),
@@ -4536,7 +4536,7 @@ body {
   }
 
   .hero-story-card {
-    min-height: 468px;
+    min-height: 351px;
     padding: 1.215rem;
   }
 
