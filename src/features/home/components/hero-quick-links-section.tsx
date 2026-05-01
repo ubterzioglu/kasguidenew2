@@ -23,8 +23,7 @@ export function HeroQuickLinksSection() {
     <section className="hero-quick-links-section" aria-label="Kaş Guide hızlı arama alanı">
       <div className="hero-quick-links-shell hero-search-band-shell">
         <div className="hero-search-band-copy">
-          <span className="hero-search-band-eyebrow">Kaş içinde hızlı erişim</span>
-          <h2 className="hero-search-band-title">Mekan, rota ve öneri aramaya hemen başla</h2>
+          <h2 className="hero-search-band-title">Kaş&apos;da ara!</h2>
         </div>
 
         <div className="hero-search-band-form" role="search" aria-label="Kaş Guide içinde arama">

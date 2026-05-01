@@ -63,11 +63,8 @@ export function QuickLinksSection() {
     <section className="quick-links-section" aria-labelledby="quick-links-title">
       <div className="quick-links-shell">
         <h2 id="quick-links-title" className="quick-links-title">
-          Kaş&apos;ta en çok hangi rehberler açılıyor?
+          Kaş&apos;da en çok ne aranıyor ? Detaylı rehberler için tıklayın.
         </h2>
-        <p className="quick-links-intro">
-          Kaş&apos;ın en çok aranan konularını özetledik. Detaylı rehberler için tıklayın.
-        </p>
         <div className="quick-links-grid">
           {QUICK_LINKS.map((item) => (
             <Link key={item.link} href={item.link} className="quick-links-card">
