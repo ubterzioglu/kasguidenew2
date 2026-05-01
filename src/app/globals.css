@@ -2241,6 +2241,8 @@ html {
   width: 100%;
   justify-self: center;
   margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 1rem;
@@ -2252,12 +2254,12 @@ html {
   display: grid;
   place-items: center;
   line-height: 0;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.42);
   color: #f3fffb;
   box-shadow:
     0 14px 30px rgba(0, 0, 0, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    inset 0 1px 0 rgba(255, 255, 255, 0.34);
 }
 
 .whatsapp-community-social-link svg {
@@ -2352,6 +2354,7 @@ html {
   }
 
   .whatsapp-community-social {
+    justify-content: center;
     gap: 0.7rem;
   }
 
