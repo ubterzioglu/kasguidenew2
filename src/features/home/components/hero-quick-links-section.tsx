@@ -1,27 +1,50 @@
-import Link from 'next/link'
+'use client'
+
+import { useState } from 'react'
+
+import { useRouter } from 'next/navigation'
 
 export function HeroQuickLinksSection() {
+  const router = useRouter()
+  const [query, setQuery] = useState('')
+
+  function submitSearch() {
+    const normalizedQuery = query.trim()
+
+    if (!normalizedQuery) {
+      router.push('/arama')
+      return
+    }
+
+    router.push(`/arama?q=${encodeURIComponent(normalizedQuery)}`)
+  }
+
   return (
-    <section className="hero-quick-links-section" aria-label="Kaş Guide hızlı erişim bağlantıları">
-      <div className="hero-quick-links-shell">
-        <div className="hero-story-search-stack hero-quick-links-stack">
-          <Link href="/arama" className="hero-story-search-button hero-quick-links-search-button">
-            Kaş Guide içinde ayrıntılı ara
-          </Link>
-          <div className="hero-story-quick-links hero-quick-links-row" aria-label="Hızlı konu başlıkları">
-            <Link href="/kas-gece-hayati" className="hero-story-quick-link">
-              Gece Hayatı
-            </Link>
-            <Link href="/kas-en-guzel-plajlar" className="hero-story-quick-link">
-              Kumsallar
-            </Link>
-            <Link href="/kas-dalis-noktalari" className="hero-story-quick-link">
-              Dalış
-            </Link>
-            <Link href="/kas-kahvalti-mekanlari" className="hero-story-quick-link">
-              Kahvaltı
-            </Link>
-          </div>
+    <section className="hero-quick-links-section" aria-label="Kaş Guide hızlı arama alanı">
+      <div className="hero-quick-links-shell hero-search-band-shell">
+        <div className="hero-search-band-copy">
+          <span className="hero-search-band-eyebrow">Kaş içinde hızlı erişim</span>
+          <h2 className="hero-search-band-title">Mekan, rota ve öneri aramaya hemen başla</h2>
+        </div>
+
+        <div className="hero-search-band-form" role="search" aria-label="Kaş Guide içinde arama">
+          <input
+            type="text"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault()
+                submitSearch()
+              }
+            }}
+            className="hero-search-band-input"
+            placeholder="Mekan adı, plaj, dalış, kahvaltı..."
+            aria-label="Kaş Guide arama kelimesi"
+          />
+          <button type="button" className="hero-search-band-button" onClick={submitSearch}>
+            Ara
+          </button>
         </div>
       </div>
     </section>
