@@ -1,6 +1,5 @@
 ﻿'use client'
 
-import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 
 import { DEFAULT_HERO_SLIDES, HERO_ROTATION_MS, type HeroSlide } from '@/lib/hero-slide-data'
@@ -132,25 +131,6 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
         >
           <div className="hero-featured-card hero-carousel-card hero-story-card hero-story-featured-pane">
             <div className="hero-featured-copy hero-carousel-copy hero-story-copy-tuned">
-              <div className="hero-story-search-stack">
-                <Link href="/arama" className="hero-story-search-button">
-                  Kaş Guide içinde ayrıntılı ara
-                </Link>
-                <div className="hero-story-quick-links" aria-label="Hızlı konu başlıkları">
-                  <Link href="/kas-gece-hayati" className="hero-story-quick-link">
-                    Gece Hayatı
-                  </Link>
-                  <Link href="/kas-en-guzel-plajlar" className="hero-story-quick-link">
-                    Kumsallar
-                  </Link>
-                  <Link href="/kas-dalis-noktalari" className="hero-story-quick-link">
-                    Dalış
-                  </Link>
-                  <Link href="/kas-kahvalti-mekanlari" className="hero-story-quick-link">
-                    Kahvaltı
-                  </Link>
-                </div>
-              </div>
               <p className="hero-story-title">
                 {scene.title}
               </p>

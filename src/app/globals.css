@@ -270,16 +270,15 @@ html {
 
 .hero-carousel-controls {
   position: absolute;
-  left: 50%;
+  right: 1rem;
   bottom: 0.9rem;
   width: auto;
   z-index: 2;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 0.85rem;
-  transform: translateX(-50%);
 }
 
 .hero-carousel-nav {
@@ -448,12 +447,12 @@ html {
   }
 
   .hero-carousel-controls {
-    left: 50%;
+    right: 0.85rem;
     bottom: 0.75rem;
     width: auto;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
   }
 
   .hero-carousel-nav {
@@ -4054,6 +4053,41 @@ body {
   color: rgba(255, 245, 236, 0.88);
 }
 
+.hero-quick-links-section {
+  position: relative;
+  z-index: 4;
+  width: var(--main-shell-width);
+  margin: -1.5rem auto 0;
+  padding: 0 0 1.3rem;
+}
+
+.hero-quick-links-shell {
+  border-radius: 28px;
+  border: 1px solid rgba(184, 238, 255, 0.18);
+  background:
+    linear-gradient(180deg, rgba(16, 38, 31, 0.86), rgba(8, 24, 26, 0.92)),
+    radial-gradient(circle at top left, rgba(106, 245, 255, 0.08), transparent 34%);
+  box-shadow:
+    0 24px 56px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.hero-quick-links-stack {
+  justify-items: center;
+  margin-bottom: 0;
+  padding: 1.25rem 1.4rem 1.35rem;
+}
+
+.hero-quick-links-search-button {
+  width: min(100%, 420px);
+}
+
+.hero-quick-links-row {
+  justify-content: center;
+}
+
 .hero-story-search-stack {
   display: grid;
   gap: 0.8rem;
@@ -4621,6 +4655,24 @@ body {
 @media (max-width: 760px) {
   .hero-content {
     padding-top: 4.55rem;
+  }
+
+  .hero-quick-links-section {
+    margin-top: -1.2rem;
+    padding-bottom: 1rem;
+  }
+
+  .hero-quick-links-stack {
+    gap: 0.65rem;
+    padding: 1rem 0.95rem 1.05rem;
+  }
+
+  .hero-quick-links-search-button {
+    width: 100%;
+  }
+
+  .hero-quick-links-row {
+    gap: 0.48rem;
   }
 
   .hero-story-search-stack {
@@ -6212,11 +6264,10 @@ body {
 }
 
 .hero-carousel-controls {
-  left: 50%;
+  right: 1rem;
   bottom: 0.95rem;
   z-index: 8;
   pointer-events: auto;
-  transform: translateX(-50%);
 }
 
 .hero-glass-action::before {
@@ -6287,7 +6338,7 @@ body {
   }
 
   .hero-carousel-controls {
-    left: 50%;
+    right: 0.85rem;
     bottom: 0.8rem;
   }
 

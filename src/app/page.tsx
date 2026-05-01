@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import { CategorySection } from '@/features/home/components/category-section'
 import { HeroCarousel } from '@/features/home/components/hero-carousel'
+import { HeroQuickLinksSection } from '@/features/home/components/hero-quick-links-section'
 import { HomeFaqSection } from '@/features/home/components/home-faq-section'
 import { HomeIntroSection } from '@/features/home/components/home-intro-section'
 import { HomeJsonLd, HOME_MODIFIED_AT, HOME_OG_IMAGE_URL, HOME_PUBLISHED_AT } from '@/features/home/components/home-jsonld'
@@ -59,6 +60,7 @@ export default async function HomePage() {
   return (
     <>
       <HeroCarousel initialSlides={heroSnapshot.slides} />
+      <HeroQuickLinksSection />
 
       <NewsAnnouncementsCarousel items={updates} />
       <CategorySection />
