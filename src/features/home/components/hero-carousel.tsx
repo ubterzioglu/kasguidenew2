@@ -51,7 +51,7 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
       <div className="hero-content">
         <div className="hero-showcase">
           <div className="hero-story-panel">
-            <span className="hero-story-kicker">Kaş Guide seçkisi</span>
+            <span className="hero-story-kicker">{scene.eyebrow || 'Kaş Guide seçkisi'}</span>
             <div className="hero-story-copy hero-story-copy-tuned hero-story-copy-simplified">
               <p className="hero-story-title">{scene.title}</p>
               <p className="hero-featured-description hero-story-description">{scene.description}</p>
@@ -79,7 +79,7 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
             >
               <div className="hero-visual-card-shade"></div>
               <div className="hero-visual-card-meta">
-                <span className="hero-visual-card-label">Bu sahne</span>
+                <span className="hero-visual-card-label">{scene.eyebrow || 'Bu sahne'}</span>
                 <strong>{scene.tags[0] ?? 'Kaş rotası'}</strong>
               </div>
             </div>

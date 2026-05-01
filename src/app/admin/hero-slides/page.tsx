@@ -246,6 +246,10 @@ export default function HeroSlidesAdminPage() {
             <span className="admin-summary-label">Depolama</span>
             <strong>{storage === 'supabase' ? 'Supabase' : storage === 'empty' ? 'Boş veri' : 'Seed yedeği'}</strong>
           </div>
+          <div className="admin-summary-item">
+            <span className="admin-summary-label">Canlı sistem</span>
+            <strong>Beyaz + yeşil hero</strong>
+          </div>
         </div>
       </section>
 
@@ -291,25 +295,64 @@ export default function HeroSlidesAdminPage() {
                 backgroundSize: slide.imageUrl ? 'cover' : 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                backgroundColor: slide.imageUrl ? undefined : 'rgba(6, 10, 19, 0.08)',
+                backgroundColor: slide.imageUrl ? undefined : 'rgba(219, 248, 243, 0.84)',
               }}
             >
               <div className="admin-slide-preview-shade"></div>
-              <div className="admin-slide-preview-copy">
-                <span className="admin-slide-order">Slide {index + 1}</span>
-                <strong>{slide.title || 'Başlık bekleniyor'}</strong>
-                <span className="admin-slide-preview-subtitle">{slide.description || 'Alt başlık bekleniyor'}</span>
-                <div className="admin-slide-preview-tags">
-                  {slide.tags.slice(0, 3).map((tag) => (
-                    <span key={`${slide.id}-${tag}`} className="admin-slide-preview-tag">
-                      {tag}
-                    </span>
-                  ))}
+              <div className="admin-slide-preview-layout">
+                <div className="admin-slide-preview-panel">
+                  <span className="admin-slide-order">Slide {index + 1}</span>
+                  <span className="admin-slide-preview-eyebrow">{slide.eyebrow || 'Üst etiket bekleniyor'}</span>
+                  <div className="admin-slide-preview-copy">
+                    <strong>{slide.title || 'Başlık bekleniyor'}</strong>
+                    <span className="admin-slide-preview-subtitle">{slide.description || 'Alt başlık bekleniyor'}</span>
+                    <div className="admin-slide-preview-tags">
+                      {slide.tags.slice(0, 3).map((tag) => (
+                        <span key={`${slide.id}-${tag}`} className="admin-slide-preview-tag">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="admin-slide-preview-visual">
+                  <div className="admin-slide-preview-image-card">
+                    <div className="admin-slide-preview-image-meta">
+                      <span>{slide.eyebrow || 'Hero sahnesi'}</span>
+                      <strong>{slide.tags[0] || 'Etiket'}</strong>
+                    </div>
+                  </div>
+
+                  <div className="admin-slide-preview-controls" aria-hidden="true">
+                    <span className="admin-slide-preview-arrow">‹</span>
+                    <span className="admin-slide-preview-dot is-active"></span>
+                    <span className="admin-slide-preview-dot"></span>
+                    <span className="admin-slide-preview-arrow">›</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="admin-slide-preview-searchband" aria-hidden="true">
+                <span className="admin-slide-preview-searchlabel">Kaş içinde hızlı erişim</span>
+                <div className="admin-slide-preview-searchmock">
+                  <span>Mekan adı, plaj, dalış...</span>
+                  <strong>Ara</strong>
                 </div>
               </div>
             </div>
 
             <div className="admin-slide-fields">
+              <label className="admin-field">
+                <span className="admin-label">Üst etiket / Eyebrow</span>
+                <input
+                  className="admin-input"
+                  value={slide.eyebrow}
+                  onChange={(event) => updateSlide(index, 'eyebrow', event.target.value)}
+                  placeholder="Kaş Guide rota seçkisi"
+                />
+              </label>
+
               <label className="admin-field">
                 <span className="admin-label">Foto URL</span>
                 <input
@@ -329,7 +372,7 @@ export default function HeroSlidesAdminPage() {
               </label>
 
               <label className="admin-field">
-                <span className="admin-label">Alt başlık</span>
+                <span className="admin-label">Açıklama metni</span>
                 <textarea
                   className="admin-textarea"
                   rows={3}
@@ -339,7 +382,7 @@ export default function HeroSlidesAdminPage() {
               </label>
 
               <label className="admin-field">
-                <span className="admin-label">Tagler</span>
+                <span className="admin-label">Tagler / Vurgu çipleri</span>
                 <input
                   className="admin-input"
                   value={slide.tags.join(', ')}
