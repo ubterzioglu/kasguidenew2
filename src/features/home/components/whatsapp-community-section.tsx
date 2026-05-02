@@ -31,7 +31,7 @@ export function WhatsAppCommunitySection() {
           </div>
 
           <p className="whatsapp-community-copy">
-            Tabii ki! Kaş&apos;a gidecekler, yerliler ve Kaşseverler bir arada. Sorularını sor, deneyimlerini paylaş, ipuçlarını keşfet.
+            Berlin&apos;den Sydney&apos;e, New York&apos;tan Dubai&apos;ye: Turklerle bağlantı kurun.
           </p>
 
           <a
