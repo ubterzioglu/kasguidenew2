@@ -213,6 +213,18 @@ export function HomeIntroSection() {
               <Link href="/kas-dalis-noktalari">Kaş dalış noktaları sayfasında</Link> ayrı ayrı toparlıyoruz.
             </p>
 
+            <div className="home-intro-accordion">
+              {HOME_INTRO_SECTIONS.map((section) => (
+                <details key={section.title} className="home-intro-card">
+                  <summary className="home-intro-card-summary">
+                    <span className="home-intro-card-title">{section.title}</span>
+                    <span className="home-intro-card-icon" aria-hidden="true" />
+                  </summary>
+                  <div className="home-intro-card-body">{section.content}</div>
+                </details>
+              ))}
+            </div>
+
             <p className="home-intro-meta">
               <time dateTime={HOME_PUBLISHED_AT}>Yayınlandı: {PUBLISHED_LABEL}</time>
               {' • '}
@@ -220,18 +232,6 @@ export function HomeIntroSection() {
             </p>
           </div>
         </details>
-
-        <div className="home-intro-accordion">
-          {HOME_INTRO_SECTIONS.map((section) => (
-            <details key={section.title} className="home-intro-card">
-              <summary className="home-intro-card-summary">
-                <span className="home-intro-card-title">{section.title}</span>
-                <span className="home-intro-card-icon" aria-hidden="true" />
-              </summary>
-              <div className="home-intro-card-body">{section.content}</div>
-            </details>
-          ))}
-        </div>
       </div>
     </section>
   )

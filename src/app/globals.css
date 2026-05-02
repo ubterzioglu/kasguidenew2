@@ -8629,6 +8629,10 @@ body {
   padding: 0 1.25rem 1.25rem;
 }
 
+.home-intro-hero-body .home-intro-accordion {
+  margin-top: 1rem;
+}
+
 .home-intro-eyebrow {
   display: inline-flex;
   width: fit-content;
