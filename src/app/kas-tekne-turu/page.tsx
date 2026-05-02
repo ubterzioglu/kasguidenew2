@@ -16,7 +16,7 @@ const BOAT_TOUR_IMAGES = [
 export const metadata: Metadata = {
   title: 'Kaş Tekne Turları: Akdeniz’in En Saf Haliyle Buluşma Deneyimi',
   description:
-    'Kaş tekne turları rehberi: Kekova, Batık Şehir, Akvaryum Koyu, Limanağzı, özel ve günlük turlar, deneyim akışı ve sezon bilgileri.',
+    'Kaş tekne turları rehberi: Kekova, Batık Şehir, Akvaryum Koyu ve Limanağzı rotaları, günlük ve özel tur seçenekleri, sezon ve deneyim ipuçları.',
   alternates: { canonical: '/kas-tekne-turu' },
   openGraph: {
     url: '/kas-tekne-turu',
