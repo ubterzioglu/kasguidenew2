@@ -181,26 +181,34 @@ export default function KasTekneTuruPage() {
           ))}
         </section>
 
-        <section className="kas-tekne-content-grid">
-          <div className="kas-tekne-main-column">
-            <article className="kas-tekne-surface kas-tekne-article-card">
-              <span className="kas-tekne-section-kicker">Neden bu kadar seviliyor?</span>
-              <h2>Kaş&apos;ta tekne turu, şehrin en net “tatildeyim” hissini veren deneyimidir</h2>
-              <p>
-                Kaş&apos;ın coğrafyası nedeniyle birçok koyu kara tarafından görmek mümkün olsa da gerçekten yaşamak için
-                denize açılmak gerekir. Tekne turu, kalabalığı kısa sürede arkada bırakır; gün boyunca berrak sularda
-                yüzme, güvertede dinlenme ve kıyı çizgisini farklı açıdan izleme imkanı sunar.
-              </p>
-              <p>
-                Özellikle ilk gelişte tekne turu yapmak, Kaş&apos;ın hangi tarafını daha çok sevdiğinizi hızlıca anlamanıza
-                yardım eder: sakin koylar mı, açık deniz hissi mi, daha sosyal tekneler mi, yoksa tamamen size ait özel
-                bir rota mı? Bu yüzden birçok ziyaretçi için tekne günü, tatilin merkez parçasına dönüşür.
-              </p>
-            </article>
+        <section className="kas-tekne-stack">
+          <article className="kas-tekne-surface kas-tekne-article-card">
+            <div className="kas-tekne-card-grid">
+              <div className="kas-tekne-card-copy">
+                <span className="kas-tekne-section-kicker">Neden bu kadar seviliyor?</span>
+                <h2>Kaş&apos;ta tekne turu, şehrin en net “tatildeyim” hissini veren deneyimidir</h2>
+                <p>
+                  Kaş&apos;ın coğrafyası nedeniyle birçok koyu kara tarafından görmek mümkün olsa da gerçekten yaşamak için
+                  denize açılmak gerekir. Tekne turu, kalabalığı kısa sürede arkada bırakır; gün boyunca berrak sularda
+                  yüzme, güvertede dinlenme ve kıyı çizgisini farklı açıdan izleme imkanı sunar.
+                </p>
+                <p>
+                  Özellikle ilk gelişte tekne turu yapmak, Kaş&apos;ın hangi tarafını daha çok sevdiğinizi hızlıca anlamanıza
+                  yardım eder: sakin koylar mı, açık deniz hissi mi, daha sosyal tekneler mi, yoksa tamamen size ait özel
+                  bir rota mı? Bu yüzden birçok ziyaretçi için tekne günü, tatilin merkez parçasına dönüşür.
+                </p>
+              </div>
+              <figure className="kas-tekne-inline-figure">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={BOAT_TOUR_IMAGES[0]} alt="Kaş tekne turunda turkuaz koy manzarası" className="kas-tekne-inline-image" loading="lazy" />
+              </figure>
+            </div>
+          </article>
 
-            <article id="tekne-turu-rotalari" className="kas-tekne-surface kas-tekne-article-card">
-              <span className="kas-tekne-section-kicker">Rotalar</span>
-              <h2>En çok karşılaşacağınız Kaş tekne turu durakları</h2>
+          <article id="tekne-turu-rotalari" className="kas-tekne-surface kas-tekne-article-card">
+            <span className="kas-tekne-section-kicker">Rotalar</span>
+            <h2>En çok karşılaşacağınız Kaş tekne turu durakları</h2>
+            <div className="kas-tekne-card-grid">
               <div className="kas-tekne-route-grid">
                 {ROUTE_CARDS.map((route) => (
                   <section key={route.title} className="kas-tekne-route-card">
@@ -209,74 +217,92 @@ export default function KasTekneTuruPage() {
                   </section>
                 ))}
               </div>
-            </article>
+              <figure className="kas-tekne-inline-figure kas-tekne-inline-figure-tall">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={BOAT_TOUR_IMAGES[1]} alt="Kaş tekne turu rotasında açık deniz görünümü" className="kas-tekne-inline-image" loading="lazy" />
+              </figure>
+            </div>
+          </article>
 
-            <article className="kas-tekne-surface kas-tekne-article-card">
-              <span className="kas-tekne-section-kicker">Tur türleri</span>
-              <h2>Hangi tekne turu tipi sana daha uygun?</h2>
-              <div className="kas-tekne-type-grid">
-                {TOUR_TYPES.map((tourType) => (
-                  <section key={tourType.title} className="kas-tekne-type-card">
-                    <h3>{tourType.title}</h3>
-                    <p>{tourType.text}</p>
-                  </section>
-                ))}
+          <article className="kas-tekne-surface kas-tekne-article-card">
+            <span className="kas-tekne-section-kicker">Tur türleri</span>
+            <h2>Hangi tekne turu tipi sana daha uygun?</h2>
+            <div className="kas-tekne-type-grid">
+              {TOUR_TYPES.map((tourType) => (
+                <section key={tourType.title} className="kas-tekne-type-card">
+                  <h3>{tourType.title}</h3>
+                  <p>{tourType.text}</p>
+                </section>
+              ))}
+            </div>
+          </article>
+
+          <article id="tekne-turu-plani" className="kas-tekne-surface kas-tekne-article-card">
+            <span className="kas-tekne-section-kicker">Planlama</span>
+            <h2>Tipik bir Kaş tekne günü nasıl akar?</h2>
+            <div className="kas-tekne-card-grid">
+              <div className="kas-tekne-card-copy">
+                <ol className="kas-tekne-timeline">
+                  {DAY_PLAN.map((step) => (
+                    <li key={step}>{step}</li>
+                  ))}
+                </ol>
+                <p className="kas-tekne-support-note">
+                  Çoğu teknede gölgelik alan, duş, tuvalet ve dinlenme bölümü bulunur. Gün sonunda doğrudan merkeze
+                  dönüldüğü için akşam yemeği veya çarşı planına rahatça bağlanır.
+                </p>
               </div>
-            </article>
+              <figure className="kas-tekne-inline-figure">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={BOAT_TOUR_IMAGES[2]} alt="Kaş tekne turunda güvertede geçen sakin bir an" className="kas-tekne-inline-image" loading="lazy" />
+              </figure>
+            </div>
+          </article>
 
-            <article id="tekne-turu-plani" className="kas-tekne-surface kas-tekne-article-card">
-              <span className="kas-tekne-section-kicker">Planlama</span>
-              <h2>Tipik bir Kaş tekne günü nasıl akar?</h2>
-              <ol className="kas-tekne-timeline">
-                {DAY_PLAN.map((step) => (
-                  <li key={step}>{step}</li>
-                ))}
-              </ol>
-              <p className="kas-tekne-support-note">
-                Çoğu teknede gölgelik alan, duş, tuvalet ve dinlenme bölümü bulunur. Gün sonunda doğrudan merkeze
-                dönüldüğü için akşam yemeği veya çarşı planına rahatça bağlanır.
-              </p>
-            </article>
-          </div>
+          <article className="kas-tekne-surface kas-tekne-article-card">
+            <span className="kas-tekne-section-kicker">Rezervasyon notu</span>
+            <h2>Fiyatı ve deneyimi en çok ne değiştirir?</h2>
+            <ul className="kas-tekne-checklist">
+              <li>Teknenin tipi ve kapasitesi</li>
+              <li>Paylaşımlı mı özel mi olduğu</li>
+              <li>Yemek ve ikram içeriği</li>
+              <li>Yüksek sezonda tarih esnekliği</li>
+            </ul>
+            <p>
+              En ucuz seçenek her zaman en iyi deneyim olmayabilir. Özellikle kalabalık hassasiyetiniz varsa kapasite
+              ve oturma düzeni, fiyat kadar belirleyicidir.
+            </p>
+          </article>
 
-          <aside className="kas-tekne-side-column">
-            <section className="kas-tekne-surface kas-tekne-side-card">
-              <span className="kas-tekne-section-kicker">Rezervasyon notu</span>
-              <h2>Fiyatı ve deneyimi en çok ne değiştirir?</h2>
-              <ul className="kas-tekne-checklist">
-                <li>Teknenin tipi ve kapasitesi</li>
-                <li>Paylaşımlı mı özel mi olduğu</li>
-                <li>Yemek ve ikram içeriği</li>
-                <li>Yüksek sezonda tarih esnekliği</li>
-              </ul>
-              <p>
-                En ucuz seçenek her zaman en iyi deneyim olmayabilir. Özellikle kalabalık hassasiyetiniz varsa kapasite
-                ve oturma düzeni, fiyat kadar belirleyicidir.
-              </p>
-            </section>
+          <article className="kas-tekne-surface kas-tekne-article-card">
+            <div className="kas-tekne-card-grid">
+              <div className="kas-tekne-card-copy">
+                <span className="kas-tekne-section-kicker">Pratik ipuçları</span>
+                <h2>Rezervasyon öncesi kısa kontrol listesi</h2>
+                <ul className="kas-tekne-checklist">
+                  {BOOKING_TIPS.map((tip) => (
+                    <li key={tip}>{tip}</li>
+                  ))}
+                </ul>
+              </div>
+              <figure className="kas-tekne-inline-figure">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={BOAT_TOUR_IMAGES[3]} alt="Kaş tekne turu için limandan çıkış hissi" className="kas-tekne-inline-image" loading="lazy" />
+              </figure>
+            </div>
+          </article>
 
-            <section className="kas-tekne-surface kas-tekne-side-card">
-              <span className="kas-tekne-section-kicker">Pratik ipuçları</span>
-              <h2>Rezervasyon öncesi kısa kontrol listesi</h2>
-              <ul className="kas-tekne-checklist">
-                {BOOKING_TIPS.map((tip) => (
-                  <li key={tip}>{tip}</li>
-                ))}
-              </ul>
-            </section>
-
-            <section className="kas-tekne-surface kas-tekne-side-card">
-              <span className="kas-tekne-section-kicker">Kısa karar</span>
-              <h2>İlk kez gelen biri için öneri</h2>
-              <p>
-                Eğer Kaş&apos;ta 2-4 günlük bir plan yapıyorsanız bir günü mutlaka tekne turuna ayırın. Geri kalan günleri
-                plaj, merkez yürüyüşü ve akşam yemeği ritmiyle tamamlamak en dengeli ilk ziyaret kurgusudur.
-              </p>
-              <Link href="/kas-3-gunluk-gezi-plani" className="kas-tekne-text-link">
-                3 günlük Kaş planına geç
-              </Link>
-            </section>
-          </aside>
+          <article className="kas-tekne-surface kas-tekne-article-card">
+            <span className="kas-tekne-section-kicker">Kısa karar</span>
+            <h2>İlk kez gelen biri için öneri</h2>
+            <p>
+              Eğer Kaş&apos;ta 2-4 günlük bir plan yapıyorsanız bir günü mutlaka tekne turuna ayırın. Geri kalan günleri
+              plaj, merkez yürüyüşü ve akşam yemeği ritmiyle tamamlamak en dengeli ilk ziyaret kurgusudur.
+            </p>
+            <Link href="/kas-3-gunluk-gezi-plani" className="kas-tekne-text-link">
+              3 günlük Kaş planına geç
+            </Link>
+          </article>
         </section>
 
         <section className="kas-tekne-discovery">
