@@ -22,10 +22,6 @@ export function HeroQuickLinksSection() {
   return (
     <section className="hero-quick-links-section" aria-label="Kaş Guide hızlı arama alanı">
       <div className="hero-quick-links-shell hero-search-band-shell">
-        <div className="hero-search-band-copy">
-          <h2 className="hero-search-band-title">Kaş&apos;da ara!</h2>
-        </div>
-
         <div className="hero-search-band-form" role="search" aria-label="Kaş Guide içinde arama">
           <input
             type="text"
@@ -38,7 +34,7 @@ export function HeroQuickLinksSection() {
               }
             }}
             className="hero-search-band-input"
-            placeholder="Mekan adı, plaj, dalış, kahvaltı..."
+            placeholder="Kaş'ta ara: mekan adı, plaj, dalış, kahvaltı..."
             aria-label="Kaş Guide arama kelimesi"
           />
           <button type="button" className="hero-search-band-button" onClick={submitSearch}>
