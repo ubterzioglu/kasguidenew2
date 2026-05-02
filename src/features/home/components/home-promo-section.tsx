@@ -4,8 +4,8 @@ import { CATEGORY_MAP } from '@/lib/categories'
 
 const PROMO_CARDS = [
   {
-    title: 'Kaş tatili günlük olarak nasıl planlanır?',
-    description: 'Kararsız kaldığında 25 soruluk planner ile gününü ritmine, bütçene ve ilgi alanına göre şekillendir.',
+    copy:
+      'Kaş tatilini günlük olarak planlamak için, kararsız kaldığında 25 soruluk planner ile gününü ritmine, bütçene ve ilgi alanına göre şekillendirebilirsin.',
     href: '/planner',
     cta: 'Planlamaya başla',
     imageUrl: CATEGORY_MAP.get('gezi')?.imageUrl ?? '',
@@ -13,8 +13,8 @@ const PROMO_CARDS = [
     toneClassName: 'home-promo-card-plan',
   },
   {
-    title: 'Kaş hakkında daha fazla sorunun cevabı nerede?',
-    description: 'Eski FAQ arşivindeki yüzlerce soruyu tek yerde toplayan, arama destekli Kaş bilgi bankasına göz at.',
+    copy:
+      'Kaş hakkında daha fazla sorunun cevabını, eski FAQ arşivindeki yüzlerce soruyu tek yerde toplayan arama destekli bilgi bankasında bulabilirsin.',
     href: '/faq',
     cta: 'SSS sayfasını keşfet',
     imageUrl: CATEGORY_MAP.get('oss')?.imageUrl ?? '',
@@ -22,8 +22,8 @@ const PROMO_CARDS = [
     toneClassName: 'home-promo-card-faq',
   },
   {
-    title: "Kaş'ı farklı bakış açılarından nasıl okuyabilirsin?",
-    description: "Kaş'ı başka tatilcilerden ve yerlisinden dinleyin. İlham veren yazıları ve rotaları keşfedin.",
+    copy:
+      "Kaş'ı farklı bakış açılarından okumak istersen, başka tatilcilerin ve yerlilerin anlattığı ilham veren yazıları ve rotaları keşfedebilirsin.",
     href: '/result?categories=yazilar',
     cta: 'Yazı dizilerine git',
     imageUrl: CATEGORY_MAP.get('yazilar')?.imageUrl ?? '',
@@ -31,8 +31,8 @@ const PROMO_CARDS = [
     toneClassName: 'home-promo-card-series',
   },
   {
-    title: "Kaş'ı daha yerel bir gözle keşfetmek ister misin?",
-    description: 'Daha içeriden, daha yerel bir Kaş rehberi için hazırladığımız yeni alanın ilk iskeletini keşfedin.',
+    copy:
+      "Kaş'ı daha yerel bir gözle keşfetmek istersen, daha içeriden ve daha yerel bir rehber için hazırladığımız yeni alanın ilk iskeletine göz atabilirsin.",
     href: '/local',
     cta: 'Local sayfasına git',
     imageUrl: CATEGORY_MAP.get('kas-local')?.imageUrl ?? CATEGORY_MAP.get('roportaj')?.imageUrl ?? '',
@@ -47,11 +47,9 @@ export function HomePromoSection() {
       <div className="home-promo-shell">
         <div className="home-promo-grid">
           {PROMO_CARDS.map((card) => (
-            <Link key={card.title} href={card.href} className={`home-promo-card ${card.toneClassName}`}>
+            <Link key={card.href} href={card.href} className={`home-promo-card ${card.toneClassName}`}>
               <div className="home-promo-copy">
-                <h3 className="home-promo-title">{card.title}</h3>
-                <span className="home-promo-separator" aria-hidden="true" />
-                <p className="home-promo-description">{card.description}</p>
+                <p className="home-promo-description">{card.copy}</p>
                 <span className="home-promo-cta">{card.cta}</span>
               </div>
               <div className="home-promo-media-wrap">
