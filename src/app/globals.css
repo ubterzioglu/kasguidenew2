@@ -3811,7 +3811,37 @@ body {
   }
 
   .category-mobile-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
     padding-bottom: 5.5rem;
+  }
+
+  .category-mobile-option {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    justify-content: start;
+    gap: 0.35rem 0.45rem;
+    min-height: 0;
+    padding: 0.55rem 0.45rem;
+    border-radius: 12px;
+  }
+
+  .category-mobile-option input {
+    width: 14px;
+    height: 14px;
+    margin-top: 0.12rem;
+  }
+
+  .category-mobile-option span {
+    font-size: 0.76rem;
+    line-height: 1.2;
+  }
+
+  .category-mobile-option strong {
+    grid-column: 2;
+    font-size: 0.68rem;
+    line-height: 1;
   }
 
   .category-mobile-drawer-actions {
@@ -4847,6 +4877,12 @@ body {
 @media (max-width: 380px) {
   .hero-content {
     padding-top: 2.65rem;
+  }
+
+  .hero-showcase-shade {
+    background:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.62) 0%, rgba(242, 252, 248, 0.5) 38%, rgba(242, 252, 248, 0.16) 64%, rgba(4, 34, 30, 0.1) 100%),
+      linear-gradient(180deg, rgba(4, 34, 30, 0.03) 0%, rgba(4, 34, 30, 0.14) 100%);
   }
 
   .hero-story-title {
@@ -6527,6 +6563,12 @@ body {
   .hero-featured-actions-glass {
     grid-template-columns: 1fr;
     width: 100%;
+  }
+
+  .hero-showcase-shade {
+    background:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.64) 0%, rgba(242, 252, 248, 0.54) 38%, rgba(242, 252, 248, 0.18) 64%, rgba(4, 34, 30, 0.12) 100%),
+      linear-gradient(180deg, rgba(4, 34, 30, 0.04) 0%, rgba(4, 34, 30, 0.16) 100%);
   }
 
   .hero-carousel-controls {
