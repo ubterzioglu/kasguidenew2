@@ -2246,6 +2246,7 @@ html {
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  text-align: center;
 }
 
 .whatsapp-community-social-link {
