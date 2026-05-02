@@ -79,23 +79,22 @@ export function HomeFaqSection() {
               temel sorunun kısa cevaplarını burada bulabilir, daha detaylı cevaplar ve arama destekli tüm içerik için geniş
               SSS arşivine geçebilirsiniz.
             </p>
+            <div className="home-faq-list">
+              {HOME_FAQ_ITEMS.map((item, index) => (
+                <details key={index} className="home-faq-item">
+                  <summary className="home-faq-question">
+                    <span className="home-faq-question-text">{item.question}</span>
+                    <span className="home-faq-question-icon" aria-hidden="true" />
+                  </summary>
+                  <p className="home-faq-answer">{item.answer}</p>
+                </details>
+              ))}
+            </div>
             <Link href="/faq" className="home-faq-link">
               Tüm SSS sayfasını aç
             </Link>
           </div>
         </details>
-
-        <div className="home-faq-list">
-          {HOME_FAQ_ITEMS.map((item, index) => (
-            <details key={index} className="home-faq-item">
-              <summary className="home-faq-question">
-                <span className="home-faq-question-text">{item.question}</span>
-                <span className="home-faq-question-icon" aria-hidden="true" />
-              </summary>
-              <p className="home-faq-answer">{item.answer}</p>
-            </details>
-          ))}
-        </div>
       </div>
     </section>
   )
