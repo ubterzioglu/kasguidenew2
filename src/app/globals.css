@@ -4114,9 +4114,9 @@ body {
   margin-bottom: 0.7rem;
   padding: 0.32rem 0.68rem;
   border-radius: 999px;
-  background: rgba(0, 168, 150, 0.1);
-  color: rgba(9, 101, 91, 0.96);
-  font-size: 0.68rem;
+  background: rgba(0, 168, 150, 0.18);
+  color: #075e57;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -4145,18 +4145,18 @@ body {
 .hero-story-title {
   margin: 0;
   max-width: 11ch;
-  color: #0a3a37;
-  font-size: clamp(1.75rem, 3vw, 2.9rem);
-  line-height: 0.98;
+  color: #083b38;
+  font-size: clamp(1.9rem, 3.15vw, 3.05rem);
+  line-height: 1.02;
   text-wrap: balance;
 }
 
 .hero-story-description {
   max-width: 25rem;
   margin: 0;
-  font-size: 0.93rem;
-  line-height: 1.48;
-  color: rgba(10, 58, 55, 0.78);
+  font-size: 1rem;
+  line-height: 1.56;
+  color: rgba(8, 59, 56, 0.92);
 }
 
 .hero-story-meta {
@@ -4965,9 +4965,9 @@ body {
 }
 
 .hero-meta-chip-accent {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.26);
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.78);
+  border-color: rgba(255, 255, 255, 0.52);
+  color: #0a4b46;
 }
 
 .hero-insight-card,
