@@ -315,22 +315,13 @@ export default function HeroSlidesAdminPage() {
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="admin-slide-preview-visual">
-                  <div className="admin-slide-preview-image-card">
-                    <div className="admin-slide-preview-image-meta">
-                      <span>{slide.eyebrow || 'Hero sahnesi'}</span>
-                      <strong>{slide.tags[0] || 'Etiket'}</strong>
-                    </div>
-                  </div>
-
-                  <div className="admin-slide-preview-controls" aria-hidden="true">
-                    <span className="admin-slide-preview-arrow">‹</span>
-                    <span className="admin-slide-preview-dot is-active"></span>
-                    <span className="admin-slide-preview-dot"></span>
-                    <span className="admin-slide-preview-arrow">›</span>
-                  </div>
-                </div>
+              <div className="admin-slide-preview-controls" aria-hidden="true">
+                <span className="admin-slide-preview-arrow">‹</span>
+                <span className="admin-slide-preview-dot is-active"></span>
+                <span className="admin-slide-preview-dot"></span>
+                <span className="admin-slide-preview-arrow">›</span>
               </div>
 
               <div className="admin-slide-preview-searchband" aria-hidden="true">

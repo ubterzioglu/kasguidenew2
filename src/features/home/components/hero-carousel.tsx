@@ -82,7 +82,12 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
     <section className="hero" id="top">
       <div className="hero-overlay"></div>
       <div className="hero-content">
-        <div className="hero-showcase">
+        <div
+          className="hero-showcase"
+          style={{ backgroundImage: `url(${scene.imageUrl})` }}
+          aria-label={scene.title}
+        >
+          <div className="hero-showcase-shade" aria-hidden="true"></div>
           <div className="hero-story-panel">
             <span className="hero-story-kicker">{scene.eyebrow || 'Kaş Guide seçkisi'}</span>
             <div className="hero-story-copy hero-story-copy-tuned hero-story-copy-simplified">
@@ -100,55 +105,37 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
             </div>
           </div>
 
-          <div className="hero-visual-panel">
-            <div className="hero-visual-map" aria-hidden="true"></div>
-            <div className="hero-visual-orb hero-visual-orb-primary" aria-hidden="true"></div>
-            <div className="hero-visual-orb hero-visual-orb-secondary" aria-hidden="true"></div>
-
-            <div
-              className="hero-visual-card"
-              style={{ backgroundImage: `url(${scene.imageUrl})` }}
-              aria-label={scene.title}
+          <div className="hero-carousel-controls">
+            <button
+              type="button"
+              className="hero-carousel-arrow"
+              onClick={goToPreviousScene}
+              aria-label="Önceki sahne"
             >
-              <div className="hero-visual-card-shade"></div>
-              <div className="hero-visual-card-meta">
-                <span className="hero-visual-card-label">{scene.eyebrow || 'Bu sahne'}</span>
-                <strong>{scene.tags[0] ?? 'Kaş rotası'}</strong>
-              </div>
+              ‹
+            </button>
+
+            <div className="hero-carousel-dots" aria-label="Hero sahneleri">
+              {heroSlides.map((heroScene, index) => (
+                <button
+                  key={heroScene.id}
+                  type="button"
+                  className={`hero-carousel-dot${index === activeScene ? ' active' : ''}`}
+                  onClick={() => setActiveScene(index)}
+                  aria-label={`Sahne ${index + 1}`}
+                  aria-pressed={index === activeScene}
+                ></button>
+              ))}
             </div>
 
-            <div className="hero-carousel-controls">
-              <button
-                type="button"
-                className="hero-carousel-arrow"
-                onClick={goToPreviousScene}
-                aria-label="Önceki sahne"
-              >
-                ‹
-              </button>
-
-              <div className="hero-carousel-dots" aria-label="Hero sahneleri">
-                {heroSlides.map((heroScene, index) => (
-                  <button
-                    key={heroScene.id}
-                    type="button"
-                    className={`hero-carousel-dot${index === activeScene ? ' active' : ''}`}
-                    onClick={() => setActiveScene(index)}
-                    aria-label={`Sahne ${index + 1}`}
-                    aria-pressed={index === activeScene}
-                  ></button>
-                ))}
-              </div>
-
-              <button
-                type="button"
-                className="hero-carousel-arrow"
-                onClick={goToNextScene}
-                aria-label="Sonraki sahne"
-              >
-                ›
-              </button>
-            </div>
+            <button
+              type="button"
+              className="hero-carousel-arrow"
+              onClick={goToNextScene}
+              aria-label="Sonraki sahne"
+            >
+              ›
+            </button>
           </div>
         </div>
       </div>
