@@ -10,9 +10,15 @@ type HeroCarouselProps = {
 
 export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
   const [activeScene, setActiveScene] = useState(0)
+  const [liveSlides, setLiveSlides] = useState<HeroSlide[] | null>(null)
   const heroSlides = useMemo(
-    () => (initialSlides && initialSlides.length > 0 ? initialSlides : DEFAULT_HERO_SLIDES),
-    [initialSlides],
+    () =>
+      liveSlides && liveSlides.length > 0
+        ? liveSlides
+        : initialSlides && initialSlides.length > 0
+          ? initialSlides
+          : DEFAULT_HERO_SLIDES,
+    [initialSlides, liveSlides],
   )
 
   const scene = heroSlides[activeScene] ?? heroSlides[0]
@@ -40,6 +46,33 @@ export function HeroCarousel({ initialSlides }: HeroCarouselProps) {
   useEffect(() => {
     setActiveScene((current) => (current >= heroSlides.length ? 0 : current))
   }, [heroSlides.length])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    async function loadLatestHeroSlides() {
+      try {
+        const response = await fetch('/api/hero-slides', {
+          cache: 'no-store',
+          signal: controller.signal,
+        })
+
+        const payload = (await response.json()) as { slides?: HeroSlide[] } | undefined
+
+        if (!response.ok || !payload?.slides || payload.slides.length === 0) {
+          return
+        }
+
+        setLiveSlides(payload.slides)
+      } catch {
+        // Keep server snapshot/default slides if the refresh request fails.
+      }
+    }
+
+    void loadLatestHeroSlides()
+
+    return () => controller.abort()
+  }, [])
 
   if (!scene) {
     return null
