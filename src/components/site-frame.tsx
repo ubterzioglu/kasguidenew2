@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useState, useEffect } from 'react'
 
 import Link from 'next/link'
 
@@ -11,6 +12,30 @@ type SiteFrameProps = {
 }
 
 export function SiteFrame({ children }: SiteFrameProps) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      const mobileMenu = document.querySelector('.header-mobile-menu')
+      const hamburger = document.querySelector('.header-hamburger')
+      
+      if (mobileMenu && hamburger && 
+          !mobileMenu.contains(event.target as Node) && 
+          !hamburger.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleOutsideClick)
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick)
+    }
+  }, [])
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
   return (
     <>
       <div id="page-top"></div>
@@ -59,13 +84,21 @@ export function SiteFrame({ children }: SiteFrameProps) {
             </Link>
           </nav>
 
-          <details className="header-mobile-menu">
-            <summary className="header-hamburger" aria-label="Menüyü aç">
-              <span></span>
-              <span></span>
-              <span></span>
-            </summary>
-            <nav className="header-mobile-panel" aria-label="Mobil menü">
+          <div className="header-mobile-menu">
+            <button 
+              className="header-hamburger" 
+              aria-label="Menüyü aç"
+              onClick={toggleMobileMenu}
+              aria-expanded={isMobileMenuOpen}
+            >
+              <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+              <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+              <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+            </button>
+            <nav 
+              className={`header-mobile-panel ${isMobileMenuOpen ? 'open' : ''}`} 
+              aria-label="Mobil menü"
+            >
               <Link href="/" className="header-mobile-link">
                 Ana Sayfa
               </Link>
@@ -87,7 +120,7 @@ export function SiteFrame({ children }: SiteFrameProps) {
                 WhatsApp Topluluğu
               </a>
             </nav>
-          </details>
+          </div>
         </div>
       </ClientHeader>
 
