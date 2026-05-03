@@ -61,9 +61,34 @@ export function SiteFrame({ children }: SiteFrameProps) {
               Mekan Ara
             </Link>
             <span className="header-inline-separator" aria-hidden="true"></span>
-            <Link href="/mekan-oner" className="header-inline-item">
-              Mekan Öner
-            </Link>
+            <div className="header-dropdown">
+              <button className="header-dropdown-toggle header-inline-item">
+                Rehberler
+                <svg className="header-dropdown-arrow" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+              <div className="header-dropdown-menu">
+                <Link href="/rehber/tekne-turu" className="header-dropdown-item">
+                  Kaş Tekne Turu
+                </Link>
+                <Link href="/rehber/dalis-noktalari" className="header-dropdown-item">
+                  Kaş Dalış Noktaları
+                </Link>
+                <Link href="/rehber/otel-onerileri" className="header-dropdown-item">
+                  Kaş Otel Önerileri
+                </Link>
+                <Link href="/rehber/gece-hayati" className="header-dropdown-item">
+                  Kaş Gece Hayatı
+                </Link>
+                <Link href="/rehber/koylar" className="header-dropdown-item">
+                  Kaş Koyları
+                </Link>
+                <Link href="/rehber/kahvalti" className="header-dropdown-item">
+                  Kaş Kahvaltı
+                </Link>
+              </div>
+            </div>
             <span className="header-inline-separator" aria-hidden="true"></span>
             <a
               href="https://wa.me/4915258450111"
