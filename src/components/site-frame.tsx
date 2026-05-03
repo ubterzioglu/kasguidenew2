@@ -45,14 +45,12 @@ export function SiteFrame({ children }: SiteFrameProps) {
       <ClientHeader>
         <div className="header-content">
           <Link href="/" className="header-mobile-brand">
-            <span className="header-brand-icon">K</span>
-            Kaş Guide
+            <img src="/kglogo.png" alt="Kaş Guide" className="header-brand-logo" />
           </Link>
 
           <nav className="header-inline-nav header-inline-nav-left" aria-label="Ana navigasyon">
             <Link href="/" className="header-brand">
-              <span className="header-brand-icon">K</span>
-              <span className="header-brand-text">Kaş Guide</span>
+              <img src="/kglogo.png" alt="Kaş Guide" className="header-brand-logo" />
             </Link>
             <span className="header-inline-separator" aria-hidden="true"></span>
             <Link href="/planner" className="header-inline-item">

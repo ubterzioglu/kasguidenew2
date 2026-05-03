@@ -1273,28 +1273,11 @@ html {
   opacity: 0.85;
 }
 
-.header-brand-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #0f5f57, #1a8a7d);
-  color: white;
-  font-size: 0.88rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(15, 95, 87, 0.25);
-}
-
-.header-brand-text {
-  color: #1a1a1a;
-  font-size: 1.08rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1;
+.header-brand-logo {
+  height: 36px;
+  width: auto;
+  border-radius: 6px;
+  object-fit: contain;
 }
 
 .header-inline-nav {
@@ -1658,15 +1641,13 @@ html {
   .header-mobile-brand {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    color: #1a1a1a;
     text-decoration: none;
-    font-size: 0.92rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
     min-width: 0;
     white-space: nowrap;
+  }
+
+  .header-brand-logo {
+    height: 30px;
   }
 
   .header-status-badge {
@@ -7773,10 +7754,11 @@ body {
 }
 
 .search-page-subtitle {
-  margin: 0.75rem 0 0;
-  max-width: 62ch;
-  color: rgba(7, 59, 54, 0.78);
-  line-height: 1.7;
+  margin: 0.5rem 0 0;
+  color: rgba(7, 59, 54, 0.55);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .search-page-form {
