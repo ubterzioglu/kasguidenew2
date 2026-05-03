@@ -102,7 +102,7 @@ const INTERNAL_LINKS = [
 export const metadata: Metadata = {
   title: 'Kaş Tekne Turları: Akdeniz’in En Saf Haliyle Buluşma Deneyimi',
   description:
-    'Kaş tekne turları rehberi: Kekova, Batık Şehir, Akvaryum Koyu ve Limanağzı rotaları, günlük ve özel tur seçenekleri, sezon ve deneyim ipuçları.',
+    'Kaş tekne turları rehberi: Kekova, Batık Şehir, Akvaryum Koyu ve Limanağzı rotaları, fiyat farkları, sezon bilgileri ve rezervasyon ipuçları.',
   alternates: { canonical: '/kas-tekne-turu' },
   openGraph: {
     url: '/kas-tekne-turu',
@@ -166,18 +166,6 @@ export default function KasTekneTuruPage() {
               <h2>{card.title}</h2>
               <p>{card.text}</p>
             </article>
-          ))}
-        </section>
-
-        <section className="kas-tekne-gallery" aria-label="Kaş tekne turu görselleri">
-          {BOAT_TOUR_IMAGES.map((imageUrl, index) => (
-            <figure
-              key={imageUrl}
-              className={`kas-tekne-gallery-item${index === 0 ? ' is-large' : ''}${index === 3 ? ' is-tall' : ''}`}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={imageUrl} alt={`Kaş tekne turu sahnesi ${index + 1}`} className="kas-tekne-gallery-image" loading="lazy" />
-            </figure>
           ))}
         </section>
 

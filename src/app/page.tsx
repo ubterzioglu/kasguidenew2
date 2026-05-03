@@ -65,11 +65,10 @@ export default async function HomePage() {
       <NewsAnnouncementsCarousel items={updates} />
       <CategorySection />
       <QuickLinksSection />
+      <HomePromoSection />
       <HomeFaqSection />
       <div className="home-section-separator" aria-hidden="true" />
       <HomeIntroSection />
-      <div className="home-section-separator" aria-hidden="true" />
-      <HomePromoSection />
       <WhatsAppCommunitySection />
 
       <HomeJsonLd />
