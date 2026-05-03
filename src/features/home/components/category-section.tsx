@@ -11,6 +11,7 @@ import { CategoryTileStrip } from './category-tile-strip'
 import type { CategoryPlace } from './types'
 
 const MAX_HOME_RESULTS = 4
+const HOME_CATEGORY_IDS = CATEGORY_IDS.filter((categoryId) => CATEGORY_MAP.get(categoryId)?.group !== 'editorial')
 
 type PlacesEnvelope = {
   places?: CategoryPlace[]
@@ -246,6 +247,7 @@ export function CategorySection() {
 
         <CategoryTileStrip
           activeCategoryIds={activeCategoryIds}
+          categoryIds={HOME_CATEGORY_IDS}
           counts={categoryCounts}
           onToggleCategory={toggleCategoryFilter}
         />
@@ -309,7 +311,7 @@ export function CategorySection() {
             </button>
           </div>
           <div className="category-mobile-list">
-            {CATEGORY_IDS.map((categoryId) => {
+            {HOME_CATEGORY_IDS.map((categoryId) => {
               const category = CATEGORY_MAP.get(categoryId)
               if (!category) {
                 return null

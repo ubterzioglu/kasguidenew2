@@ -4,14 +4,20 @@ import { CATEGORY_IDS, CATEGORY_MAP } from '@/lib/categories'
 
 type CategoryTileStripProps = {
   activeCategoryIds: string[]
+  categoryIds?: readonly string[]
   counts?: Record<string, number>
   onToggleCategory?: (categoryId: string) => void
 }
 
-export function CategoryTileStrip({ activeCategoryIds, counts = {}, onToggleCategory }: CategoryTileStripProps) {
+export function CategoryTileStrip({
+  activeCategoryIds,
+  categoryIds = CATEGORY_IDS,
+  counts = {},
+  onToggleCategory,
+}: CategoryTileStripProps) {
   return (
     <div className="category-pill-list category-pill-list-all">
-      {CATEGORY_IDS.map((categoryId) => {
+      {categoryIds.map((categoryId) => {
         const category = CATEGORY_MAP.get(categoryId)
 
         if (!category) {

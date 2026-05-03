@@ -24,7 +24,7 @@ const PROMO_CARDS = [
   {
     copy:
       "Kaş'ı farklı bakış açılarından okumak istersen, başka tatilcilerin ve yerlilerin anlattığı ilham veren yazıları ve rotaları keşfedebilirsin.",
-    href: '/result?categories=yazilar',
+    href: '/yazi-dizileri',
     cta: 'Yazı dizilerine git',
     imageUrl: CATEGORY_MAP.get('yazilar')?.imageUrl ?? '',
     imageAlt: 'Kaş yazı dizileri',
