@@ -67,7 +67,6 @@ export default async function HomePage() {
       <QuickLinksSection />
       <HomePromoSection />
       <HomeFaqSection />
-      <div className="home-section-separator" aria-hidden="true" />
       <HomeIntroSection />
       <WhatsAppCommunitySection />
 
