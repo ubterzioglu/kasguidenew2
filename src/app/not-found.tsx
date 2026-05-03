@@ -20,11 +20,11 @@ export default function NotFound() {
         <div className="not-found-copy">
           <p className="not-found-eyebrow">404</p>
           <h1 id="not-found-title" className="not-found-title">
-            Aradığınız sayfa Kaş sokaklarında biraz kaybolmuş olabilir.
+            Bu sayfa bulunamadı.
           </h1>
           <p className="not-found-description">
-            Bağlantı eski olabilir, sayfa taşınmış olabilir ya da adres küçük bir harf hatası yüzünden buraya düşmüş
-            olabilir. En iyi rotaya geri dönmeniz için birkaç kısa yol bıraktık.
+            Bağlantı eski olabilir veya adres hatalı girilmiş olabilir. Ana sayfaya dönebilir ya da aşağıdaki kısa
+            yollardan devam edebilirsiniz.
           </p>
 
           <div className="not-found-actions">
@@ -42,20 +42,6 @@ export default function NotFound() {
                 {link.label}
               </Link>
             ))}
-          </div>
-        </div>
-
-        <div className="not-found-media">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/kasplaceholder.jpg"
-            alt="Kaş kıyısından deniz ve kasaba görünümü"
-            className="not-found-image"
-          />
-          <div className="not-found-media-shade" />
-          <div className="not-found-media-card" aria-hidden="true">
-            <strong>Kaş Guide</strong>
-            <span>Doğru yola dönmek için en iyi başlangıç ana sayfa.</span>
           </div>
         </div>
       </section>
