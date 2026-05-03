@@ -3763,7 +3763,7 @@ body {
   }
 
   .category-mobile-backdrop {
-    display: block;
+    display: none;
     position: fixed;
     inset: 0;
     background: rgba(7, 27, 32, 0.18);
@@ -3774,12 +3774,13 @@ body {
   }
 
   .category-mobile-backdrop.is-open {
+    display: block;
     opacity: 1;
     pointer-events: auto;
   }
 
   .category-mobile-drawer {
-    display: block;
+    display: none;
     position: fixed;
     left: 0;
     right: 0;
@@ -3801,10 +3802,17 @@ body {
     z-index: 230;
     overflow-y: auto;
     overflow-x: hidden;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .category-mobile-drawer.is-open {
+    display: block;
     transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .category-mobile-list {
