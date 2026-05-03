@@ -145,16 +145,6 @@ export const CATEGORIES: CategoryDefinition[] = [
     group: 'fun',
     tone: 'fun',
   },
-  {
-    id: 'etkinlik',
-    label: 'Etkinlik',
-    icon: '✨',
-    imageUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1200&q=80',
-    googleTypes: [],
-    group: 'fun',
-    tone: 'fun',
-  },
-
   // İÇERİK & MEDYA
   {
     id: 'yazilar',
@@ -238,7 +228,7 @@ export const CATEGORY_GROUPS = [
   {
     title: 'AKTİVİTE & EĞLENCE',
     tone: 'fun' as const,
-    ids: ['dalis', 'aktivite', 'etkinlik'] as const,
+    ids: ['dalis', 'aktivite'] as const,
   },
   {
     title: 'İÇERİK & MEDYA',

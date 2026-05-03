@@ -51,7 +51,7 @@ const HERO_SLIDE_SEEDS: HeroSlide[] = [
     eyebrow: 'Kaş Sahne 04',
     title: 'Tekneler, kıyılar ve yazın hafifliği.',
     description: 'Etkinlikler, kısa duyurular ve haftalık öneri seçimleri için esnek bir sahne.',
-    tags: ['Etkinlik', 'Duyuru', 'Yaz'],
+    tags: ['Duyuru', 'Yaz'],
     imageUrl:
       'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1600&q=80',
     isActive: true,

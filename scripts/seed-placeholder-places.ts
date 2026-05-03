@@ -19,7 +19,6 @@ const CATEGORY_IDS = [
   'gezi',
   'dalis',
   'aktivite',
-  'etkinlik',
   'yazilar',
   'roportaj',
   'fotograf',

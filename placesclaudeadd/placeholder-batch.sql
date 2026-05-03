@@ -16,7 +16,7 @@
 --
 -- Whitelist (category_primary):
 --   bar, meyhane, restoran, cafe, kahvalti, oteller, tarih, doga, plaj,
---   carsi, gezi, dalis, aktivite, etkinlik, patililer
+--   carsi, gezi, dalis, aktivite, patililer
 --
 -- Rozet (kasguide_badge):
 --   recommend | must-see | hidden-gem | local-favorite
@@ -117,7 +117,7 @@ SELECT
 FROM input i
 WHERE i.category_primary IN (
   'bar','meyhane','restoran','cafe','kahvalti','oteller',
-  'tarih','doga','plaj','carsi','gezi','dalis','aktivite','etkinlik','patililer'
+  'tarih','doga','plaj','carsi','gezi','dalis','aktivite','patililer'
 )
 AND i.badge IN ('recommend','must-see','hidden-gem','local-favorite')
 -- Idempotent: ayni slug varsa satir atlanir. NOT EXISTS, slug partial unique index

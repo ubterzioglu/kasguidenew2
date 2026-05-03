@@ -14,7 +14,7 @@
 --
 -- Whitelist (category_primary için geçerli ID'ler, src/lib/categories.ts ile aynı):
 --   bar, meyhane, restoran, cafe, kahvalti, oteller, tarih, doga, plaj,
---   carsi, gezi, dalis, aktivite, etkinlik, patililer
+--   carsi, gezi, dalis, aktivite, patililer
 --
 -- Rozet (kasguide_badge) önerileri: recommend | must-see | hidden-gem | local-favorite
 

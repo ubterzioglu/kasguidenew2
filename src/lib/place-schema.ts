@@ -19,7 +19,6 @@ export function mapCategoryToSchemaType(categoryId: string | null | undefined): 
       return 'Store'
     case 'dalis':
     case 'aktivite':
-    case 'etkinlik':
       return 'LocalBusiness'
     default:
       return 'LocalBusiness'
