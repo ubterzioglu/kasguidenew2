@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1777011515970,
-  "projectRoot": "C:\\temp_private\\kasguidede",
+  "lastScanned": 1783368403992,
+  "projectRoot": "c:\\temp_private\\kasguidede",
   "techStack": {
     "languages": [
       {
@@ -54,6 +54,7 @@
       "prestart": "node scripts/sync-next-server-chunks.mjs",
       "start": "next start",
       "lint": "next lint",
+      "backup:db": "node scripts/backup-db.mjs",
       "normalize:places": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/normalize-places.ts",
       "dedupe:places": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/dedupe-places.ts",
       "backfill:legacy-review": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local --experimental-strip-types scripts/backfill-legacy-items-to-review.ts",
@@ -88,7 +89,7 @@
       "path": "db",
       "purpose": null,
       "fileCount": 21,
-      "lastAccessed": 1777011515923,
+      "lastAccessed": 1783368403942,
       "keyFiles": [
         "add_article_interview_types.sql",
         "connection.js",
@@ -101,7 +102,7 @@
       "path": "faq",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1777011515923,
+      "lastAccessed": 1783368403942,
       "keyFiles": [
         "faq-list-data.js"
       ]
@@ -110,7 +111,7 @@
       "path": "placesclaudeadd",
       "purpose": null,
       "fileCount": 4,
-      "lastAccessed": 1777011515946,
+      "lastAccessed": 1783368403943,
       "keyFiles": [
         "placeholder-batch-prompt.md",
         "placeholder-batch.sql",
@@ -121,38 +122,41 @@
     "public": {
       "path": "public",
       "purpose": "Public files",
-      "fileCount": 2,
-      "lastAccessed": 1777011515946,
+      "fileCount": 5,
+      "lastAccessed": 1783368403943,
       "keyFiles": [
+        "kasguidevid.mp4",
         "kasplaceholder.jpg",
+        "kglogo.png",
+        "og.jpg",
         "upup.png"
       ]
     },
     "scripts": {
       "path": "scripts",
       "purpose": "Build/utility scripts",
-      "fileCount": 14,
-      "lastAccessed": 1777011515947,
+      "fileCount": 15,
+      "lastAccessed": 1783368403968,
       "keyFiles": [
         "backfill-legacy-items-to-review.ts",
+        "backup-db.mjs",
         "consolidate-raw-into-places.ts",
         "dedupe-places.ts",
-        "enforce-place-status-buckets.ts",
-        "force-all-places-admin.ts"
+        "enforce-place-status-buckets.ts"
       ]
     },
     "src": {
       "path": "src",
       "purpose": "Source code",
       "fileCount": 0,
-      "lastAccessed": 1777011515947,
+      "lastAccessed": 1783368403968,
       "keyFiles": []
     },
     "supabase": {
       "path": "supabase",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1777011515947,
+      "lastAccessed": 1783368403969,
       "keyFiles": [
         "config.toml"
       ]
@@ -160,15 +164,18 @@
     "temp": {
       "path": "temp",
       "purpose": null,
-      "fileCount": 0,
-      "lastAccessed": 1777011515947,
-      "keyFiles": []
+      "fileCount": 2,
+      "lastAccessed": 1783368403970,
+      "keyFiles": [
+        "next-dev.err.log",
+        "next-dev.out.log"
+      ]
     },
     "scripts\\lib": {
       "path": "scripts\\lib",
       "purpose": "Library code",
       "fileCount": 2,
-      "lastAccessed": 1777011515948,
+      "lastAccessed": 1783368403972,
       "keyFiles": [
         "ingestion-config.ts",
         "supabase-admin.ts"
@@ -178,7 +185,7 @@
       "path": "src\\app",
       "purpose": "Application code",
       "fileCount": 8,
-      "lastAccessed": 1777011515948,
+      "lastAccessed": 1783368403973,
       "keyFiles": [
         "error.tsx",
         "globals.css",
@@ -189,7 +196,7 @@
       "path": "src\\components",
       "purpose": "UI components",
       "fileCount": 5,
-      "lastAccessed": 1777011515948,
+      "lastAccessed": 1783368403974,
       "keyFiles": [
         "back-to-top-button.tsx",
         "client-header.tsx",
@@ -199,19 +206,19 @@
     "src\\lib": {
       "path": "src\\lib",
       "purpose": "Library code",
-      "fileCount": 22,
-      "lastAccessed": 1777011515949,
+      "fileCount": 26,
+      "lastAccessed": 1783368403974,
       "keyFiles": [
         "admin-auth.ts",
         "admin-password-client.ts",
-        "api-helpers.ts"
+        "admin-session-client.ts"
       ]
     },
     "src\\types": {
       "path": "src\\types",
       "purpose": "Type definitions",
       "fileCount": 2,
-      "lastAccessed": 1777011515949,
+      "lastAccessed": 1783368403975,
       "keyFiles": [
         "review.ts",
         "updates.ts"
@@ -220,8 +227,8 @@
     "supabase\\migrations": {
       "path": "supabase\\migrations",
       "purpose": "Database migrations",
-      "fileCount": 12,
-      "lastAccessed": 1777011515949,
+      "fileCount": 13,
+      "lastAccessed": 1783368403976,
       "keyFiles": [
         "20260326215500_create_hero_slides.sql",
         "20260328193000_create_place_ingestion_core.sql",
@@ -232,7 +239,7 @@
       "path": "temp\\docs",
       "purpose": "Documentation",
       "fileCount": 10,
-      "lastAccessed": 1777011515950,
+      "lastAccessed": 1783368403977,
       "keyFiles": [
         "grid-sweep-runbook.md",
         "kas-run-report.md",
@@ -243,7 +250,7 @@
       "path": "temp\\tests",
       "purpose": "Test files",
       "fileCount": 4,
-      "lastAccessed": 1777011515950,
+      "lastAccessed": 1783368403977,
       "keyFiles": [
         "test-api-limit.mjs",
         "test-limit.mjs",
@@ -253,46 +260,88 @@
   },
   "hotPaths": [
     {
-      "path": "package.json",
-      "accessCount": 1,
-      "lastAccessed": 1777011542385,
+      "path": "src",
+      "accessCount": 6,
+      "lastAccessed": 1783368531784,
+      "type": "directory"
+    },
+    {
+      "path": "src\\app\\layout.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1783368488259,
       "type": "file"
     },
     {
-      "path": "TECH_STACK.md",
-      "accessCount": 1,
-      "lastAccessed": 1777011543144,
+      "path": "src\\features\\home\\components\\whatsapp-community-section.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1783368540029,
       "type": "file"
     },
     {
-      "path": "ARCHITECTURE.md",
+      "path": "src\\app\\sitemap.ts",
       "accessCount": 1,
-      "lastAccessed": 1777011543208,
+      "lastAccessed": 1783368459033,
       "type": "file"
     },
     {
-      "path": "AGENTS.md",
+      "path": "src\\app\\robots.ts",
       "accessCount": 1,
-      "lastAccessed": 1777011543495,
+      "lastAccessed": 1783368460187,
       "type": "file"
     },
     {
-      "path": "src\\lib\\api-schemas.ts",
+      "path": "src\\app\\mekan\\[slug]\\page.tsx",
       "accessCount": 1,
-      "lastAccessed": 1777011556274,
+      "lastAccessed": 1783368460254,
       "type": "file"
     },
     {
-      "path": "src\\lib\\place-taxonomy.ts",
+      "path": "src\\app\\page.tsx",
       "accessCount": 1,
-      "lastAccessed": 1777011556919,
+      "lastAccessed": 1783368460311,
       "type": "file"
     },
     {
-      "path": "AGENT_ONBOARDING.md",
+      "path": "src\\app\\kas-en-guzel-plajlar\\page.tsx",
       "accessCount": 1,
-      "lastAccessed": 1777011677769,
+      "lastAccessed": 1783368467627,
       "type": "file"
+    },
+    {
+      "path": "temp\\old\\llms.txt",
+      "accessCount": 1,
+      "lastAccessed": 1783368467910,
+      "type": "file"
+    },
+    {
+      "path": "src\\app",
+      "accessCount": 1,
+      "lastAccessed": 1783368470795,
+      "type": "directory"
+    },
+    {
+      "path": "src\\app\\iletisim\\page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1783368489519,
+      "type": "directory"
+    },
+    {
+      "path": "src\\components\\site-frame.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1783368504616,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\client-page-shell.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1783368509692,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\globals.css",
+      "accessCount": 1,
+      "lastAccessed": 1783368511715,
+      "type": "directory"
     }
   ],
   "userDirectives": []

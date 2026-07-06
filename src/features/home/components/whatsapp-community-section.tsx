@@ -126,6 +126,10 @@ export function WhatsAppCommunitySection() {
               >
                 Ziyaretçi Yorumları : TripAdvisor Kaş
               </a>
+              {' | '}
+              <a href="https://ufuksoynakliyat.com.tr/esya-depolama" rel="dofollow">
+                Eşya Depolama
+              </a>
               {' | '}Bir başkadır Kaş!
             </p>
           </div>

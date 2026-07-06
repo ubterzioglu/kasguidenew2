@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"true\",\"description\":\"Check bash tool availability\"}",
+  "error": "Exit code 1\n/usr/bin/bash: line 1: /c/Users/BARIS-~1/AppData/Local/Temp/claude-06fb-cwd: No such file or directory",
+  "timestamp": "2026-07-06T20:08:01.613Z",
+  "retry_count": 4
+}
