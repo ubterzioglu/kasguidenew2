@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Kaş Arama Sonuçları | Kaş Guide',
   description: 'Kaş Guide içinde mekanlar ve soru-cevap içeriklerinde arama yapın.',
   alternates: { canonical: '/arama' },
+  robots: { index: false, follow: true },
 }
 
 type SearchPageProps = {

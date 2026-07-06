@@ -8,6 +8,15 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Haberler | Kaş Guide',
   description: 'Kaş Guide haberleri, yeni içerikler ve güncel gelişmeler.',
+  alternates: { canonical: '/haberler' },
+  openGraph: {
+    title: 'Haberler | Kaş Guide',
+    description: 'Kaş Guide haberleri, yeni içerikler ve güncel gelişmeler.',
+    url: '/haberler',
+    type: 'website',
+    locale: 'tr_TR',
+    siteName: 'Kaş Guide',
+  },
 }
 
 export default async function HaberlerPage() {

@@ -261,9 +261,39 @@
   "hotPaths": [
     {
       "path": "src",
-      "accessCount": 6,
-      "lastAccessed": 1783368531784,
+      "accessCount": 7,
+      "lastAccessed": 1783368939705,
       "type": "directory"
+    },
+    {
+      "path": "src\\app\\haberler\\page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1783369092215,
+      "type": "directory"
+    },
+    {
+      "path": "src\\app\\duyurular\\page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1783369095119,
+      "type": "directory"
+    },
+    {
+      "path": "src\\app\\arama\\page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1783369102462,
+      "type": "directory"
+    },
+    {
+      "path": "src\\app\\haberler\\[slug]\\page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1783369122765,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\duyurular\\[slug]\\page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1783369142391,
+      "type": "file"
     },
     {
       "path": "src\\app\\layout.tsx",
@@ -278,9 +308,21 @@
       "type": "file"
     },
     {
+      "path": "src\\app",
+      "accessCount": 2,
+      "lastAccessed": 1783368717705,
+      "type": "directory"
+    },
+    {
+      "path": "src\\app\\iletisim\\page.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1783368743784,
+      "type": "directory"
+    },
+    {
       "path": "src\\app\\sitemap.ts",
-      "accessCount": 1,
-      "lastAccessed": 1783368459033,
+      "accessCount": 2,
+      "lastAccessed": 1783369104640,
       "type": "file"
     },
     {
@@ -314,18 +356,6 @@
       "type": "file"
     },
     {
-      "path": "src\\app",
-      "accessCount": 1,
-      "lastAccessed": 1783368470795,
-      "type": "directory"
-    },
-    {
-      "path": "src\\app\\iletisim\\page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1783368489519,
-      "type": "directory"
-    },
-    {
       "path": "src\\components\\site-frame.tsx",
       "accessCount": 1,
       "lastAccessed": 1783368504616,
@@ -342,6 +372,42 @@
       "accessCount": 1,
       "lastAccessed": 1783368511715,
       "type": "directory"
+    },
+    {
+      "path": "src\\app\\faq\\page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1783368718064,
+      "type": "file"
+    },
+    {
+      "path": "src\\features\\home\\components\\home-jsonld.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1783368718170,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\biz-kimiz\\page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1783368727767,
+      "type": "directory"
+    },
+    {
+      "path": "src\\lib\\updates-store.ts",
+      "accessCount": 1,
+      "lastAccessed": 1783368931696,
+      "type": "file"
+    },
+    {
+      "path": "public\\kglogo.png",
+      "accessCount": 1,
+      "lastAccessed": 1783368932430,
+      "type": "file"
+    },
+    {
+      "path": "public\\llms.txt",
+      "accessCount": 1,
+      "lastAccessed": 1783369159612,
+      "type": "file"
     }
   ],
   "userDirectives": []
