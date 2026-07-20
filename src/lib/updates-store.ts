@@ -27,6 +27,8 @@ type NewsRow = {
   is_active: boolean
   sort_order: number | null
   status: ContentStatus
+  source_url: string | null
+  source_name: string | null
   created_at: string
   updated_at: string
 }
@@ -133,6 +135,8 @@ function mapNews(row: NewsRow): NewsItem {
     isActive: row.is_active,
     sortOrder: row.sort_order ?? 0,
     status: row.status,
+    sourceUrl: row.source_url,
+    sourceName: row.source_name,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }
@@ -219,7 +223,7 @@ export async function listPublicNews(limit = 12): Promise<NewsItem[]> {
 
   const { data, error } = await client
     .from(NEWS_TABLE)
-    .select('id, title, slug, summary, content, image_url, published_at, is_active, sort_order, status, created_at, updated_at')
+    .select('id, title, slug, summary, content, image_url, published_at, is_active, sort_order, status, source_url, source_name, created_at, updated_at')
     .eq('status', 'published')
     .eq('is_active', true)
     .not('published_at', 'is', null)
@@ -334,7 +338,7 @@ export async function listAdminUpdatesSnapshot(): Promise<UpdatesAdminSnapshot> 
   const [newsResponse, announcementsResponse] = await Promise.all([
     client
       .from(NEWS_TABLE)
-      .select('id, title, slug, summary, content, image_url, published_at, is_active, sort_order, status, created_at, updated_at')
+      .select('id, title, slug, summary, content, image_url, published_at, is_active, sort_order, status, source_url, source_name, created_at, updated_at')
       .order('updated_at', { ascending: false }),
     client
       .from(ANNOUNCEMENTS_TABLE)
@@ -372,6 +376,8 @@ function normalizeNewsInput(input: NewsInput, currentId?: string) {
     is_active: input.isActive,
     sort_order: Number.isFinite(input.sortOrder) ? input.sortOrder : 0,
     status: input.status,
+    source_url: normalizeNullableText(input.sourceUrl),
+    source_name: normalizeNullableText(input.sourceName),
   }))
 }
 
@@ -469,7 +475,7 @@ export async function getNewsBySlug(slug: string) {
   const client = requireClient()
   const { data, error } = await client
     .from(NEWS_TABLE)
-    .select('id, title, slug, summary, content, image_url, published_at, is_active, sort_order, status, created_at, updated_at')
+    .select('id, title, slug, summary, content, image_url, published_at, is_active, sort_order, status, source_url, source_name, created_at, updated_at')
     .eq('slug', slug)
     .maybeSingle()
 

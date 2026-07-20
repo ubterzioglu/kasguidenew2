@@ -57,6 +57,8 @@ export const NewsInputSchema = z.object({
   isActive: z.boolean(),
   sortOrder: z.coerce.number().int().min(0).max(9999),
   status: ContentStatusSchema,
+  sourceUrl: z.string().trim().url().max(2000).nullish().or(z.literal('')),
+  sourceName: z.string().trim().max(200).nullish().or(z.literal('')),
 })
 
 export const AnnouncementInputSchema = z.object({
@@ -100,6 +102,43 @@ export const UserPlaceSubmissionSchema = z.object({
   shortDescription: z.string().trim().max(500).optional(),
   lat: z.coerce.number().min(-90).max(90).optional(),
   lng: z.coerce.number().min(-180).max(180).optional(),
+})
+
+export const NewsScraperSourceTypeSchema = z.enum(['rss', 'atom', 'gdelt_query'])
+
+export const NewsScraperSourceInputSchema = z.object({
+  name: z.string().trim().min(1).max(200),
+  feedUrl: z.string().trim().url().max(2000),
+  sourceType: NewsScraperSourceTypeSchema.default('rss'),
+  isEnabled: z.boolean().default(true),
+})
+
+export const NewsScraperSourceUpdateBodySchema = z.object({
+  name: z.string().trim().min(1).max(200).optional(),
+  feedUrl: z.string().trim().url().max(2000).optional(),
+  sourceType: NewsScraperSourceTypeSchema.optional(),
+  isEnabled: z.boolean().optional(),
+})
+
+export const PlaceScraperJobCreateBodySchema = z.object({
+  locationLabel: z.string().trim().min(1).max(200),
+  countryCode: z.string().trim().length(2).default('TR'),
+  region: z.string().trim().max(200).nullish(),
+  city: z.string().trim().min(1).max(200).default('Kaş'),
+  professionLabel: z.string().trim().min(1).max(200),
+  categorySlug: z.string().trim().max(100).nullish(),
+  languageTerms: z.array(z.string().trim().min(1).max(100)).max(10).default([]),
+  queryTemplates: z.array(z.string().trim().min(1).max(300)).max(10).default([]),
+  maxQueries: z.coerce.number().int().min(1).max(20).default(6),
+  maxSourceUrls: z.coerce.number().int().min(1).max(50).default(15),
+  maxExtractUrls: z.coerce.number().int().min(1).max(30).default(10),
+  maxCandidates: z.coerce.number().int().min(1).max(30).default(10),
+  softCapUsd: z.coerce.number().min(0).max(10).default(0.5),
+  hardCapUsd: z.coerce.number().min(0).max(10).default(2),
+})
+
+export const PlaceScraperCandidateActionBodySchema = z.object({
+  action: z.enum(['promote', 'reject']),
 })
 
 export const OverpassSweepRunBodySchema = z.object({

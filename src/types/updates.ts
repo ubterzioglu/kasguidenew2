@@ -13,6 +13,8 @@ export type NewsItem = {
   isActive: boolean
   sortOrder: number
   status: ContentStatus
+  sourceUrl: string | null
+  sourceName: string | null
   createdAt: string
   updatedAt: string
 }
@@ -64,6 +66,8 @@ export type NewsInput = {
   isActive: boolean
   sortOrder: number
   status: ContentStatus
+  sourceUrl?: string | null
+  sourceName?: string | null
 }
 
 export type AnnouncementInput = {

@@ -31,30 +31,32 @@ src/
 
 ## Database Şeması
 
-### Items Tablosu (Unified)
+Şema, `supabase/migrations/*.sql` altında sıralı, timestamp-prefix'li Supabase CLI migration dosyalarıyla yönetilir. Aşağıdaki tablolar güncel gerçek durumu yansıtır (bkz. migration geçmişi için `supabase/migrations/`).
 
-```sql
-CREATE TABLE items (
-  id SERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  slug VARCHAR(255) UNIQUE NOT NULL,
-  description TEXT,
-  long_text TEXT,
-  item_type VARCHAR(50) NOT NULL, -- 'place', 'pet', 'hotel', 'artist'
-  status VARCHAR(50) DEFAULT 'pending', -- 'pending', 'approved', 'rejected'
-  attributes JSONB DEFAULT '{}',
-  images TEXT[],
-  published_at TIMESTAMP,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-```
+### Places Tablosu (Unified — mekanlar)
+
+Tüm mekan içeriği (restoran, otel, plaj, vb.) tek bir `places` tablosunda, `category_primary`/`category_ids` ile kategori ayrımı yapılarak tutulur.
+
+Önemli kolonlar: `id`, `slug`, `name`, `headline`, `short_description`, `long_description`, `category_primary`, `category_ids[]`, `kasguide_badges[]`, `address`, `lat`/`lng`, `phone`, `website`, `images` (jsonb array), `status`, `verification_status`, `intake_channel`, `primary_source_name`, `raw_snapshot` (jsonb), `source_records` (jsonb array).
+
+- **Status Workflow**: `pending → review → admin → published` (ayrıca `rejected`/`archived`/`merged`/`error`)
+- **`intake_channel`** (text + CHECK constraint, enum değil): `'sweep' | 'manual' | 'import' | 'migrated' | 'user_submission' | 'scraper'` — mekanın nasıl sisteme girdiğini işaretler (`'scraper'`: otomatik hizmet arama scraper'ından gelen adaylar).
+- **Slug Generation**: Türkçe karakter normalizasyonu (ğ→g, ü→u, ş→s, ı→i, ö→o, ç→c)
+
+### News / Announcements Tabloları (haberler ve duyurular)
+
+Ayrı `news` ve `announcements` tabloları, `src/lib/updates-store.ts` üzerinden yönetilir. Ortak `status` (`draft|published|archived`) alanı var; `announcements` ayrıca `priority` (`urgent|normal|info`) ve `start_date`/`end_date` görünürlük penceresi taşır. `news` tablosunda scraper provenance için `source_url`/`source_name` (nullable) kolonları bulunur.
+
+### Scraper Tabloları (admin panel — otomatik veri toplama)
+
+- **`news_scraper_sources`**: haber scraper'ının taradığı RSS/Atom/GDELT kaynaklarının admin-yönetilen listesi (`feed_url`, `is_enabled`, `last_run_*`).
+- **`place_scraper_jobs`** / **`place_scraper_candidates`**: hizmet arama (Tavily+Gemini tabanlı) scraper'ının iş kuyruğu ve incelemeye açık aday mekan kayıtları. Adaylar admin onayıyla `places` tablosuna `intake_channel: 'scraper'` olarak "yükseltilir" (promote).
 
 ### Önemli Kurallar
 
 1. **SQL Template Tag**: Database sorguları için parameterized query kullan
-2. **Unified Items Table**: Tüm içerik `items` tablosunda, `item_type` ile ayrım yapılıyor
-3. **Status Workflow**: `pending` → `approved`/`rejected`
+2. **Unified Places Table**: Tüm mekan içeriği `places` tablosunda, kategori alanlarıyla ayrım yapılıyor
+3. **Status Workflow**: `pending → review → admin → published`
 4. **Slug Generation**: Türkçe karakter normalizasyonu (ğ→g, ü→u, ş→s, ı→i, ö→o, ç→c)
 
 ## Kategoriler
@@ -96,15 +98,23 @@ POSTGRES_URL=postgresql://...
 
 # Admin
 ADMIN_API_KEY=...
+ADMIN_PASSWORD=...
 
 # External APIs
 GOOGLE_PLACES_API_KEY=...
+
+# Hizmet arama scraper (Service Finder pipeline — Tavily + Gemini)
+TAVILY_API_KEY=...          # search+extract için gerekli
+SERPAPI_API_KEY=...         # opsiyonel, fallback arama sağlayıcısı
+GEMINI_API_KEY=...          # sınıflandırma için gerekli (Google Gemini API)
 
 # Email
 SMTP_HOST=smtp.zoho.eu
 SMTP_USER=...
 SMTP_PASS=...
 ```
+
+Not: Haber scraper için ek env var gerekmez (kaynaklar public RSS/Atom feed'leridir, admin panelden `news_scraper_sources` tablosu üzerinden yönetilir).
 
 ## Eski Proje Referansı
 
