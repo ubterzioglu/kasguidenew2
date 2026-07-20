@@ -9,6 +9,7 @@ import {
   RELEVANCE_AUTO_PUBLISH_THRESHOLD,
 } from '@/lib/news-scraper/relevance'
 import { isDuplicateNews } from '@/lib/news-scraper/dedupe'
+import { checkTopicSuitability } from '@/lib/news-scraper/topic-filter'
 import {
   listEnabledNewsScraperSources,
   recordNewsScraperSourceRun,
@@ -46,6 +47,13 @@ export async function runNewsScraper(): Promise<NewsScraperRunResult[]> {
         }
 
         if (isDuplicateNews(item, existingNews)) {
+          skipped += 1
+          continue
+        }
+
+        // Kas ile ilgili olsa bile turizm rehberine uygun olmayan konular
+        // (yangin, deprem, asayis, secim, eczane nobeti vb.) elenir.
+        if (!checkTopicSuitability(item).allowed) {
           skipped += 1
           continue
         }

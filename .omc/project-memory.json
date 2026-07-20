@@ -261,15 +261,45 @@
   "hotPaths": [
     {
       "path": "src\\app\\globals.css",
-      "accessCount": 23,
-      "lastAccessed": 1784557689698,
+      "accessCount": 60,
+      "lastAccessed": 1784563606688,
       "type": "directory"
     },
     {
+      "path": "src\\lib\\news-scraper\\run.ts",
+      "accessCount": 14,
+      "lastAccessed": 1784563471546,
+      "type": "file"
+    },
+    {
       "path": "src",
-      "accessCount": 6,
-      "lastAccessed": 1784558765130,
+      "accessCount": 12,
+      "lastAccessed": 1784563530643,
       "type": "directory"
+    },
+    {
+      "path": "src\\app\\admin\\scrapers\\news\\page.tsx",
+      "accessCount": 9,
+      "lastAccessed": 1784562668959,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\promote.ts",
+      "accessCount": 8,
+      "lastAccessed": 1784560217599,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\news-scraper\\relevance.ts",
+      "accessCount": 7,
+      "lastAccessed": 1784562775166,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\admin\\scrapers\\places\\page.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1784562833247,
+      "type": "file"
     },
     {
       "path": "src\\lib\\place-scraper\\gemini.ts",
@@ -284,9 +314,21 @@
       "type": "directory"
     },
     {
-      "path": "src\\lib\\place-scraper\\promote.ts",
+      "path": "src\\app\\admin\\scrapers\\places\\[id]\\page.tsx",
       "accessCount": 5,
-      "lastAccessed": 1784560192261,
+      "lastAccessed": 1784562672135,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\news-scraper\\types.ts",
+      "accessCount": 4,
+      "lastAccessed": 1784562482201,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\news-scraper\\dedupe.ts",
+      "accessCount": 4,
+      "lastAccessed": 1784563455378,
       "type": "file"
     },
     {
@@ -299,12 +341,6 @@
       "path": "src\\lib\\place-scraper\\run-job.ts",
       "accessCount": 3,
       "lastAccessed": 1784556971116,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\news-scraper\\run.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784556971318,
       "type": "file"
     },
     {
@@ -323,18 +359,6 @@
       "path": "src\\lib\\news-scraper\\feed-parser.ts",
       "accessCount": 3,
       "lastAccessed": 1784556993797,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\admin\\scrapers\\places\\page.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1784556994080,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\admin\\scrapers\\news\\page.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1784556994173,
       "type": "file"
     },
     {
@@ -359,6 +383,18 @@
       "path": "src\\app\\api\\admin\\scrapers\\places\\candidates\\[id]\\route.ts",
       "accessCount": 3,
       "lastAccessed": 1784560160343,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\admin\\scrapers\\news\\sources\\route.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784560515074,
+      "type": "file"
+    },
+    {
+      "path": "src\\features\\home\\components\\hero-carousel.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1784561720443,
       "type": "file"
     },
     {
@@ -416,21 +452,9 @@
       "type": "file"
     },
     {
-      "path": "src\\lib\\news-scraper\\types.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556810027,
-      "type": "file"
-    },
-    {
       "path": "src\\lib\\news-scraper\\feed-fetcher.ts",
       "accessCount": 2,
       "lastAccessed": 1784556810803,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\news-scraper\\relevance.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556811972,
       "type": "file"
     },
     {
@@ -440,27 +464,9 @@
       "type": "file"
     },
     {
-      "path": "src\\lib\\news-scraper\\dedupe.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556812596,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\admin\\scrapers\\places\\[id]\\page.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1784556820003,
-      "type": "file"
-    },
-    {
       "path": "src\\app\\api\\admin\\scrapers\\places\\jobs\\[id]\\route.ts",
       "accessCount": 2,
       "lastAccessed": 1784556821507,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\api\\admin\\scrapers\\news\\sources\\route.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556823346,
       "type": "file"
     },
     {
@@ -482,10 +488,10 @@
       "type": "file"
     },
     {
-      "path": "src\\features\\home\\components\\hero-carousel.tsx",
+      "path": "src\\app\\admin\\components\\AdminSectionLinks.tsx",
       "accessCount": 2,
-      "lastAccessed": 1784557092749,
-      "type": "file"
+      "lastAccessed": 1784560732494,
+      "type": "directory"
     },
     {
       "path": "package.json",
@@ -540,12 +546,6 @@
       "accessCount": 1,
       "lastAccessed": 1784556790104,
       "type": "file"
-    },
-    {
-      "path": "src\\app\\admin\\components\\AdminSectionLinks.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1784556790185,
-      "type": "directory"
     },
     {
       "path": "src\\lib\\api-schemas.ts",
