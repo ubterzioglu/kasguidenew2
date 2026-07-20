@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import type { AdminPlacesSnapshot, PanelStatus, PlaceEditorDraft } from '@/types/review'
 
 import { adminLogout, hasActiveSession } from '@/lib/admin-session-client'
-import { useDraftEditor } from '../review/useDraftEditor'
+import { useDraftEditor } from '../../review/useDraftEditor'
 
 const INITIAL_STATUS: PanelStatus = {
   tone: 'neutral',

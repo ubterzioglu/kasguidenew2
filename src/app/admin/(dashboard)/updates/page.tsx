@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { AdminSectionLinks } from '../components/AdminSectionLinks'
+import { useAdminSidebarRefreshAction } from '../AdminSidebarActionsContext'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
@@ -139,6 +139,12 @@ export default function AdminUpdatesPage() {
   const [announcementDraft, setAnnouncementDraft] = useState<AnnouncementInput>(createEmptyAnnouncementDraft())
   const [isSavingNews, setIsSavingNews] = useState(false)
   const [isSavingAnnouncement, setIsSavingAnnouncement] = useState(false)
+
+  useAdminSidebarRefreshAction({
+    label: 'Listeyi yenile',
+    refreshing: isLoading,
+    onRefresh: () => loadData(),
+  })
 
   async function loadData(passwordOverride?: string, redirectOnAuthError = false) {
     const password = (passwordOverride ?? adminPassword).trim()
@@ -359,18 +365,8 @@ export default function AdminUpdatesPage() {
           </p>
         </div>
 
-        <div className="admin-places-header-actions">
-          <AdminSectionLinks
-            current="updates"
-            onRefresh={() => loadData()}
-            refreshLabel="Listeyi yenile"
-            refreshing={isLoading}
-            onLogout={logout}
-          />
-
-          <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
-            <span>{status.message}</span>
-          </div>
+        <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
+          <span>{status.message}</span>
         </div>
       </section>
 

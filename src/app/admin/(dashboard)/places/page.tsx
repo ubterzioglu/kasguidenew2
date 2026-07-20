@@ -1,13 +1,13 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { CATEGORIES, CATEGORY_GROUPS } from '@/lib/categories'
 
-import { AdminSectionLinks } from '../components/AdminSectionLinks'
-import { PlaceEditorForm } from '../review/components/PlaceEditorForm'
-import { formatCompactDate, formatDate, formatPlaceStatus } from '../review/formatters'
+import { useAdminSidebarRefreshAction } from '../AdminSidebarActionsContext'
+import { PlaceEditorForm } from '../../review/components/PlaceEditorForm'
+import { formatCompactDate, formatDate, formatPlaceStatus } from '../../review/formatters'
 import { usePlacesDashboard } from './usePlacesDashboard'
 
 type FilterMode = 'all' | 'published' | 'draft'
@@ -32,8 +32,13 @@ export default function AdminPlacesPage() {
     updateImageField,
     addImageField,
     removeImageField,
-    logout,
   } = usePlacesDashboard()
+
+  useAdminSidebarRefreshAction({
+    label: 'Listeyi yenile',
+    refreshing: isLoading,
+    onRefresh: () => loadDashboard(),
+  })
 
   const filteredPlaces = useMemo(() => {
     let result = snapshot.places
@@ -169,18 +174,8 @@ export default function AdminPlacesPage() {
           </p>
         </div>
 
-        <div className="admin-places-header-actions">
-          <AdminSectionLinks
-            current="places"
-            onRefresh={() => loadDashboard()}
-            refreshLabel="Listeyi yenile"
-            refreshing={isLoading}
-            onLogout={logout}
-          />
-
-          <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
-            <span>{status.message}</span>
-          </div>
+        <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
+          <span>{status.message}</span>
         </div>
       </section>
 

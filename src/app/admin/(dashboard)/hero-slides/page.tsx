@@ -1,9 +1,9 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { AdminSectionLinks } from '../components/AdminSectionLinks'
+import { useAdminSidebarRefreshAction } from '../AdminSidebarActionsContext'
 import {
   clearStoredAdminPassword,
   getStoredAdminPassword,
@@ -39,6 +39,12 @@ export default function HeroSlidesAdminPage() {
   const [isSaving, setIsSaving] = useState(false)
 
   const activeCount = useMemo(() => slides.filter((slide) => slide.isActive).length, [slides])
+
+  useAdminSidebarRefreshAction({
+    label: 'Hero listesini yenile',
+    refreshing: isLoading,
+    onRefresh: () => loadSlides(),
+  })
 
   async function loadSlides(passwordOverride?: string, redirectOnAuthError = false) {
     const password = (passwordOverride ?? adminPassword).trim()
@@ -215,12 +221,6 @@ export default function HeroSlidesAdminPage() {
     })
   }
 
-  function logout() {
-    clearStoredAdminPassword()
-    setAdminPassword('')
-    router.replace('/admin')
-  }
-
   return (
     <main className="container admin-shell admin-shell-places admin-shell-hero">
       <section className="admin-places-intro">
@@ -254,14 +254,6 @@ export default function HeroSlidesAdminPage() {
       </section>
 
       <section className="admin-toolbar admin-toolbar-places">
-        <AdminSectionLinks
-          current="hero"
-          onRefresh={() => loadSlides()}
-          refreshLabel="Hero listesini yenile"
-          refreshing={isLoading}
-          onLogout={logout}
-        />
-
         <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
           <span>{status.message}</span>
         </div>
