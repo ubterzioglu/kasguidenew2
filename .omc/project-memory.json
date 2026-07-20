@@ -261,14 +261,14 @@
   "hotPaths": [
     {
       "path": "src\\app\\globals.css",
-      "accessCount": 70,
-      "lastAccessed": 1784567706002,
+      "accessCount": 75,
+      "lastAccessed": 1784571270893,
       "type": "directory"
     },
     {
       "path": "src",
-      "accessCount": 26,
-      "lastAccessed": 1784567517856,
+      "accessCount": 36,
+      "lastAccessed": 1784574761241,
       "type": "directory"
     },
     {
@@ -303,8 +303,8 @@
     },
     {
       "path": "src\\lib\\place-scraper\\gemini.ts",
-      "accessCount": 6,
-      "lastAccessed": 1784558816874,
+      "accessCount": 7,
+      "lastAccessed": 1784572798282,
       "type": "file"
     },
     {
@@ -320,6 +320,12 @@
       "type": "directory"
     },
     {
+      "path": "CLAUDE.md",
+      "accessCount": 5,
+      "lastAccessed": 1784570659349,
+      "type": "file"
+    },
+    {
       "path": "src\\lib\\news-scraper\\types.ts",
       "accessCount": 4,
       "lastAccessed": 1784562482201,
@@ -332,21 +338,27 @@
       "type": "file"
     },
     {
-      "path": "CLAUDE.md",
-      "accessCount": 3,
-      "lastAccessed": 1784556835542,
+      "path": "src\\features\\home\\components\\hero-carousel.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1784570726933,
       "type": "file"
     },
     {
       "path": "src\\lib\\place-scraper\\run-job.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784556971116,
+      "accessCount": 4,
+      "lastAccessed": 1784571412960,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\admin\\scrapers\\places\\jobs\\route.ts",
+      "accessCount": 4,
+      "lastAccessed": 1784571418883,
       "type": "file"
     },
     {
       "path": "src\\app\\api\\admin\\scrapers\\places\\jobs\\[id]\\run\\route.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784556983772,
+      "accessCount": 4,
+      "lastAccessed": 1784571424844,
       "type": "file"
     },
     {
@@ -359,12 +371,6 @@
       "path": "src\\lib\\news-scraper\\feed-parser.ts",
       "accessCount": 3,
       "lastAccessed": 1784556993797,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\api\\admin\\scrapers\\places\\jobs\\route.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784557003536,
       "type": "file"
     },
     {
@@ -392,9 +398,45 @@
       "type": "file"
     },
     {
-      "path": "src\\features\\home\\components\\hero-carousel.tsx",
+      "path": "src\\lib\\place-scraper\\dedupe.ts",
       "accessCount": 3,
-      "lastAccessed": 1784561720443,
+      "lastAccessed": 1784571412158,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\queries.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784571412605,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\job-store.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784571418259,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\types.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784571418590,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 3,
+      "lastAccessed": 1784571937235,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\tavily.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784572797919,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\robots.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784572808833,
       "type": "file"
     },
     {
@@ -404,45 +446,9 @@
       "type": "file"
     },
     {
-      "path": "src\\lib\\place-scraper\\types.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556799519,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\tavily.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556799944,
-      "type": "file"
-    },
-    {
       "path": "src\\lib\\place-scraper\\cost.ts",
       "accessCount": 2,
       "lastAccessed": 1784556807016,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\dedupe.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556807390,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\job-store.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556808090,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\queries.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556808846,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\robots.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556809239,
       "type": "file"
     },
     {
@@ -494,10 +500,10 @@
       "type": "directory"
     },
     {
-      "path": "package.json",
-      "accessCount": 1,
-      "lastAccessed": 1784556706712,
-      "type": "file"
+      "path": "src\\lib\\api-schemas.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784572486166,
+      "type": "directory"
     },
     {
       "path": "scripts\\normalize-places.ts",
@@ -546,12 +552,6 @@
       "accessCount": 1,
       "lastAccessed": 1784556790104,
       "type": "file"
-    },
-    {
-      "path": "src\\lib\\api-schemas.ts",
-      "accessCount": 1,
-      "lastAccessed": 1784556791526,
-      "type": "directory"
     },
     {
       "path": ".tmp-find-pooler.mjs",
