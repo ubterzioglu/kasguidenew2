@@ -1,0 +1,7 @@
+{
+  "tool_name": "Read",
+  "tool_input_preview": "{\"file_path\":\"C:\\\\Users\\\\baris-terzioglu\\\\.claude\\\\projects\\\\c--temp-private-kasguidede\\\\memory\\\\MEMORY.md\"}",
+  "error": "File does not exist. Note: your current working directory is c:\\temp_private\\kasguidede.",
+  "timestamp": "2026-07-20T20:36:04.011Z",
+  "retry_count": 1
+}
