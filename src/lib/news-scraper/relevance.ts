@@ -22,18 +22,21 @@ const CORE_KEYWORDS = [
   'çukurbağ',
   'antiphellos',
   'gelemiş',
-  'islamlar',
   'bezirgan',
-  'yeşilköy',
   'akçagerme',
   'limanağzı',
-  'hidayet',
   'aperlai',
   'apollonia',
-  'sıçak',
   'gökkaya',
-  'besmi',
   'inceboğaz',
+  // NOT: asagidaki yer adlari bilerek listede DEGIL, cunku Turkce karakter
+  // normalizasyonundan sonra gunluk kelimelerle cakisiyorlar ve alakasiz
+  // haberleri iceri aliyorlar:
+  //   'sıçak'    -> "sicak"    ("kavurucu sicak hava" ile eslesiyor)
+  //   'hidayet'  -> yaygin kisi adi
+  //   'islamlar' -> dini/genel haberlerle eslesiyor
+  //   'yeşilköy' -> Istanbul'daki ayni adli semt daha sik geciyor
+  //   'besmi'    -> cok kisa, yanlis eslesme riski yuksek
 ]
 
 // Tek basina yeterli degil; cekirdek kelimeyle birlikte gecerse skoru guclendirir.
