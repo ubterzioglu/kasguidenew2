@@ -37,5 +37,7 @@ export type NewsScraperRunResult = {
   found: number
   inserted: number
   skipped: number
+  /** inserted icindeki, dogrudan 'published' olarak yayina alinanlarin sayisi. */
+  published: number
   error?: string
 }

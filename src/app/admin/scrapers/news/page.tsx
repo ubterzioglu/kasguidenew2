@@ -260,7 +260,8 @@ export default function AdminNewsScraperPage() {
                 <div>
                   <strong>{result.sourceName}</strong>
                   <p>
-                    {result.found} bulundu, {result.inserted} eklendi, {result.skipped} atlandi
+                    {result.found} bulundu, {result.inserted} eklendi ({result.published} yayinda),{' '}
+                    {result.skipped} atlandi
                     {result.error ? ` — Hata: ${result.error}` : ''}
                   </p>
                 </div>

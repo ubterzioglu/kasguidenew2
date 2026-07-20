@@ -3,13 +3,18 @@ import 'server-only'
 import { createNews, listAdminUpdatesSnapshot } from '@/lib/updates-store'
 import { fetchFeed } from '@/lib/news-scraper/feed-fetcher'
 import { parseFeedItems } from '@/lib/news-scraper/feed-parser'
-import { scoreRelevance, RELEVANCE_ACCEPT_THRESHOLD } from '@/lib/news-scraper/relevance'
+import {
+  scoreRelevance,
+  RELEVANCE_ACCEPT_THRESHOLD,
+  RELEVANCE_AUTO_PUBLISH_THRESHOLD,
+} from '@/lib/news-scraper/relevance'
 import { isDuplicateNews } from '@/lib/news-scraper/dedupe'
 import {
   listEnabledNewsScraperSources,
   recordNewsScraperSourceRun,
 } from '@/lib/news-scraper/source-store'
 import type { NewsScraperRunResult } from '@/lib/news-scraper/types'
+import type { ContentStatus } from '@/types/updates'
 
 export async function runNewsScraper(): Promise<NewsScraperRunResult[]> {
   const sources = await listEnabledNewsScraperSources()
@@ -27,6 +32,7 @@ export async function runNewsScraper(): Promise<NewsScraperRunResult[]> {
     let found = 0
     let inserted = 0
     let skipped = 0
+    let published = 0
 
     try {
       const xml = await fetchFeed(source.feedUrl)
@@ -50,19 +56,26 @@ export async function runNewsScraper(): Promise<NewsScraperRunResult[]> {
           continue
         }
 
+        // Yuksek skorlular dogrudan yayina; sinirdakiler admin onayi icin draft.
+        const status: ContentStatus =
+          score >= RELEVANCE_AUTO_PUBLISH_THRESHOLD ? 'published' : 'draft'
+
         await createNews({
           title: item.title,
           summary: item.summary || item.title,
           content: item.summary || item.title,
           imageUrl: null,
-          publishedAt: item.publishedAt,
+          publishedAt: item.publishedAt ?? new Date().toISOString(),
           isActive: true,
           sortOrder: 0,
-          status: 'draft',
+          status,
           sourceUrl: item.link,
           sourceName: source.name,
         })
 
+        if (status === 'published') {
+          published += 1
+        }
         inserted += 1
         existingNews.push({
           id: `pending-${item.link}`,
@@ -74,7 +87,7 @@ export async function runNewsScraper(): Promise<NewsScraperRunResult[]> {
           publishedAt: item.publishedAt,
           isActive: true,
           sortOrder: 0,
-          status: 'draft',
+          status,
           sourceUrl: item.link,
           sourceName: source.name,
           createdAt: new Date().toISOString(),
@@ -88,7 +101,7 @@ export async function runNewsScraper(): Promise<NewsScraperRunResult[]> {
         insertedCount: inserted,
       })
 
-      results.push({ sourceId: source.id, sourceName: source.name, found, inserted, skipped })
+      results.push({ sourceId: source.id, sourceName: source.name, found, inserted, skipped, published })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Bilinmeyen hata.'
 
@@ -99,7 +112,7 @@ export async function runNewsScraper(): Promise<NewsScraperRunResult[]> {
         error: message,
       })
 
-      results.push({ sourceId: source.id, sourceName: source.name, found, inserted, skipped, error: message })
+      results.push({ sourceId: source.id, sourceName: source.name, found, inserted, skipped, published, error: message })
     }
   }
 
