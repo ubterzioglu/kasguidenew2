@@ -506,6 +506,12 @@
       "type": "directory"
     },
     {
+      "path": "supabase\\migrations\\20260404123000_unify_places_single_table.sql",
+      "accessCount": 2,
+      "lastAccessed": 1784579715762,
+      "type": "file"
+    },
+    {
       "path": "scripts\\normalize-places.ts",
       "accessCount": 1,
       "lastAccessed": 1784556780160,
@@ -527,12 +533,6 @@
       "path": "supabase\\migrations\\20260328193000_create_place_ingestion_core.sql",
       "accessCount": 1,
       "lastAccessed": 1784556787403,
-      "type": "file"
-    },
-    {
-      "path": "supabase\\migrations\\20260404123000_unify_places_single_table.sql",
-      "accessCount": 1,
-      "lastAccessed": 1784556787609,
       "type": "file"
     },
     {

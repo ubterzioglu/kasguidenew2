@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"npm run lint 2>&1 | tail -20\",\"timeout\":120000,\"description\":\"Final lint check\"}",
-  "error": "Exit code 1\n`next lint` is deprecated and will be removed in Next.js 16.\nFor new projects, use create-next-app to choose your preferred linter.\nFor existing projects, migrate to the ESLint CLI:\nnpx @next/codemod@canary next-lint-to-eslint-cli .\n\n\n./src/app/admin/(dashboard)/places/usePlacesDashboard.ts\n76:6  Warning: React Hook useCallback has a missing dependency: 'logout'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps\n\n./src/app/duyurular/page.tsx\n49:17  Warnin...",
-  "timestamp": "2026-07-20T19:16:03.783Z",
-  "retry_count": 2
-}
