@@ -15,6 +15,18 @@ function buildOrganizationSchema(): Record<string, unknown> {
     name: 'Kaş Guide',
     url: 'https://www.kasguide.de',
     logo: 'https://www.kasguide.de/logo.png',
+    areaServed: {
+      '@type': 'City',
+      name: 'Kaş',
+      containedInPlace: {
+        '@type': 'AdministrativeArea',
+        name: 'Antalya',
+        containedInPlace: {
+          '@type': 'Country',
+          name: 'Türkiye',
+        },
+      },
+    },
     sameAs: [
       'https://instagram.com/guidekas',
       'https://facebook.com/kasguide',
