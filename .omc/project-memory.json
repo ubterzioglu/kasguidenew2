@@ -261,14 +261,14 @@
   "hotPaths": [
     {
       "path": "src\\app\\globals.css",
-      "accessCount": 60,
-      "lastAccessed": 1784563606688,
+      "accessCount": 70,
+      "lastAccessed": 1784567706002,
       "type": "directory"
     },
     {
       "path": "src",
-      "accessCount": 15,
-      "lastAccessed": 1784564222793,
+      "accessCount": 26,
+      "lastAccessed": 1784567517856,
       "type": "directory"
     },
     {
@@ -279,8 +279,8 @@
     },
     {
       "path": "src\\app\\admin\\scrapers\\news\\page.tsx",
-      "accessCount": 9,
-      "lastAccessed": 1784562668959,
+      "accessCount": 10,
+      "lastAccessed": 1784566112756,
       "type": "file"
     },
     {
@@ -290,15 +290,15 @@
       "type": "file"
     },
     {
-      "path": "src\\lib\\news-scraper\\relevance.ts",
-      "accessCount": 7,
-      "lastAccessed": 1784562775166,
+      "path": "src\\app\\admin\\scrapers\\places\\page.tsx",
+      "accessCount": 8,
+      "lastAccessed": 1784566113719,
       "type": "file"
     },
     {
-      "path": "src\\app\\admin\\scrapers\\places\\page.tsx",
+      "path": "src\\lib\\news-scraper\\relevance.ts",
       "accessCount": 7,
-      "lastAccessed": 1784562833247,
+      "lastAccessed": 1784562775166,
       "type": "file"
     },
     {
@@ -308,16 +308,16 @@
       "type": "file"
     },
     {
+      "path": "src\\app\\admin\\scrapers\\places\\[id]\\page.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1784566113801,
+      "type": "file"
+    },
+    {
       "path": "supabase\\migrations",
       "accessCount": 5,
       "lastAccessed": 1784560152373,
       "type": "directory"
-    },
-    {
-      "path": "src\\app\\admin\\scrapers\\places\\[id]\\page.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1784562672135,
-      "type": "file"
     },
     {
       "path": "src\\lib\\news-scraper\\types.ts",

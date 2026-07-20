@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"grep -n \\\"image_url\\\\|images\\\\b\\\\|images\\\\[\\\\|images:\\\" \\\"c:/temp_private/kasguidede/src/lib/public-place-store.ts\\\" | head -40\",\"description\":\"Search public-place-store.ts for image field...",
-  "error": "Exit code 1\n80:  images: PlaceImageRecord[] | null\n84:  'id, slug, name, headline, short_description, category_primary, address, phone, website, kasguide_badge, kasguide_badges, images'\n87:  'id, slug, name, headline, short_description, category_primary, address, phone, website, kasguide_badge, images'\n90:  'id, slug, name, headline, short_description, long_description, category_primary, address, phone, website, kasguide_badge, kasguide_badges, images'\n93:  'id, slug, name, headline, short_descr...",
-  "timestamp": "2026-07-20T16:16:44.454Z",
-  "retry_count": 2
+  "tool_input_preview": "{\"command\":\"git rev-parse HEAD\\ngit rev-parse origin/main\\necho \\\"---\\\"\\ngit log --oneline -8 origin/main\",\"description\":\"Confirm HEAD matches origin/main exactly\"}",
+  "error": "Exit code 1\n79e32c1bf3626fbcea556165d8eb5240283f4d2f\n79e32c1bf3626fbcea556165d8eb5240283f4d2f\n---\n79e32c1 feat(images): add randomized Kaş visuals for news and places\n9fc541f chore(admin): remove unused AdminSectionLinks component\n6ccf268 refactor(admin): move scrapers pages into dashboard sidebar layout\n68dc22c refactor(admin): move places/hero/updates pages into dashboard sidebar layout\n18ddc61 feat(admin): add dashboard route group layout with sidebar\n9d4c564 style(admin): add sidebar layout ...",
+  "timestamp": "2026-07-20T17:31:49.251Z",
+  "retry_count": 9
 }
