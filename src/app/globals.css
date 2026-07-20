@@ -9367,8 +9367,7 @@ body {
 .home-intro-rich-title,
 .home-intro-card-title,
 .quick-links-card-title,
-.home-promo-title,
-.updates-card-title {
+.home-promo-title {
   font-size: 1.06rem;
 }
 
@@ -10040,8 +10039,7 @@ body {
   .home-intro-rich-title,
   .home-intro-card-title,
   .quick-links-card-title,
-  .home-promo-title,
-  .updates-card-title {
+  .home-promo-title {
     font-size: 1rem;
   }
 
@@ -10868,7 +10866,6 @@ body {
 .faq-title,
 .faq-card-question,
 .updates-section-title,
-.updates-card-title,
 .updates-page-title,
 .home-intro-title,
 .home-intro-rich-title,
@@ -10920,7 +10917,6 @@ body {
   .faq-title,
   .faq-card-question,
   .updates-section-title,
-  .updates-card-title,
   .updates-page-title,
   .home-intro-title,
   .home-intro-rich-title,
