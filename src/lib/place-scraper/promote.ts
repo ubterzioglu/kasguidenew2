@@ -61,7 +61,7 @@ export async function promoteCandidateToPlace(candidateId: string): Promise<{ pl
   const placeId = randomUUID()
   const slugBase = slugifyText(candidate.canonicalName) || `mekan-${placeId.slice(0, 8)}`
   const slug = await ensureUniqueSlug(client, slugBase)
-  const categoryId = resolveCategoryId(candidate.categorySlug)
+  const { categoryId, wasGuessed } = resolveCategoryId(candidate.categorySlug)
   const now = new Date().toISOString()
 
   const payload = {
@@ -95,7 +95,9 @@ export async function promoteCandidateToPlace(candidateId: string): Promise<{ pl
     is_sweeped: false,
     source_sweep_id: null,
     review_reason: 'Hizmet arama scraper adayi',
-    review_notes: null,
+    review_notes: wasGuessed
+      ? `Kategori otomatik tahmin edildi (Gemini onerisi: "${candidate.categorySlug ?? 'yok'}"). Lutfen kontrol edin.`
+      : null,
     review_score: candidate.confidenceScore,
     merge_target_place_id: null,
     images: [
