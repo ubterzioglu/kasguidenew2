@@ -45,7 +45,7 @@ const HOME_INTRO_SECTIONS = [
           deneyim sunan öne çıkan plajlar arasında yer alır.
         </p>
         <p>
-          <Link href="/kas-plajlari">Kaş plajları rehberimizde</Link> tüm plajları karşılaştırmalı olarak
+          <Link href="/kas-en-guzel-plajlar">Kaş plajları rehberimizde</Link> tüm plajları karşılaştırmalı olarak
           bulabilirsiniz. Tekne turu ile Kekova&apos;yı keşfetmek ise Kaş&apos;ın en ikonik aktivitelerinden biridir;
           <Link href="/kas-tekne-turu"> Kaş tekne turu sayfamızda</Link> güzergah ve önerileri derledik.
         </p>
@@ -56,7 +56,7 @@ const HOME_INTRO_SECTIONS = [
           altında meze ve rakı sofraları öne çıkar.
         </p>
         <p>
-          Gezi ve keşif rotaları için <Link href="/kas-gezilecek-yerler">Kaş gezilecek yerler rehberine</Link> göz
+          Gezi ve keşif rotaları için <Link href="/kas-merkez-gezilecek-yerler">Kaş gezilecek yerler rehberine</Link> göz
           atmanızı öneririz. Tarih meraklıları Likya kaya mezarlarından Patara antik kentine, doğa tutkunları ise
           Likya Yolu&apos;ndan Akdağ yaylalarına kadar çok sayıda rota bulacaktır.
         </p>
@@ -78,8 +78,8 @@ const HOME_INTRO_SECTIONS = [
           bulabilirsiniz.
         </p>
         <p>
-          Kategori sayfalarımız üzerinden <Link href="/kas-restoran-onerileri">restoran önerileri</Link>,{' '}
-          <Link href="/kas-barlar-ve-gece-hayati">bar ve gece hayatı</Link> ya da{' '}
+          Kategori sayfalarımız üzerinden <Link href="/kas-nerede-ne-yenir">restoran önerileri</Link>,{' '}
+          <Link href="/kas-gece-hayati">bar ve gece hayatı</Link> ya da{' '}
           <Link href="/kas-dalis-noktalari">dalış noktaları</Link> gibi spesifik ilgi alanlarınıza göre arama
           yapabilirsiniz.
         </p>
@@ -96,8 +96,8 @@ const HOME_INTRO_SECTIONS = [
           butik otel idealdir.
         </p>
         <p>
-          Daha uzun bir tatil planlıyorsanız Çukurbağ yarımadasındaki <Link href="/kas-butik-oteller">butik
-          oteller</Link> ya da <Link href="/kas-pansiyonlar">pansiyonlar</Link> sakinlik ve manzara arayanlar için
+          Daha uzun bir tatil planlıyorsanız Çukurbağ yarımadasındaki <Link href="/kas-otel-onerileri">butik
+          oteller</Link> ya da <Link href="/kas-otel-onerileri">pansiyonlar</Link> sakinlik ve manzara arayanlar için
           güçlü seçenekler sunar.
         </p>
         <p>
@@ -106,7 +106,7 @@ const HOME_INTRO_SECTIONS = [
           pansiyonlar, sokak lezzetleri ve ücretsiz plajlar oldukça iyi bir denge sunar.
         </p>
         <p>
-          <Link href="/kas-3-gunluk-gezi-plani">3 günlük Kaş gezi planı sayfamız</Link> ilk kez gelenler için güçlü
+          <Link href="/kas-tatil-rehberi">Kaş tatil rehberi sayfamız</Link> ilk kez gelenler için güçlü
           bir başlangıç noktasıdır. Her sezonun kendine özgü bir avantajı vardır: ilkbahar sakinlik, yaz canlılık,
           sonbahar ılıman deniz ve dalış, kış ise daha ekonomik fiyatlar sunar.
         </p>

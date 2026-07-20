@@ -287,8 +287,8 @@ export default function KasTekneTuruPage() {
               Eğer Kaş&apos;ta 2-4 günlük bir plan yapıyorsanız bir günü mutlaka tekne turuna ayırın. Geri kalan günleri
               plaj, merkez yürüyüşü ve akşam yemeği ritmiyle tamamlamak en dengeli ilk ziyaret kurgusudur.
             </p>
-            <Link href="/kas-3-gunluk-gezi-plani" className="kas-tekne-text-link">
-              3 günlük Kaş planına geç
+            <Link href="/kas-tatil-rehberi" className="kas-tekne-text-link">
+              Kaş tatil rehberine geç
             </Link>
           </article>
         </section>

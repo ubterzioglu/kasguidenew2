@@ -66,7 +66,7 @@ export default async function KasMerkezGezilecekYerlerPage() {
           <h2>Daha Fazla Keşif</h2>
           <p>
             <Link href="/">Ana Sayfaya Dön</Link> |{' '}
-            <Link href="/kas-gezilecek-yerler">Gezilecek Yerler</Link> |{' '}
+            <Link href="/kas-tatil-rehberi">Tatil Rehberi</Link> |{' '}
             <Link href="/kas-nerede-ne-yenir">Nerede Ne Yenir</Link>
           </p>
         </section>

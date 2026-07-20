@@ -70,27 +70,27 @@ export function SiteFrame({ children }: SiteFrameProps) {
               </button>
               <div className="header-dropdown-menu">
                 <div className="header-dropdown-header">Kaş Rehberleri</div>
-                <Link href="/rehber/tekne-turu" className="header-dropdown-item">
+                <Link href="/kas-tekne-turu" className="header-dropdown-item">
                   <span className="header-dropdown-item-icon">⛵</span>
                   Kaş Tekne Turu
                 </Link>
-                <Link href="/rehber/dalis-noktalari" className="header-dropdown-item">
+                <Link href="/kas-dalis-noktalari" className="header-dropdown-item">
                   <span className="header-dropdown-item-icon">🤿</span>
                   Kaş Dalış Noktaları
                 </Link>
-                <Link href="/rehber/otel-onerileri" className="header-dropdown-item">
+                <Link href="/kas-otel-onerileri" className="header-dropdown-item">
                   <span className="header-dropdown-item-icon">🏨</span>
                   Kaş Otel Önerileri
                 </Link>
-                <Link href="/rehber/gece-hayati" className="header-dropdown-item">
+                <Link href="/kas-gece-hayati" className="header-dropdown-item">
                   <span className="header-dropdown-item-icon">🌙</span>
                   Kaş Gece Hayatı
                 </Link>
-                <Link href="/rehber/koylar" className="header-dropdown-item">
+                <Link href="/kas-koylari" className="header-dropdown-item">
                   <span className="header-dropdown-item-icon">🏖️</span>
                   Kaş Koyları
                 </Link>
-                <Link href="/rehber/kahvalti" className="header-dropdown-item">
+                <Link href="/kas-kahvalti-mekanlari" className="header-dropdown-item">
                   <span className="header-dropdown-item-icon">☕</span>
                   Kaş Kahvaltı
                 </Link>
@@ -143,22 +143,22 @@ export function SiteFrame({ children }: SiteFrameProps) {
                 Mekan Ara
               </Link>
               <div className="header-mobile-divider">Rehberler</div>
-              <Link href="/rehber/tekne-turu" className="header-mobile-link header-mobile-link-sub">
+              <Link href="/kas-tekne-turu" className="header-mobile-link header-mobile-link-sub">
                 Kaş Tekne Turu
               </Link>
-              <Link href="/rehber/dalis-noktalari" className="header-mobile-link header-mobile-link-sub">
+              <Link href="/kas-dalis-noktalari" className="header-mobile-link header-mobile-link-sub">
                 Kaş Dalış Noktaları
               </Link>
-              <Link href="/rehber/otel-onerileri" className="header-mobile-link header-mobile-link-sub">
+              <Link href="/kas-otel-onerileri" className="header-mobile-link header-mobile-link-sub">
                 Kaş Otel Önerileri
               </Link>
-              <Link href="/rehber/gece-hayati" className="header-mobile-link header-mobile-link-sub">
+              <Link href="/kas-gece-hayati" className="header-mobile-link header-mobile-link-sub">
                 Kaş Gece Hayatı
               </Link>
-              <Link href="/rehber/koylar" className="header-mobile-link header-mobile-link-sub">
+              <Link href="/kas-koylari" className="header-mobile-link header-mobile-link-sub">
                 Kaş Koyları
               </Link>
-              <Link href="/rehber/kahvalti" className="header-mobile-link header-mobile-link-sub">
+              <Link href="/kas-kahvalti-mekanlari" className="header-mobile-link header-mobile-link-sub">
                 Kaş Kahvaltı
               </Link>
               <div className="header-mobile-divider"></div>
