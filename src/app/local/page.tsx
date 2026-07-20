@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Kaş Local | Kaş Guide',
   description: "Kaş Local yakında daha derin yerel içeriklerle genişleyecek.",
+  alternates: { canonical: '/local' },
 }
 
 export default function LocalPage() {
