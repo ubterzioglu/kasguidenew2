@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+import { getRandomNewsImage } from '@/lib/random-image'
 import { listPublicAnnouncements } from '@/lib/updates-store'
 
 export const dynamic = 'force-dynamic'
@@ -45,7 +46,7 @@ export default async function DuyurularPage() {
           <div className="updates-list-grid">
             {announcements.map((item) => (
               <Link key={item.id} href={`/duyurular/${item.slug}`} className="updates-list-card updates-list-card-announcement">
-                <img src={item.imageUrl || '/kasplaceholder.jpg'} alt={item.title} className="updates-list-image" width={600} height={400} loading="lazy" />
+                <img src={item.imageUrl || getRandomNewsImage(item.id)} alt={item.title} className="updates-list-image" width={600} height={400} loading="lazy" />
                 <div className="updates-list-copy">
                   <span className={`updates-list-type updates-list-type-${item.priority}`}>Duyuru</span>
                   <h2>{item.title}</h2>

@@ -2,9 +2,8 @@
 
 import Link from 'next/link'
 
+import { getRandomNewsImage } from '@/lib/random-image'
 import type { UpdateCarouselItem } from '@/types/updates'
-
-const DEFAULT_IMAGE = '/kasplaceholder.jpg'
 
 type Props = {
   items: UpdateCarouselItem[]
@@ -41,7 +40,7 @@ export function NewsAnnouncementsCarousel({ items }: Props) {
                     <div className="updates-card-media-wrap">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={item.imageUrl || DEFAULT_IMAGE}
+                        src={item.imageUrl || getRandomNewsImage(item.id)}
                         alt={item.title || 'Güncel içerik görseli'}
                         className="updates-card-media"
                         loading="lazy"

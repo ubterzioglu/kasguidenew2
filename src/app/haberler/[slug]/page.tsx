@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { buildBreadcrumbListSchema } from '@/features/home/components/home-jsonld'
+import { getRandomNewsImage } from '@/lib/random-image'
 import { getNewsBySlug } from '@/lib/updates-store'
 import type { NewsItem } from '@/types/updates'
 
@@ -13,7 +14,7 @@ type PageProps = {
 
 function buildNewsArticleJsonLd(news: NewsItem, slug: string): Record<string, unknown> {
   const url = `https://www.kasguide.de/haberler/${slug}`
-  const image = news.imageUrl || 'https://www.kasguide.de/kasplaceholder.jpg'
+  const image = news.imageUrl || `https://www.kasguide.de${getRandomNewsImage(news.id)}`
 
   return {
     '@context': 'https://schema.org',
@@ -99,7 +100,7 @@ export default async function HaberDetayPage({ params }: PageProps) {
       />
       <article className="updates-detail-card">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={news.imageUrl || '/kasplaceholder.jpg'} alt={news.title} className="updates-detail-image" />
+        <img src={news.imageUrl || getRandomNewsImage(news.id)} alt={news.title} className="updates-detail-image" />
         <div className="updates-detail-copy">
           <span className="updates-detail-badge">Haber</span>
           <h1>{news.title}</h1>

@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import { PlaceGuideBadges } from '@/components/place-guide-badges'
 import { CATEGORY_MAP } from '@/lib/categories'
+import { getRandomPlaceImage } from '@/lib/random-image'
 
 import type { CategoryPlace } from './types'
 
@@ -16,7 +17,7 @@ export function CategoryPlaceCard({ place }: CategoryPlaceCardProps) {
     <Link href={`/mekan/${place.slug}`} className="category-place-card">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={place.imageUrl || CATEGORY_MAP.get(place.categoryPrimary)?.imageUrl || ''}
+        src={place.imageUrl || CATEGORY_MAP.get(place.categoryPrimary)?.imageUrl || getRandomPlaceImage(place.slug)}
         alt={place.headline || place.name}
         className="category-place-media"
         loading="lazy"

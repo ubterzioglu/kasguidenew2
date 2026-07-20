@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { buildBreadcrumbListSchema } from '@/features/home/components/home-jsonld'
+import { getRandomNewsImage } from '@/lib/random-image'
 import { getAnnouncementBySlug } from '@/lib/updates-store'
 import type { AnnouncementItem } from '@/types/updates'
 
@@ -13,7 +14,7 @@ type PageProps = {
 
 function buildAnnouncementArticleJsonLd(announcement: AnnouncementItem, slug: string): Record<string, unknown> {
   const url = `https://www.kasguide.de/duyurular/${slug}`
-  const image = announcement.imageUrl || 'https://www.kasguide.de/kasplaceholder.jpg'
+  const image = announcement.imageUrl || `https://www.kasguide.de${getRandomNewsImage(announcement.id)}`
 
   return {
     '@context': 'https://schema.org',
@@ -99,7 +100,7 @@ export default async function DuyuruDetayPage({ params }: PageProps) {
       />
       <article className="updates-detail-card updates-detail-card-announcement">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={announcement.imageUrl || '/kasplaceholder.jpg'} alt={announcement.title} className="updates-detail-image" />
+        <img src={announcement.imageUrl || getRandomNewsImage(announcement.id)} alt={announcement.title} className="updates-detail-image" />
         <div className="updates-detail-copy">
           <span className={`updates-detail-badge updates-detail-badge-${announcement.priority}`}>Duyuru</span>
           <h1>{announcement.title}</h1>

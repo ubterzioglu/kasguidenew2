@@ -1,6 +1,7 @@
 ﻿import 'server-only'
 
 import { getCategoryLabel } from '@/lib/categories'
+import { getRandomPlaceImage } from '@/lib/random-image'
 import type { PublicPlaceBadge } from '@/lib/public-place-types'
 import { getSupabaseAdminClient } from '@/lib/supabase-admin'
 
@@ -248,7 +249,7 @@ function mapPlaceListItem(place: PlaceRow, badgeRows: BadgeRow[]): PublicPlaceLi
     address: place.address,
     phone: place.phone,
     website: place.website,
-    imageUrl: getImageUrls(place.images)[0] ?? null,
+    imageUrl: getImageUrls(place.images)[0] ?? getRandomPlaceImage(place.id),
     guideBadges: resolveGuideBadges(
       badgeRows,
       place.kasguide_badges?.length ? place.kasguide_badges : place.kasguide_badge,
@@ -424,7 +425,9 @@ export async function getPublishedPlaceBySlug(slug: string) {
     address: place.address,
     phone: place.phone,
     website: place.website,
-    imageUrls: getImageUrls(place.images),
+    imageUrls: getImageUrls(place.images).length > 0
+      ? getImageUrls(place.images)
+      : [getRandomPlaceImage(place.id)],
     guideBadges: resolveGuideBadges(
       badgeRows,
       place.kasguide_badges?.length ? place.kasguide_badges : place.kasguide_badge,
