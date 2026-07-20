@@ -76,6 +76,18 @@ const SECTIONS: SidebarSection[] = [
     ),
     isActive: (pathname) => pathname.startsWith('/admin/social'),
   },
+  {
+    key: 'activity',
+    href: '/admin/activity',
+    label: 'Aktiviteler',
+    icon: (
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="M12 7.5V12l3 2" />
+      </svg>
+    ),
+    isActive: (pathname) => pathname.startsWith('/admin/activity'),
+  },
 ]
 
 export default function AdminSidebar() {
