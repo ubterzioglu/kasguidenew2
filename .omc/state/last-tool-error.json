@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd c:/temp_private/kasguidede && node --env-file=.env.local -e \\\"\\nconst { createClient } = require('@supabase/supabase-js');\\nconst client = createClient(process.env.SUPABASE_URL, process...",
+  "error": "Exit code 1\nplace delete: ok\ncandidates delete: ok\njob delete: ok\n/usr/bin/bash: line 12: /c/Users/BARIS-~1/AppData/Local/Temp/claude-cf03-cwd: No such file or directory",
+  "timestamp": "2026-07-20T15:03:25.866Z",
+  "retry_count": 5
+}

@@ -258,6 +258,307 @@
       ]
     }
   },
-  "hotPaths": [],
+  "hotPaths": [
+    {
+      "path": "src\\app\\globals.css",
+      "accessCount": 23,
+      "lastAccessed": 1784557689698,
+      "type": "directory"
+    },
+    {
+      "path": "src",
+      "accessCount": 6,
+      "lastAccessed": 1784558765130,
+      "type": "directory"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\gemini.ts",
+      "accessCount": 6,
+      "lastAccessed": 1784558816874,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations",
+      "accessCount": 5,
+      "lastAccessed": 1784560152373,
+      "type": "directory"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\promote.ts",
+      "accessCount": 5,
+      "lastAccessed": 1784560192261,
+      "type": "file"
+    },
+    {
+      "path": "CLAUDE.md",
+      "accessCount": 3,
+      "lastAccessed": 1784556835542,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\run-job.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784556971116,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\news-scraper\\run.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784556971318,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\admin\\scrapers\\places\\jobs\\[id]\\run\\route.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784556983772,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\admin\\scrapers\\news\\run\\route.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784556984203,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\news-scraper\\feed-parser.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784556993797,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\admin\\scrapers\\places\\page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1784556994080,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\admin\\scrapers\\news\\page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1784556994173,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\admin\\scrapers\\places\\jobs\\route.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784557003536,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260709120000_create_news_scraper_sources.sql",
+      "accessCount": 3,
+      "lastAccessed": 1784557068660,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260709120200_create_place_scraper_tables.sql",
+      "accessCount": 3,
+      "lastAccessed": 1784557077472,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\admin\\scrapers\\places\\candidates\\[id]\\route.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784560160343,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\publish-reviewed.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556790140,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\types.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556799519,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\tavily.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556799944,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\cost.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556807016,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\dedupe.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556807390,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\job-store.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556808090,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\queries.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556808846,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\robots.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556809239,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\place-scraper\\serpapi.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556809679,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\news-scraper\\types.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556810027,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\news-scraper\\feed-fetcher.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556810803,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\news-scraper\\relevance.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556811972,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\news-scraper\\source-store.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556812258,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\news-scraper\\dedupe.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556812596,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\admin\\scrapers\\places\\[id]\\page.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1784556820003,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\admin\\scrapers\\places\\jobs\\[id]\\route.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556821507,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\admin\\scrapers\\news\\sources\\route.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556823346,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\admin\\scrapers\\news\\sources\\[id]\\route.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784556824129,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260709120100_add_source_attribution_to_news.sql",
+      "accessCount": 2,
+      "lastAccessed": 1784557069008,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260709120300_add_scraper_intake_channel.sql",
+      "accessCount": 2,
+      "lastAccessed": 1784557077732,
+      "type": "file"
+    },
+    {
+      "path": "src\\features\\home\\components\\hero-carousel.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1784557092749,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 1,
+      "lastAccessed": 1784556706712,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\normalize-places.ts",
+      "accessCount": 1,
+      "lastAccessed": 1784556780160,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\dedupe-places.ts",
+      "accessCount": 1,
+      "lastAccessed": 1784556780472,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\reset-ingestion.ts",
+      "accessCount": 1,
+      "lastAccessed": 1784556780531,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260328193000_create_place_ingestion_core.sql",
+      "accessCount": 1,
+      "lastAccessed": 1784556787403,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260404123000_unify_places_single_table.sql",
+      "accessCount": 1,
+      "lastAccessed": 1784556787609,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\backfill-legacy-items-to-review.ts",
+      "accessCount": 1,
+      "lastAccessed": 1784556788984,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\consolidate-raw-into-places.ts",
+      "accessCount": 1,
+      "lastAccessed": 1784556790030,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\enforce-place-status-buckets.ts",
+      "accessCount": 1,
+      "lastAccessed": 1784556790104,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\admin\\components\\AdminSectionLinks.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1784556790185,
+      "type": "directory"
+    },
+    {
+      "path": "src\\lib\\api-schemas.ts",
+      "accessCount": 1,
+      "lastAccessed": 1784556791526,
+      "type": "directory"
+    },
+    {
+      "path": ".tmp-find-pooler.mjs",
+      "accessCount": 1,
+      "lastAccessed": 1784556928761,
+      "type": "file"
+    }
+  ],
   "userDirectives": []
 }

@@ -8,6 +8,7 @@ old/
 .env
 .env.local
 .env*.local
+check.api
 
 # Node modules
 node_modules/

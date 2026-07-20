@@ -2,7 +2,7 @@ import 'server-only'
 
 import { randomUUID } from 'node:crypto'
 
-import { PLACE_CATEGORY_OPTIONS } from '@/lib/place-taxonomy'
+import { PLACE_CATEGORY_OPTIONS, suggestCategoryFromRaw } from '@/lib/place-taxonomy'
 import { slugifyText } from '@/lib/place-review-utils'
 import { getSupabaseAdminClient } from '@/lib/supabase-admin'
 import { getPlaceScraperCandidate, updateCandidateReviewStatus } from '@/lib/place-scraper/job-store'
@@ -11,9 +11,13 @@ import type { PlaceScraperCandidate } from '@/lib/place-scraper/types'
 const DEFAULT_PLACE_IMAGE_URL = '/kasplaceholder.jpg'
 const MAX_SLUG_ITERATIONS = 100
 
-function resolveCategoryId(categorySlug: string | null): string {
-  const match = PLACE_CATEGORY_OPTIONS.find((option) => option.id === categorySlug)
-  return match?.id ?? PLACE_CATEGORY_OPTIONS[0].id
+function resolveCategoryId(categorySlug: string | null): { categoryId: string; wasGuessed: boolean } {
+  const directMatch = PLACE_CATEGORY_OPTIONS.find((option) => option.id === categorySlug)
+  if (directMatch) {
+    return { categoryId: directMatch.id, wasGuessed: false }
+  }
+
+  return { categoryId: suggestCategoryFromRaw(categorySlug), wasGuessed: true }
 }
 
 function primaryContact(candidate: PlaceScraperCandidate, type: 'phone' | 'website'): string | null {

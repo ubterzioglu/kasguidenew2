@@ -3,7 +3,9 @@ import 'server-only'
 import type { CandidateDraft, GeminiClassificationResult } from '@/lib/place-scraper/types'
 
 const GEMINI_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models'
-const DEFAULT_MODEL = 'gemini-2.5-flash-lite'
+// gemini-2.5-flash-lite yeni API key'lerine kapatildi (404: "no longer available
+// to new users"), bu yuzden varsayilan flash. Ucuz mod da ayni modeli kullanir.
+const DEFAULT_MODEL = 'gemini-2.5-flash'
 const FALLBACK_MODEL = 'gemini-2.5-flash'
 const REQUEST_TIMEOUT_MS = 30000
 
