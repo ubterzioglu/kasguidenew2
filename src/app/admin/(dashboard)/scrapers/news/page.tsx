@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { AdminSectionLinks } from '../../components/AdminSectionLinks'
+import { useAdminSidebarRefreshAction } from '../../AdminSidebarActionsContext'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -47,6 +47,12 @@ export default function AdminNewsScraperPage() {
   const [sourceDraft, setSourceDraft] = useState<NewsScraperSourceInput>(createEmptySourceDraft())
   const [isSavingSource, setIsSavingSource] = useState(false)
   const [lastRunResults, setLastRunResults] = useState<NewsScraperRunResult[] | null>(null)
+
+  useAdminSidebarRefreshAction({
+    label: 'Listeyi yenile',
+    refreshing: isLoading,
+    onRefresh: () => loadData(),
+  })
 
   async function loadData(passwordOverride?: string, redirectOnAuthError = false) {
     const password = (passwordOverride ?? adminPassword).trim()
@@ -230,18 +236,8 @@ export default function AdminNewsScraperPage() {
           </p>
         </div>
 
-        <div className="admin-places-header-actions">
-          <AdminSectionLinks
-            current="scrapers"
-            onRefresh={() => loadData()}
-            refreshLabel="Listeyi yenile"
-            refreshing={isLoading}
-            onLogout={logout}
-          />
-
-          <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
-            <span>{status.message}</span>
-          </div>
+        <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
+          <span>{status.message}</span>
         </div>
       </section>
 

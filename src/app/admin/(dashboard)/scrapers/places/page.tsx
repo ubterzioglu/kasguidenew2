@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-import { AdminSectionLinks } from '../../components/AdminSectionLinks'
+import { useAdminSidebarRefreshAction } from '../../AdminSidebarActionsContext'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -65,6 +65,12 @@ export default function AdminPlaceScraperPage() {
   const [jobDraft, setJobDraft] = useState<PlaceScraperJobInput>(createEmptyJobDraft())
   const [isCreatingJob, setIsCreatingJob] = useState(false)
   const [runningJobId, setRunningJobId] = useState<string | null>(null)
+
+  useAdminSidebarRefreshAction({
+    label: 'Listeyi yenile',
+    refreshing: isLoading,
+    onRefresh: () => loadData(),
+  })
 
   async function loadData(passwordOverride?: string, redirectOnAuthError = false) {
     const password = (passwordOverride ?? adminPassword).trim()
@@ -204,18 +210,8 @@ export default function AdminPlaceScraperPage() {
           </p>
         </div>
 
-        <div className="admin-places-header-actions">
-          <AdminSectionLinks
-            current="scrapers"
-            onRefresh={() => loadData()}
-            refreshLabel="Listeyi yenile"
-            refreshing={isLoading}
-            onLogout={logout}
-          />
-
-          <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
-            <span>{status.message}</span>
-          </div>
+        <div className={`admin-status admin-status-${status.tone} admin-status-places`}>
+          <span>{status.message}</span>
         </div>
       </section>
 
