@@ -266,16 +266,16 @@
       "type": "directory"
     },
     {
+      "path": "src",
+      "accessCount": 15,
+      "lastAccessed": 1784564222793,
+      "type": "directory"
+    },
+    {
       "path": "src\\lib\\news-scraper\\run.ts",
       "accessCount": 14,
       "lastAccessed": 1784563471546,
       "type": "file"
-    },
-    {
-      "path": "src",
-      "accessCount": 12,
-      "lastAccessed": 1784563530643,
-      "type": "directory"
     },
     {
       "path": "src\\app\\admin\\scrapers\\news\\page.tsx",
