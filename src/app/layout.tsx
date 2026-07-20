@@ -23,12 +23,21 @@ export const metadata: Metadata = {
     siteName: 'Kaş Guide',
     locale: 'tr_TR',
     type: 'website',
+    images: [
+      {
+        url: 'https://www.kasguide.de/og.jpg',
+        width: 1200,
+        height: 630,
+        alt: "Kaş Guide - Kaş'ta Gezilecek Yerler ve Yerel Rehber",
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: "Kaş Guide - Kaş'ta Gezilecek Yerler ve Yerel Rehber",
     description: "Kaş'ın en kapsamlı yerel rehberi.",
     site: '@thekasguide',
+    images: ['https://www.kasguide.de/og.jpg'],
   },
   robots: {
     index: true,
