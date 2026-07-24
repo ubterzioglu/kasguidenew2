@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1784556666920,
+  "lastScanned": 1784925050653,
   "projectRoot": "c:\\temp_private\\kasguidede",
   "techStack": {
     "languages": [
@@ -74,6 +74,7 @@
     "isMonorepo": false,
     "workspaces": [],
     "mainDirectories": [
+      "docs",
       "public",
       "scripts",
       "src"
@@ -89,7 +90,7 @@
       "path": "db",
       "purpose": null,
       "fileCount": 21,
-      "lastAccessed": 1784556666861,
+      "lastAccessed": 1784925050595,
       "keyFiles": [
         "add_article_interview_types.sql",
         "connection.js",
@@ -98,11 +99,18 @@
         "import-data.js"
       ]
     },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 0,
+      "lastAccessed": 1784925050596,
+      "keyFiles": []
+    },
     "faq": {
       "path": "faq",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1784556666862,
+      "lastAccessed": 1784925050597,
       "keyFiles": [
         "faq-list-data.js"
       ]
@@ -111,7 +119,7 @@
       "path": "placesclaudeadd",
       "purpose": null,
       "fileCount": 4,
-      "lastAccessed": 1784556666890,
+      "lastAccessed": 1784925050623,
       "keyFiles": [
         "placeholder-batch-prompt.md",
         "placeholder-batch.sql",
@@ -123,7 +131,7 @@
       "path": "public",
       "purpose": "Public files",
       "fileCount": 7,
-      "lastAccessed": 1784556666891,
+      "lastAccessed": 1784925050624,
       "keyFiles": [
         "kasguidevid.mp4",
         "kasplaceholder.jpg",
@@ -135,28 +143,28 @@
     "scripts": {
       "path": "scripts",
       "purpose": "Build/utility scripts",
-      "fileCount": 15,
-      "lastAccessed": 1784556666891,
+      "fileCount": 16,
+      "lastAccessed": 1784925050624,
       "keyFiles": [
         "backfill-legacy-items-to-review.ts",
         "backup-db.mjs",
         "consolidate-raw-into-places.ts",
         "dedupe-places.ts",
-        "enforce-place-status-buckets.ts"
+        "download-kas-images.mjs"
       ]
     },
     "src": {
       "path": "src",
       "purpose": "Source code",
       "fileCount": 0,
-      "lastAccessed": 1784556666892,
+      "lastAccessed": 1784925050624,
       "keyFiles": []
     },
     "supabase": {
       "path": "supabase",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1784556666892,
+      "lastAccessed": 1784925050625,
       "keyFiles": [
         "config.toml"
       ]
@@ -165,7 +173,7 @@
       "path": "temp",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1784556666893,
+      "lastAccessed": 1784925050625,
       "keyFiles": [
         "next-dev.err.log",
         "next-dev.out.log"
@@ -175,7 +183,7 @@
       "path": "scripts\\lib",
       "purpose": "Library code",
       "fileCount": 2,
-      "lastAccessed": 1784556666895,
+      "lastAccessed": 1784925050628,
       "keyFiles": [
         "ingestion-config.ts",
         "supabase-admin.ts"
@@ -185,7 +193,7 @@
       "path": "src\\app",
       "purpose": "Application code",
       "fileCount": 8,
-      "lastAccessed": 1784556666896,
+      "lastAccessed": 1784925050629,
       "keyFiles": [
         "error.tsx",
         "globals.css",
@@ -196,7 +204,7 @@
       "path": "src\\components",
       "purpose": "UI components",
       "fileCount": 5,
-      "lastAccessed": 1784556666896,
+      "lastAccessed": 1784925050630,
       "keyFiles": [
         "back-to-top-button.tsx",
         "client-header.tsx",
@@ -206,20 +214,21 @@
     "src\\lib": {
       "path": "src\\lib",
       "purpose": "Library code",
-      "fileCount": 26,
-      "lastAccessed": 1784556666897,
+      "fileCount": 28,
+      "lastAccessed": 1784925050631,
       "keyFiles": [
+        "activity-store.ts",
         "admin-auth.ts",
-        "admin-password-client.ts",
-        "admin-session-client.ts"
+        "admin-password-client.ts"
       ]
     },
     "src\\types": {
       "path": "src\\types",
       "purpose": "Type definitions",
-      "fileCount": 2,
-      "lastAccessed": 1784556666898,
+      "fileCount": 3,
+      "lastAccessed": 1784925050632,
       "keyFiles": [
+        "activity.ts",
         "review.ts",
         "updates.ts"
       ]
@@ -227,8 +236,8 @@
     "supabase\\migrations": {
       "path": "supabase\\migrations",
       "purpose": "Database migrations",
-      "fileCount": 17,
-      "lastAccessed": 1784556666899,
+      "fileCount": 18,
+      "lastAccessed": 1784925050633,
       "keyFiles": [
         "20260326215500_create_hero_slides.sql",
         "20260328193000_create_place_ingestion_core.sql",
@@ -239,7 +248,7 @@
       "path": "temp\\docs",
       "purpose": "Documentation",
       "fileCount": 10,
-      "lastAccessed": 1784556666900,
+      "lastAccessed": 1784925050634,
       "keyFiles": [
         "grid-sweep-runbook.md",
         "kas-run-report.md",
@@ -250,7 +259,7 @@
       "path": "temp\\tests",
       "purpose": "Test files",
       "fileCount": 4,
-      "lastAccessed": 1784556666900,
+      "lastAccessed": 1784925050634,
       "keyFiles": [
         "test-api-limit.mjs",
         "test-limit.mjs",
@@ -258,307 +267,6 @@
       ]
     }
   },
-  "hotPaths": [
-    {
-      "path": "src\\app\\globals.css",
-      "accessCount": 75,
-      "lastAccessed": 1784571270893,
-      "type": "directory"
-    },
-    {
-      "path": "src",
-      "accessCount": 36,
-      "lastAccessed": 1784574761241,
-      "type": "directory"
-    },
-    {
-      "path": "src\\lib\\news-scraper\\run.ts",
-      "accessCount": 14,
-      "lastAccessed": 1784563471546,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\admin\\scrapers\\news\\page.tsx",
-      "accessCount": 10,
-      "lastAccessed": 1784566112756,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\promote.ts",
-      "accessCount": 8,
-      "lastAccessed": 1784560217599,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\admin\\scrapers\\places\\page.tsx",
-      "accessCount": 8,
-      "lastAccessed": 1784566113719,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\news-scraper\\relevance.ts",
-      "accessCount": 7,
-      "lastAccessed": 1784562775166,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\gemini.ts",
-      "accessCount": 7,
-      "lastAccessed": 1784572798282,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\admin\\scrapers\\places\\[id]\\page.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1784566113801,
-      "type": "file"
-    },
-    {
-      "path": "supabase\\migrations",
-      "accessCount": 5,
-      "lastAccessed": 1784560152373,
-      "type": "directory"
-    },
-    {
-      "path": "CLAUDE.md",
-      "accessCount": 5,
-      "lastAccessed": 1784570659349,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\news-scraper\\types.ts",
-      "accessCount": 4,
-      "lastAccessed": 1784562482201,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\news-scraper\\dedupe.ts",
-      "accessCount": 4,
-      "lastAccessed": 1784563455378,
-      "type": "file"
-    },
-    {
-      "path": "src\\features\\home\\components\\hero-carousel.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1784570726933,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\run-job.ts",
-      "accessCount": 4,
-      "lastAccessed": 1784571412960,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\api\\admin\\scrapers\\places\\jobs\\route.ts",
-      "accessCount": 4,
-      "lastAccessed": 1784571418883,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\api\\admin\\scrapers\\places\\jobs\\[id]\\run\\route.ts",
-      "accessCount": 4,
-      "lastAccessed": 1784571424844,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\api\\admin\\scrapers\\news\\run\\route.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784556984203,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\news-scraper\\feed-parser.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784556993797,
-      "type": "file"
-    },
-    {
-      "path": "supabase\\migrations\\20260709120000_create_news_scraper_sources.sql",
-      "accessCount": 3,
-      "lastAccessed": 1784557068660,
-      "type": "file"
-    },
-    {
-      "path": "supabase\\migrations\\20260709120200_create_place_scraper_tables.sql",
-      "accessCount": 3,
-      "lastAccessed": 1784557077472,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\api\\admin\\scrapers\\places\\candidates\\[id]\\route.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784560160343,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\api\\admin\\scrapers\\news\\sources\\route.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784560515074,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\dedupe.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784571412158,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\queries.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784571412605,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\job-store.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784571418259,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\types.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784571418590,
-      "type": "file"
-    },
-    {
-      "path": "package.json",
-      "accessCount": 3,
-      "lastAccessed": 1784571937235,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\tavily.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784572797919,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\robots.ts",
-      "accessCount": 3,
-      "lastAccessed": 1784572808833,
-      "type": "file"
-    },
-    {
-      "path": "scripts\\publish-reviewed.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556790140,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\cost.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556807016,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\place-scraper\\serpapi.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556809679,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\news-scraper\\feed-fetcher.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556810803,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\news-scraper\\source-store.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556812258,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\api\\admin\\scrapers\\places\\jobs\\[id]\\route.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556821507,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\api\\admin\\scrapers\\news\\sources\\[id]\\route.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784556824129,
-      "type": "file"
-    },
-    {
-      "path": "supabase\\migrations\\20260709120100_add_source_attribution_to_news.sql",
-      "accessCount": 2,
-      "lastAccessed": 1784557069008,
-      "type": "file"
-    },
-    {
-      "path": "supabase\\migrations\\20260709120300_add_scraper_intake_channel.sql",
-      "accessCount": 2,
-      "lastAccessed": 1784557077732,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\admin\\components\\AdminSectionLinks.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1784560732494,
-      "type": "directory"
-    },
-    {
-      "path": "src\\lib\\api-schemas.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784572486166,
-      "type": "directory"
-    },
-    {
-      "path": "supabase\\migrations\\20260404123000_unify_places_single_table.sql",
-      "accessCount": 2,
-      "lastAccessed": 1784579715762,
-      "type": "file"
-    },
-    {
-      "path": "scripts\\normalize-places.ts",
-      "accessCount": 1,
-      "lastAccessed": 1784556780160,
-      "type": "file"
-    },
-    {
-      "path": "scripts\\dedupe-places.ts",
-      "accessCount": 1,
-      "lastAccessed": 1784556780472,
-      "type": "file"
-    },
-    {
-      "path": "scripts\\reset-ingestion.ts",
-      "accessCount": 1,
-      "lastAccessed": 1784556780531,
-      "type": "file"
-    },
-    {
-      "path": "supabase\\migrations\\20260328193000_create_place_ingestion_core.sql",
-      "accessCount": 1,
-      "lastAccessed": 1784556787403,
-      "type": "file"
-    },
-    {
-      "path": "scripts\\backfill-legacy-items-to-review.ts",
-      "accessCount": 1,
-      "lastAccessed": 1784556788984,
-      "type": "file"
-    },
-    {
-      "path": "scripts\\consolidate-raw-into-places.ts",
-      "accessCount": 1,
-      "lastAccessed": 1784556790030,
-      "type": "file"
-    },
-    {
-      "path": "scripts\\enforce-place-status-buckets.ts",
-      "accessCount": 1,
-      "lastAccessed": 1784556790104,
-      "type": "file"
-    },
-    {
-      "path": ".tmp-find-pooler.mjs",
-      "accessCount": 1,
-      "lastAccessed": 1784556928761,
-      "type": "file"
-    }
-  ],
+  "hotPaths": [],
   "userDirectives": []
 }
