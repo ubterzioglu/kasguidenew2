@@ -130,6 +130,10 @@ export function WhatsAppCommunitySection() {
               <a href="https://ufuksoynakliyat.com.tr/esya-depolama" rel="dofollow">
                 Eşya Depolama
               </a>
+              {' | '}
+              <a href="https://tekhurdametal.com/hurda-fiyatlari/" rel="dofollow">
+                Hurda Fiyatları
+              </a>
               {' | '}Bir başkadır Kaş!
             </p>
           </div>
