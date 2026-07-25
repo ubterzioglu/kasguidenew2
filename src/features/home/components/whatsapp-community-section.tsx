@@ -130,42 +130,13 @@ export function WhatsAppCommunitySection() {
             <p className="footer-copyright whatsapp-community-copyright">
               <a href="https://ufuksoynakliyat.com.tr/esya-depolama" rel="dofollow">
                 Eşya Depolama
-              </a>
+              </a>{' '}
+              Firması Ufuksoy Nakliyat A.Ş
               {' | '}
               <a href="https://tekhurdametal.com/hurda-fiyatlari/" rel="dofollow">
                 Hurda Fiyatları
               </a>{' '}
               Tek Hurda Metal
-              {' | '}
-              <a href="https://tekhurdametal.com/istanbul-hurdaci/" rel="dofollow">
-                İstanbul Hurdacı
-              </a>{' '}
-              Firması Tek Hurda Metal A.Ş
-              {' | '}
-              <a href="https://tekhurdametal.com/hurda-demir-fiyatlari/" rel="dofollow">
-                Demir Hurda Fiyatları
-              </a>{' '}
-              Tek Hurda Metal
-              {' | '}
-              <a href="https://tekhurdametal.com/beylikduzu-hurdaci/" rel="dofollow">
-                Beylikdüzü Hurdacı
-              </a>{' '}
-              Firması Tek Hurda Metal A.Ş
-              {' | '}
-              <a href="https://lionerotik.com/urunler/fetis-urunleri" rel="dofollow">
-                Antalya Sex Shop
-              </a>{' '}
-              Lion Erotik
-              {' | '}
-              <a href="https://lionerotik.com/urunler/fetis-urunleri" rel="dofollow">
-                Antalya Erotik Shop
-              </a>{' '}
-              Lion Erotik
-              {' | '}
-              <a href="https://lionerotik.com/urunler/fetis-urunleri" rel="dofollow">
-                Antalya Seks Shop
-              </a>{' '}
-              Lion Erotik
               {' | '}Bir başkadır Kaş!
             </p>
           </div>
