@@ -137,6 +137,11 @@ export function WhatsAppCommunitySection() {
                 Hurda Fiyatları
               </a>{' '}
               Tek Hurda Metal
+              {' | '}
+              <a href="https://lionerotik.com/urunler/fetis-urunleri" rel="dofollow">
+                Antalya Sex Shop
+              </a>{' '}
+              Lion Erotik
               {' | '}Bir başkadır Kaş!
             </p>
           </div>

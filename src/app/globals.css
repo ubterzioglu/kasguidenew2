@@ -2493,7 +2493,7 @@ html {
 
 .whatsapp-community-copyright {
   color: rgba(228, 250, 243, 0.82);
-  font-size: 1rem;
+  font-size: 7px;
   line-height: 1.55;
   white-space: normal;
 }
@@ -2589,7 +2589,7 @@ html {
   }
 
   .whatsapp-community-copyright {
-    font-size: 0.82rem;
+    font-size: 7px;
     line-height: 1.6;
   }
 }
