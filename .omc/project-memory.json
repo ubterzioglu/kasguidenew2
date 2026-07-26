@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1784925050653,
+  "lastScanned": 1785078590783,
   "projectRoot": "c:\\temp_private\\kasguidede",
   "techStack": {
     "languages": [
@@ -90,7 +90,7 @@
       "path": "db",
       "purpose": null,
       "fileCount": 21,
-      "lastAccessed": 1784925050595,
+      "lastAccessed": 1785078590704,
       "keyFiles": [
         "add_article_interview_types.sql",
         "connection.js",
@@ -103,14 +103,14 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 0,
-      "lastAccessed": 1784925050596,
+      "lastAccessed": 1785078590704,
       "keyFiles": []
     },
     "faq": {
       "path": "faq",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1784925050597,
+      "lastAccessed": 1785078590705,
       "keyFiles": [
         "faq-list-data.js"
       ]
@@ -119,7 +119,7 @@
       "path": "placesclaudeadd",
       "purpose": null,
       "fileCount": 4,
-      "lastAccessed": 1784925050623,
+      "lastAccessed": 1785078590705,
       "keyFiles": [
         "placeholder-batch-prompt.md",
         "placeholder-batch.sql",
@@ -131,7 +131,7 @@
       "path": "public",
       "purpose": "Public files",
       "fileCount": 7,
-      "lastAccessed": 1784925050624,
+      "lastAccessed": 1785078590743,
       "keyFiles": [
         "kasguidevid.mp4",
         "kasplaceholder.jpg",
@@ -144,7 +144,7 @@
       "path": "scripts",
       "purpose": "Build/utility scripts",
       "fileCount": 16,
-      "lastAccessed": 1784925050624,
+      "lastAccessed": 1785078590744,
       "keyFiles": [
         "backfill-legacy-items-to-review.ts",
         "backup-db.mjs",
@@ -157,14 +157,14 @@
       "path": "src",
       "purpose": "Source code",
       "fileCount": 0,
-      "lastAccessed": 1784925050624,
+      "lastAccessed": 1785078590744,
       "keyFiles": []
     },
     "supabase": {
       "path": "supabase",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1784925050625,
+      "lastAccessed": 1785078590745,
       "keyFiles": [
         "config.toml"
       ]
@@ -173,7 +173,7 @@
       "path": "temp",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1784925050625,
+      "lastAccessed": 1785078590745,
       "keyFiles": [
         "next-dev.err.log",
         "next-dev.out.log"
@@ -183,7 +183,7 @@
       "path": "scripts\\lib",
       "purpose": "Library code",
       "fileCount": 2,
-      "lastAccessed": 1784925050628,
+      "lastAccessed": 1785078590748,
       "keyFiles": [
         "ingestion-config.ts",
         "supabase-admin.ts"
@@ -193,7 +193,7 @@
       "path": "src\\app",
       "purpose": "Application code",
       "fileCount": 8,
-      "lastAccessed": 1784925050629,
+      "lastAccessed": 1785078590750,
       "keyFiles": [
         "error.tsx",
         "globals.css",
@@ -204,7 +204,7 @@
       "path": "src\\components",
       "purpose": "UI components",
       "fileCount": 5,
-      "lastAccessed": 1784925050630,
+      "lastAccessed": 1785078590751,
       "keyFiles": [
         "back-to-top-button.tsx",
         "client-header.tsx",
@@ -215,7 +215,7 @@
       "path": "src\\lib",
       "purpose": "Library code",
       "fileCount": 28,
-      "lastAccessed": 1784925050631,
+      "lastAccessed": 1785078590752,
       "keyFiles": [
         "activity-store.ts",
         "admin-auth.ts",
@@ -226,7 +226,7 @@
       "path": "src\\types",
       "purpose": "Type definitions",
       "fileCount": 3,
-      "lastAccessed": 1784925050632,
+      "lastAccessed": 1785078590753,
       "keyFiles": [
         "activity.ts",
         "review.ts",
@@ -237,7 +237,7 @@
       "path": "supabase\\migrations",
       "purpose": "Database migrations",
       "fileCount": 18,
-      "lastAccessed": 1784925050633,
+      "lastAccessed": 1785078590756,
       "keyFiles": [
         "20260326215500_create_hero_slides.sql",
         "20260328193000_create_place_ingestion_core.sql",
@@ -248,7 +248,7 @@
       "path": "temp\\docs",
       "purpose": "Documentation",
       "fileCount": 10,
-      "lastAccessed": 1784925050634,
+      "lastAccessed": 1785078590758,
       "keyFiles": [
         "grid-sweep-runbook.md",
         "kas-run-report.md",
@@ -259,7 +259,7 @@
       "path": "temp\\tests",
       "purpose": "Test files",
       "fileCount": 4,
-      "lastAccessed": 1784925050634,
+      "lastAccessed": 1785078590759,
       "keyFiles": [
         "test-api-limit.mjs",
         "test-limit.mjs",
